@@ -1,0 +1,165 @@
+# robots.txt
+
+Last updated April 8, 2026
+
+Add or generate a `robots.txt` file that matches the Robots Exclusion Standard in the **root** of `app` directory to tell search engine crawlers which URLs they can access on your site.
+
+## Static `robots.txt`
+
+app/robots.txt
+
+```
+User-Agent: *
+Allow: /
+Disallow: /private/
+
+Sitemap: https://acme.com/sitemap.xml
+```
+
+## Generate a Robots file
+
+Add a `robots.js` or `robots.ts` file that returns a `Robots` object.
+
+> **Good to know**: `robots.js` is a special Route Handler that is cached by default unless it uses a Request-time API or dynamic config option.
+
+app/robots.ts
+
+TypeScript
+
+```
+import type { MetadataRoute } from 'next'
+ 
+export default function robots(): MetadataRoute.Robots {
+ return {
+ rules: {
+ userAgent: '*',
+ allow: '/',
+ disallow: '/private/',
+ },
+ sitemap: 'https://acme.com/sitemap.xml',
+ }
+}
+```
+
+Output:
+
+```
+User-Agent: *
+Allow: /
+Disallow: /private/
+
+Sitemap: https://acme.com/sitemap.xml
+```
+
+### Customizing specific user agents
+
+You can customize how individual search engine bots crawl your site by passing an array of user agents to the `rules` property. For example:
+
+app/robots.ts
+
+TypeScript
+
+```
+import type { MetadataRoute } from 'next'
+ 
+export default function robots(): MetadataRoute.Robots {
+ return {
+ rules: [
+ {
+ userAgent: 'Googlebot',
+ allow: ['/'],
+ disallow: '/private/',
+ },
+ {
+ userAgent: ['Applebot', 'Bingbot'],
+ disallow: ['/'],
+ },
+ ],
+ sitemap: 'https://acme.com/sitemap.xml',
+ }
+}
+```
+
+Output:
+
+```
+User-Agent: Googlebot
+Allow: /
+Disallow: /private/
+
+User-Agent: Applebot
+Disallow: /
+
+User-Agent: Bingbot
+Disallow: /
+
+Sitemap: https://acme.com/sitemap.xml
+```
+
+### Robots object
+
+```
+type Robots = {
+ rules:
+ | {
+ userAgent?: string | string[]
+ allow?: string | string[]
+ disallow?: string | string[]
+ crawlDelay?: number
+ }
+ | Array<{
+ userAgent: string | string[]
+ allow?: string | string[]
+ disallow?: string | string[]
+ crawlDelay?: number
+ }>
+ sitemap?: string | string[]
+ host?: string
+}
+```
+
+## Version History
+
+| Version | Changes |
+| --- | --- |
+| `v13.3.0` | `robots` introduced. |
+
+Previous opengraph-image and twitter-imageNext sitemap.xml
+
+Was this helpful?
+
+supported.
+
+Send
+
+* * *
+
+* * *
+
+#### Resources
+
+DocsSupport PolicyLearnShowcaseBlogTeamAnalyticsNext.js ConfPreviewsEvals
+
+#### More
+
+Next.js CommerceContact SalesCommunityGitHubReleasesTelemetryGovernanceEcosystem Working Group
+
+#### About Vercel
+
+Next.js + VercelOpen Source SoftwareGitHubBlueskyX
+
+#### Legal
+
+Privacy PolicyCookie Preferences
+
+#### Subscribe to our newsletter
+
+Stay updated on new releases and features, guides, and case studies.
+
+Subscribe
+
+© 2026 Vercel, Inc.
+
+* * *
+
+* * *

@@ -1,6 +1,6 @@
 Copy
 
-# Escape Hatches
+# Escape Hatches[](https://react.dev/learn/escape-hatches#undefined)
 
 Advanced
 
@@ -8,16 +8,16 @@ Some of your components may need to control and synchronize with systems outside
 
 ### In this chapter
 
-*   How to “remember” information without re-rendering
-*   How to access DOM elements managed by React
-*   How to synchronize components with external systems
-*   How to remove unnecessary Effects from your components
-*   How an Effect’s lifecycle is different from a component’s
-*   How to prevent some values from re-triggering Effects
-*   How to make your Effect re-run less often
-*   How to share logic between components
+* How to “remember” information without re-rendering
+* How to access DOM elements managed by React
+* How to synchronize components with external systems
+* How to remove unnecessary Effects from your components
+* How an Effect’s lifecycle is different from a component’s
+* How to prevent some values from re-triggering Effects
+* How to make your Effect re-run less often
+* How to share logic between components
 
-## Referencing values with refs 
+## Referencing values with refs [](https://react.dev/learn/escape-hatches#referencing-values-with-refs)
 
 When you want a component to “remember” some information, but you don’t want that information to trigger new renders, you can use a _ref_:
 
@@ -32,18 +32,18 @@ App.js
 import { useRef } from 'react';
 
 export default function Counter() {
-  let ref = useRef(0);
+ let ref = useRef(0);
 
-  function handleClick() {
-    ref.current = ref.current + 1;
-    alert('You clicked ' + ref.current + ' times!');
-  }
+ function handleClick() {
+ ref.current = ref.current + 1;
+ alert('You clicked ' + ref.current + ' times!');
+ }
 
-  return (
-    <button onClick={handleClick}>
-      Click me!
-    </button>
-  );
+ return (
+ <button onClick={handleClick}>
+ Click me!
+ </button>
+ );
 }
 
 A ref is like a secret pocket of your component that React doesn’t track. For example, you can use refs to store timeout IDs, DOM elements, and other objects that don’t impact the component’s rendering output.
@@ -56,7 +56,7 @@ Read More
 
 * * *
 
-## Manipulating the DOM with refs 
+## Manipulating the DOM with refs [](https://react.dev/learn/escape-hatches#manipulating-the-dom-with-refs)
 
 React automatically updates the DOM to match your render output, so your components won’t often need to manipulate it. However, sometimes you might need access to the DOM elements managed by React—for example, to focus a node, scroll to it, or measure its size and position. There is no built-in way to do those things in React, so you will need a ref to the DOM node. For example, clicking the button will focus the input using a ref:
 
@@ -67,20 +67,20 @@ App.js
 import { useRef } from 'react';
 
 export default function Form() {
-  const inputRef = useRef(null);
+ const inputRef = useRef(null);
 
-  function handleClick() {
-    inputRef.current.focus();
-  }
+ function handleClick() {
+ inputRef.current.focus();
+ }
 
-  return (
-    <>
-      <input ref={inputRef} />
-      <button onClick={handleClick}>
-        Focus the input
-      </button>
-    </>
-  );
+ return (
+ <>
+ <input ref={inputRef} />
+ <button onClick={handleClick}>
+ Focus the input
+ </button>
+ </>
+ );
 }
 
 ## Ready to learn this topic?
@@ -91,7 +91,7 @@ Read More
 
 * * *
 
-## Synchronizing with Effects 
+## Synchronizing with Effects [](https://react.dev/learn/escape-hatches#synchronizing-with-effects)
 
 Some components need to synchronize with external systems. For example, you might want to control a non-React component based on the React state, set up a server connection, or send an analytics log when a component appears on the screen. Unlike event handlers, which let you handle particular events, _Effects_ let you run some code after rendering. Use them to synchronize your component with a system outside of React.
 
@@ -104,32 +104,32 @@ App.js
 import { useState, useRef, useEffect } from 'react';
 
 function VideoPlayer({ src, isPlaying }) {
-  const ref = useRef(null);
+ const ref = useRef(null);
 
-  useEffect(() => {
-    if (isPlaying) {
-      ref.current.play();
-    } else {
-      ref.current.pause();
-    }
-  }, [isPlaying]);
+ useEffect(() => {
+ if (isPlaying) {
+ ref.current.play();
+ } else {
+ ref.current.pause();
+ }
+ }, [isPlaying]);
 
-  return <video ref={ref} src={src} loop playsInline />;
+ return <video ref={ref} src={src} loop playsInline />;
 }
 
 export default function App() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  return (
-    <>
-      <button onClick={() => setIsPlaying(!isPlaying)}>
-        {isPlaying ? 'Pause' : 'Play'}
-      </button>
-      <VideoPlayer
-        isPlaying={isPlaying}
-        src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-      />
-    </>
-  );
+ const [isPlaying, setIsPlaying] = useState(false);
+ return (
+ <>
+ <button onClick={() => setIsPlaying(!isPlaying)}>
+ {isPlaying ? 'Pause' : 'Play'}
+ </button>
+ <VideoPlayer
+ isPlaying={isPlaying}
+ src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+ />
+ </>
+ );
 }
 
 Many Effects also “clean up” after themselves. For example, an Effect that sets up a connection to a chat server should return a _cleanup function_ that tells React how to disconnect your component from that server:
@@ -142,12 +142,12 @@ import { useState, useEffect } from 'react';
 import { createConnection } from './chat.js';
 
 export default function ChatRoom() {
-  useEffect(() => {
-    const connection = createConnection();
-    connection.connect();
-    return () => connection.disconnect();
-  }, []);
-  return <h1>Welcome to the chat!</h1>;
+ useEffect(() => {
+ const connection = createConnection();
+ connection.connect();
+ return () => connection.disconnect();
+ }, []);
+ return <h1>Welcome to the chat!</h1>;
 }
 
 In development, React will immediately run and clean up your Effect one extra time. This is why you see `"✅ Connecting..."` printed twice. This ensures that you don’t forget to implement the cleanup function.
@@ -160,22 +160,22 @@ Read More
 
 * * *
 
-## You Might Not Need An Effect 
+## You Might Not Need An Effect [](https://react.dev/learn/escape-hatches#you-might-not-need-an-effect)
 
 Effects are an escape hatch from the React paradigm. They let you “step outside” of React and synchronize your components with some external system. If there is no external system involved (for example, if you want to update a component’s state when some props or state change), you shouldn’t need an Effect. Removing unnecessary Effects will make your code easier to follow, faster to run, and less error-prone.
 
 There are two common cases in which you don’t need Effects:
 
-*   **You don’t need Effects to transform data for rendering.**
-*   **You don’t need Effects to handle user events.**
+* **You don’t need Effects to transform data for rendering.**
+* **You don’t need Effects to handle user events.**
 
 For example, you don’t need an Effect to adjust some state based on other state:
 
-`function Form() {  const [firstName, setFirstName] = useState('Taylor');  const [lastName, setLastName] = useState('Swift');  // 🔴 Avoid: redundant state and unnecessary Effect  const [fullName, setFullName] = useState('');  useEffect(() => {    setFullName(firstName + ' ' + lastName);  }, [firstName, lastName]);  // ...}`
+`function Form() { const [firstName, setFirstName] = useState('Taylor'); const [lastName, setLastName] = useState('Swift'); // 🔴 Avoid: redundant state and unnecessary Effect const [fullName, setFullName] = useState(''); useEffect(() => { setFullName(firstName + ' ' + lastName); }, [firstName, lastName]); // ...}`
 
 Instead, calculate as much as you can while rendering:
 
-`function Form() {  const [firstName, setFirstName] = useState('Taylor');  const [lastName, setLastName] = useState('Swift');  // ✅ Good: calculated during rendering  const fullName = firstName + ' ' + lastName;  // ...}`
+`function Form() { const [firstName, setFirstName] = useState('Taylor'); const [lastName, setLastName] = useState('Swift'); // ✅ Good: calculated during rendering const fullName = firstName + ' ' + lastName; // ...}`
 
 However, you _do_ need Effects to synchronize with external systems.
 
@@ -187,7 +187,7 @@ Read More
 
 * * *
 
-## Lifecycle of reactive effects 
+## Lifecycle of reactive effects [](https://react.dev/learn/escape-hatches#lifecycle-of-reactive-effects)
 
 Effects have a different lifecycle from components. Components may mount, update, or unmount. An Effect can only do two things: to start synchronizing something, and later to stop synchronizing it. This cycle can happen multiple times if your Effect depends on props and state that change over time.
 
@@ -203,34 +203,34 @@ import { createConnection } from './chat.js';
 const serverUrl = 'https://localhost:1234';
 
 function ChatRoom({ roomId }) {
-  useEffect(() => {
-    const connection = createConnection(serverUrl, roomId);
-    connection.connect();
-    return () => connection.disconnect();
-  }, [roomId]);
+ useEffect(() => {
+ const connection = createConnection(serverUrl, roomId);
+ connection.connect();
+ return () => connection.disconnect();
+ }, [roomId]);
 
-  return <h1>Welcome to the {roomId} room!</h1>;
+ return <h1>Welcome to the {roomId} room!</h1>;
 }
 
 export default function App() {
-  const [roomId, setRoomId] = useState('general');
-  return (
-    <>
-      <label>
-        Choose the chat room:{' '}
-        <select
-          value={roomId}
-          onChange={e => setRoomId(e.target.value)}
-        >
-          <option value="general">general</option>
-          <option value="travel">travel</option>
-          <option value="music">music</option>
-        </select>
-      </label>
-      <hr />
-      <ChatRoom roomId={roomId} />
-    </>
-  );
+ const [roomId, setRoomId] = useState('general');
+ return (
+ <>
+ <label>
+ Choose the chat room:{' '}
+ <select
+ value={roomId}
+ onChange={e => setRoomId(e.target.value)}
+ >
+ <option value="general">general</option>
+ <option value="travel">travel</option>
+ <option value="music">music</option>
+ </select>
+ </label>
+ <hr />
+ <ChatRoom roomId={roomId} />
+ </>
+ );
 }
 
 React provides a linter rule to check that you’ve specified your Effect’s dependencies correctly. If you forget to specify `roomId` in the list of dependencies in the above example, the linter will find that bug automatically.
@@ -243,7 +243,7 @@ Read More
 
 * * *
 
-## Separating events from Effects 
+## Separating events from Effects [](https://react.dev/learn/escape-hatches#separating-events-from-effects)
 
 Event handlers only re-run when you perform the same interaction again. Unlike event handlers, Effects re-synchronize if any of the values they read, like props or state, are different than during last render. Sometimes, you want a mix of both behaviors: an Effect that re-runs in response to some values but not others.
 
@@ -260,49 +260,49 @@ import { showNotification } from './notifications.js';
 const serverUrl = 'https://localhost:1234';
 
 function ChatRoom({ roomId, theme }) {
-  useEffect(() => {
-    const connection = createConnection(serverUrl, roomId);
-    connection.on('connected', () => {
-      showNotification('Connected!', theme);
-    });
-    connection.connect();
-    return () => connection.disconnect();
-  }, [roomId, theme]);
+ useEffect(() => {
+ const connection = createConnection(serverUrl, roomId);
+ connection.on('connected', () => {
+ showNotification('Connected!', theme);
+ });
+ connection.connect();
+ return () => connection.disconnect();
+ }, [roomId, theme]);
 
-  return <h1>Welcome to the {roomId} room!</h1>
+ return <h1>Welcome to the {roomId} room!</h1>
 }
 
 export default function App() {
-  const [roomId, setRoomId] = useState('general');
-  const [isDark, setIsDark] = useState(false);
-  return (
-    <>
-      <label>
-        Choose the chat room:{' '}
-        <select
-          value={roomId}
-          onChange={e => setRoomId(e.target.value)}
-        >
-          <option value="general">general</option>
-          <option value="travel">travel</option>
-          <option value="music">music</option>
-        </select>
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          checked={isDark}
-          onChange={e => setIsDark(e.target.checked)}
-        />
-        Use dark theme
-      </label>
-      <hr />
-      <ChatRoom
-        roomId={roomId}
-        theme={isDark ? 'dark' : 'light'}
-      />
-    </>
-  );
+ const [roomId, setRoomId] = useState('general');
+ const [isDark, setIsDark] = useState(false);
+ return (
+ <>
+ <label>
+ Choose the chat room:{' '}
+ <select
+ value={roomId}
+ onChange={e => setRoomId(e.target.value)}
+ >
+ <option value="general">general</option>
+ <option value="travel">travel</option>
+ <option value="music">music</option>
+ </select>
+ </label>
+ <label>
+ <input
+ type="checkbox"
+ checked={isDark}
+ onChange={e => setIsDark(e.target.checked)}
+ />
+ Use dark theme
+ </label>
+ <hr />
+ <ChatRoom
+ roomId={roomId}
+ theme={isDark ? 'dark' : 'light'}
+ />
+ </>
+ );
 }
 
 This is not ideal. You want to re-connect to the chat only if the `roomId` has changed. Switching the `theme` shouldn’t re-connect to the chat! Move the code reading `theme` out of your Effect into an _Effect Event_:
@@ -319,53 +319,53 @@ import { showNotification } from './notifications.js';
 const serverUrl = 'https://localhost:1234';
 
 function ChatRoom({ roomId, theme }) {
-  const onConnected = useEffectEvent(() => {
-    showNotification('Connected!', theme);
-  });
+ const onConnected = useEffectEvent(() => {
+ showNotification('Connected!', theme);
+ });
 
-  useEffect(() => {
-    const connection = createConnection(serverUrl, roomId);
-    connection.on('connected', () => {
-      onConnected();
-    });
-    connection.connect();
-    return () => connection.disconnect();
-  }, [roomId]);
+ useEffect(() => {
+ const connection = createConnection(serverUrl, roomId);
+ connection.on('connected', () => {
+ onConnected();
+ });
+ connection.connect();
+ return () => connection.disconnect();
+ }, [roomId]);
 
-  return <h1>Welcome to the {roomId} room!</h1>
+ return <h1>Welcome to the {roomId} room!</h1>
 }
 
 export default function App() {
-  const [roomId, setRoomId] = useState('general');
-  const [isDark, setIsDark] = useState(false);
-  return (
-    <>
-      <label>
-        Choose the chat room:{' '}
-        <select
-          value={roomId}
-          onChange={e => setRoomId(e.target.value)}
-        >
-          <option value="general">general</option>
-          <option value="travel">travel</option>
-          <option value="music">music</option>
-        </select>
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          checked={isDark}
-          onChange={e => setIsDark(e.target.checked)}
-        />
-        Use dark theme
-      </label>
-      <hr />
-      <ChatRoom
-        roomId={roomId}
-        theme={isDark ? 'dark' : 'light'}
-      />
-    </>
-  );
+ const [roomId, setRoomId] = useState('general');
+ const [isDark, setIsDark] = useState(false);
+ return (
+ <>
+ <label>
+ Choose the chat room:{' '}
+ <select
+ value={roomId}
+ onChange={e => setRoomId(e.target.value)}
+ >
+ <option value="general">general</option>
+ <option value="travel">travel</option>
+ <option value="music">music</option>
+ </select>
+ </label>
+ <label>
+ <input
+ type="checkbox"
+ checked={isDark}
+ onChange={e => setIsDark(e.target.checked)}
+ />
+ Use dark theme
+ </label>
+ <hr />
+ <ChatRoom
+ roomId={roomId}
+ theme={isDark ? 'dark' : 'light'}
+ />
+ </>
+ );
 }
 
 Code inside Effect Events isn’t reactive, so changing the `theme` no longer makes your Effect re-connect.
@@ -378,7 +378,7 @@ Read More
 
 * * *
 
-## Removing Effect dependencies 
+## Removing Effect dependencies [](https://react.dev/learn/escape-hatches#removing-effect-dependencies)
 
 When you write an Effect, the linter will verify that you’ve included every reactive value (like props and state) that the Effect reads in the list of your Effect’s dependencies. This ensures that your Effect remains synchronized with the latest props and state of your component. Unnecessary dependencies may cause your Effect to run too often, or even create an infinite loop. The way you remove them depends on the case.
 
@@ -394,46 +394,46 @@ import { createConnection } from './chat.js';
 const serverUrl = 'https://localhost:1234';
 
 function ChatRoom({ roomId }) {
-  const [message, setMessage] = useState('');
+ const [message, setMessage] = useState('');
 
-  const options = {
-    serverUrl: serverUrl,
-    roomId: roomId
-  };
+ const options = {
+ serverUrl: serverUrl,
+ roomId: roomId
+ };
 
-  useEffect(() => {
-    const connection = createConnection(options);
-    connection.connect();
-    return () => connection.disconnect();
-  }, [options]);
+ useEffect(() => {
+ const connection = createConnection(options);
+ connection.connect();
+ return () => connection.disconnect();
+ }, [options]);
 
-  return (
-    <>
-      <h1>Welcome to the {roomId} room!</h1>
-      <input value={message} onChange={e => setMessage(e.target.value)} />
-    </>
-  );
+ return (
+ <>
+ <h1>Welcome to the {roomId} room!</h1>
+ <input value={message} onChange={e => setMessage(e.target.value)} />
+ </>
+ );
 }
 
 export default function App() {
-  const [roomId, setRoomId] = useState('general');
-  return (
-    <>
-      <label>
-        Choose the chat room:{' '}
-        <select
-          value={roomId}
-          onChange={e => setRoomId(e.target.value)}
-        >
-          <option value="general">general</option>
-          <option value="travel">travel</option>
-          <option value="music">music</option>
-        </select>
-      </label>
-      <hr />
-      <ChatRoom roomId={roomId} />
-    </>
-  );
+ const [roomId, setRoomId] = useState('general');
+ return (
+ <>
+ <label>
+ Choose the chat room:{' '}
+ <select
+ value={roomId}
+ onChange={e => setRoomId(e.target.value)}
+ >
+ <option value="general">general</option>
+ <option value="travel">travel</option>
+ <option value="music">music</option>
+ </select>
+ </label>
+ <hr />
+ <ChatRoom roomId={roomId} />
+ </>
+ );
 }
 
 You don’t want the chat to re-connect every time you start typing a message in that chat. To fix this problem, move creation of the `options` object inside the Effect so that the Effect only depends on the `roomId` string:
@@ -448,45 +448,45 @@ import { createConnection } from './chat.js';
 const serverUrl = 'https://localhost:1234';
 
 function ChatRoom({ roomId }) {
-  const [message, setMessage] = useState('');
+ const [message, setMessage] = useState('');
 
-  useEffect(() => {
-    const options = {
-      serverUrl: serverUrl,
-      roomId: roomId
-    };
-    const connection = createConnection(options);
-    connection.connect();
-    return () => connection.disconnect();
-  }, [roomId]);
+ useEffect(() => {
+ const options = {
+ serverUrl: serverUrl,
+ roomId: roomId
+ };
+ const connection = createConnection(options);
+ connection.connect();
+ return () => connection.disconnect();
+ }, [roomId]);
 
-  return (
-    <>
-      <h1>Welcome to the {roomId} room!</h1>
-      <input value={message} onChange={e => setMessage(e.target.value)} />
-    </>
-  );
+ return (
+ <>
+ <h1>Welcome to the {roomId} room!</h1>
+ <input value={message} onChange={e => setMessage(e.target.value)} />
+ </>
+ );
 }
 
 export default function App() {
-  const [roomId, setRoomId] = useState('general');
-  return (
-    <>
-      <label>
-        Choose the chat room:{' '}
-        <select
-          value={roomId}
-          onChange={e => setRoomId(e.target.value)}
-        >
-          <option value="general">general</option>
-          <option value="travel">travel</option>
-          <option value="music">music</option>
-        </select>
-      </label>
-      <hr />
-      <ChatRoom roomId={roomId} />
-    </>
-  );
+ const [roomId, setRoomId] = useState('general');
+ return (
+ <>
+ <label>
+ Choose the chat room:{' '}
+ <select
+ value={roomId}
+ onChange={e => setRoomId(e.target.value)}
+ >
+ <option value="general">general</option>
+ <option value="travel">travel</option>
+ <option value="music">music</option>
+ </select>
+ </label>
+ <hr />
+ <ChatRoom roomId={roomId} />
+ </>
+ );
 }
 
 Notice that you didn’t start by editing the dependency list to remove the `options` dependency. That would be wrong. Instead, you changed the surrounding code so that the dependency became _unnecessary._ Think of the dependency list as a list of all the reactive values used by your Effect’s code. You don’t intentionally choose what to put on that list. The list describes your code. To change the dependency list, change the code.
@@ -499,7 +499,7 @@ Read More
 
 * * *
 
-## Reusing logic with custom Hooks 
+## Reusing logic with custom Hooks [](https://react.dev/learn/escape-hatches#reusing-logic-with-custom-hooks)
 
 React comes with built-in Hooks like `useState`, `useContext`, and `useEffect`. Sometimes, you’ll wish that there was a Hook for some more specific purpose: for example, to fetch data, to keep track of whether the user is online, or to connect to a chat room. To do this, you can create your own Hooks for your application’s needs.
 
@@ -513,37 +513,37 @@ import { usePointerPosition } from './usePointerPosition.js';
 import { useDelayedValue } from './useDelayedValue.js';
 
 export default function Canvas() {
-  const pos1 = usePointerPosition();
-  const pos2 = useDelayedValue(pos1, 100);
-  const pos3 = useDelayedValue(pos2, 200);
-  const pos4 = useDelayedValue(pos3, 100);
-  const pos5 = useDelayedValue(pos4, 50);
-  return (
-    <>
-      <Dot position={pos1} opacity={1} />
-      <Dot position={pos2} opacity={0.8} />
-      <Dot position={pos3} opacity={0.6} />
-      <Dot position={pos4} opacity={0.4} />
-      <Dot position={pos5} opacity={0.2} />
-    </>
-  );
+ const pos1 = usePointerPosition();
+ const pos2 = useDelayedValue(pos1, 100);
+ const pos3 = useDelayedValue(pos2, 200);
+ const pos4 = useDelayedValue(pos3, 100);
+ const pos5 = useDelayedValue(pos4, 50);
+ return (
+ <>
+ <Dot position={pos1} opacity={1} />
+ <Dot position={pos2} opacity={0.8} />
+ <Dot position={pos3} opacity={0.6} />
+ <Dot position={pos4} opacity={0.4} />
+ <Dot position={pos5} opacity={0.2} />
+ </>
+ );
 }
 
 function Dot({ position, opacity }) {
-  return (
-    <div style={{
-      position: 'absolute',
-      backgroundColor: 'pink',
-      borderRadius: '50%',
-      opacity,
-      transform: `translate(${position.x}px, ${position.y}px)`,
-      pointerEvents: 'none',
-      left: -20,
-      top: -20,
-      width: 40,
-      height: 40,
-    }} />
-  );
+ return (
+ <div style={{
+ position: 'absolute',
+ backgroundColor: 'pink',
+ borderRadius: '50%',
+ opacity,
+ transform: `translate(${position.x}px, ${position.y}px)`,
+ pointerEvents: 'none',
+ left: -20,
+ top: -20,
+ width: 40,
+ height: 40,
+ }} />
+ );
 }
 
 You can create custom Hooks, compose them together, pass data between them, and reuse them between components. As your app grows, you will write fewer Effects by hand because you’ll be able to reuse custom Hooks you already wrote. There are also many excellent custom Hooks maintained by the React community.
@@ -556,6 +556,6 @@ Read More
 
 * * *
 
-## What’s next? 
+## What’s next? [](https://react.dev/learn/escape-hatches#whats-next)
 
 Head over to Referencing Values with Refs to start reading this chapter page by page!

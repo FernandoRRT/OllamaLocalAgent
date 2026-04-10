@@ -46,23 +46,27 @@ This repository includes pre-fetched documentation (`docs_stack`) and all necess
 
 ```text
 .
-├── bulk-fetch-next.js # Script to scrape and format documentation from next js
-├── bulk-fetch-react.js # same script, but to catch react docs
 ├── docker
-│ └── postgres
-│ └── docker-compose.yml # Postgres + pgvector container config
-├── docs_stack # Pre-downloaded Markdown documentation
-│ ├── 00-stack-base.md
-│ ├── mui/
-│ ├── nextjs/ # 117 Next.js 16 documentation files
-│ └── react/
-├── fetch-docs.js # fetch a single documentation page
-├── ingest.js # Chunks markdown and saves vectors to Postgres
-├── mcp-rag.js # MCP Server linking the DB to OpenClaude
-├── package.json # Node dependencies (knex, pg, axios, sdk)
-├── search.js # CLI utility to test vector search
-└── setup-db.js # Initializes Postgres tables and HNSW indexes
-
+│   └── postgres
+│       └── docker-compose.yml   # Postgres + pgvector container config
+├── docs_stack                   # Pre-downloaded Markdown documentation
+│   ├── nextjs/                  # Next.js 16 documentation files
+│   └── react/                   # React 19 documentation files
+├── src                          # Core application logic
+│   ├── helpers/
+│   │   ├── fetchAndClean.js     # Sanitization Regex engine
+│   │   └── runBulk.js           # Bulk execution orchestrator
+│   └── lib/
+│       └── database.js          # Centralized DB connection & RAG Config (TOP_K)
+├── bulk-fetch-next.js           # Lightweight config script for Next.js
+├── bulk-fetch-react.js          # Lightweight config script for React
+├── fetch-docs.js                # Fetch a single documentation page
+├── ingest.js                    # Chunks markdown and saves vectors to Postgres
+├── jsconfig.json                # VS Code IntelliSense configuration
+├── mcp-rag.js                   # MCP Server linking the DB to OpenClaude
+├── package.json                 # Node dependencies ("type": "module")
+├── search.js                    # CLI utility to test vector search
+└── setup-db.js                  # Initializes Postgres tables and HNSW indexes
 ```
 ---
 
@@ -87,8 +91,22 @@ Install the required packages (`knex`, `pg`, `axios`, `@modelcontextprotocol/sdk
 ```bash
 npm install knex pg axios zod @modelcontextprotocol/sdk
 ```
+### 3. Configure Database & RAG Parameters
 
-### 3. Initialize the Database Schema
+This project uses a centralized configuration file. Before initializing the database or running any ingestion, open `src/lib/database.js` and verify your credentials and RAG parameters.
+
+You can modify parameters like chunk size and the number of contexts returned to the LLM (`TOP_K`):
+
+```javascript
+export const RAG_CONFIG = {
+  TOP_K: 3, // Number of context chunks returned to the LLM
+  MAX_CHUNK_SIZE: 2000,
+  EMBEDDING_MODEL: 'nomic-embed-text',
+  OLLAMA_API: 'http://127.0.0.1:11434/api/embeddings'
+};
+```
+
+### 4. Initialize the Database Schema
 
 Run the setup script to create the `stack_knowledge` table and the HNSW vector index. *You only need to run this once.*
 
@@ -96,7 +114,7 @@ Run the setup script to create the `stack_knowledge` table and the HNSW vector i
 node setup-db.js
 ```
 
-### 4. Download Ollama Models
+### 5. Download Ollama Models
 
 Pull the required embedding model (for vectorizing text) and the main LLM (for chatting).
  
@@ -109,7 +127,7 @@ ollama pull qwen2.5:14b
 > 
 > I also tested the qwen3.5:9b model. Besides not producing very good results, I noticed that 9b was the minimum number of parameters needed to get good responses on my hardware. Although I continue to recommend the 14b models, I believe that the smaller models will perform worse as the context expands.
 
-### 5. Download documentation
+### 6. Download documentation
 
 You can download additional documentation pages using the script below. It will download the page content as markdown and save it to a file in the docs_stack folder of this project. To download a single document, run:
 
@@ -130,9 +148,9 @@ If new versions of the framework have been released, check that the links remain
 node bulk-fetch-next.js
 ``` 
 
-If you want to change the download folder, edit the constant `dirPath` at the top of the file.
+If you want to change the download folder or create a fetch script for a new framework (like MUI or Tailwind), simply duplicate one of the `bulk-fetch-*.js` files, update the array of URLs, and change the `dirPath` at the top. The heavy lifting of downloading, cleaning, and avoiding infinite loops is safely handled by `src/helpers/runBulk.js`.
 
-### 6. Ingest the Documentation (Populate the Brain)
+### 7. Ingest the Documentation (Populate the Brain)
 
 Run the ingestion script. This will read all Markdown files in the `docs_stack/` folder, chunk them to avoid context limits, generate embeddings via Ollama, and save them to PostgreSQL using a "Delete & Replace" strategy.
 

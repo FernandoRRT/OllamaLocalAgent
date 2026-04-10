@@ -9,11 +9,11 @@ React, and many other UI libraries, model UI as a tree. Thinking of your app as 
 
 ### You will learn
 
-*   How React “sees” component structures
-*   What a render tree is and what it is useful for
-*   What a module dependency tree is and what it is useful for
+* How React “sees” component structures
+* What a render tree is and what it is useful for
+* What a module dependency tree is and what it is useful for
 
-## Your UI as a tree 
+## Your UI as a tree [](https://react.dev/learn/understanding-your-ui-as-a-tree#your-ui-as-a-tree)
 
 Trees are a relationship model between items. The UI is often represented using tree structures. For example, browsers use tree structures to model HTML (DOM) and CSS (CSSOM). Mobile platforms also use trees to represent their view hierarchy.
 
@@ -21,7 +21,7 @@ React creates a UI tree from your components. In this example, the UI tree is th
 
 Like browsers and mobile platforms, React also uses tree structures to manage and model the relationship between components in a React app. These trees are useful tools to understand how data flows through a React app and how to optimize rendering and app size.
 
-## The Render Tree 
+## The Render Tree [](https://react.dev/learn/understanding-your-ui-as-a-tree#the-render-tree)
 
 A major feature of components is the ability to compose components of other components. As we nest components, we have the concept of parent and child components, where each parent component may itself be a child of another component.
 
@@ -39,7 +39,7 @@ The root node in a React render tree is the root component of the app. In this c
 
 ##### Deep Dive
 
-#### Where are the HTML tags in the render tree? 
+#### Where are the HTML tags in the render tree? [](https://react.dev/learn/understanding-your-ui-as-a-tree#where-are-the-html-elements-in-the-render-tree)
 
 You’ll notice in the above render tree, there is no mention of the HTML tags that each component renders. This is because the render tree is only composed of React components.
 
@@ -59,7 +59,7 @@ Although render trees may differ across render passes, these trees are generally
 
 Identifying these categories of components are useful for understanding data flow and performance of your app.
 
-## The Module Dependency Tree 
+## The Module Dependency Tree [](https://react.dev/learn/understanding-your-ui-as-a-tree#the-module-dependency-tree)
 
 Another relationship in a React app that can be modeled with a tree are an app’s module dependencies. As we break up our components and logic into separate files, we create JS modules where we may export components, functions, or constants.
 
@@ -73,20 +73,20 @@ The root node of the tree is the root module, also known as the entrypoint file.
 
 Comparing to the render tree of the same app, there are similar structures but some notable differences:
 
-*   The nodes that make-up the tree represent modules, not components.
-*   Non-component modules, like `inspirations.js`, are also represented in this tree. The render tree only encapsulates components.
-*   `Copyright.js` appears under `App.js` but in the render tree, `Copyright`, the component, appears as a child of `InspirationGenerator`. This is because `InspirationGenerator` accepts JSX as children props, so it renders `Copyright` as a child component but does not import the module.
+* The nodes that make-up the tree represent modules, not components.
+* Non-component modules, like `inspirations.js`, are also represented in this tree. The render tree only encapsulates components.
+* `Copyright.js` appears under `App.js` but in the render tree, `Copyright`, the component, appears as a child of `InspirationGenerator`. This is because `InspirationGenerator` accepts JSX as children props, so it renders `Copyright` as a child component but does not import the module.
 
 Dependency trees are useful to determine what modules are necessary to run your React app. When building a React app for production, there is typically a build step that will bundle all the necessary JavaScript to ship to the client. The tool responsible for this is called a bundler, and bundlers will use the dependency tree to determine what modules should be included.
 
 As your app grows, often the bundle size does too. Large bundle sizes are expensive for a client to download and run. Large bundle sizes can delay the time for your UI to get drawn. Getting a sense of your app’s dependency tree may help with debugging these issues.
 
-## Recap
+## Recap[](https://react.dev/learn/understanding-your-ui-as-a-tree#recap)
 
-*   Trees are a common way to represent the relationship between entities. They are often used to model UI.
-*   Render trees represent the nested relationship between React components across a single render.
-*   With conditional rendering, the render tree may change across different renders. With different prop values, components may render different children components.
-*   Render trees help identify what the top-level and leaf components are. Top-level components affect the rendering performance of all components beneath them and leaf components are often re-rendered frequently. Identifying them is useful for understanding and debugging rendering performance.
-*   Dependency trees represent the module dependencies in a React app.
-*   Dependency trees are used by build tools to bundle the necessary code to ship an app.
-*   Dependency trees are useful for debugging large bundle sizes that slow time to paint and expose opportunities for optimizing what code is bundled.
+* Trees are a common way to represent the relationship between entities. They are often used to model UI.
+* Render trees represent the nested relationship between React components across a single render.
+* With conditional rendering, the render tree may change across different renders. With different prop values, components may render different children components.
+* Render trees help identify what the top-level and leaf components are. Top-level components affect the rendering performance of all components beneath them and leaf components are often re-rendered frequently. Identifying them is useful for understanding and debugging rendering performance.
+* Dependency trees represent the module dependencies in a React app.
+* Dependency trees are used by build tools to bundle the necessary code to ship an app.
+* Dependency trees are useful for debugging large bundle sizes that slow time to paint and expose opportunities for optimizing what code is bundled.

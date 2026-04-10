@@ -7,12 +7,12 @@ When you want a component to “remember” some information, but you don’t wa
 
 ### You will learn
 
-*   How to add a ref to your component
-*   How to update a ref’s value
-*   How refs are different from state
-*   How to use refs safely
+* How to add a ref to your component
+* How to update a ref’s value
+* How refs are different from state
+* How to use refs safely
 
-## Adding a ref to your component 
+## Adding a ref to your component [](https://react.dev/learn/referencing-values-with-refs#adding-a-ref-to-your-component)
 
 You can add a ref to your component by importing the `useRef` Hook from React:
 
@@ -24,7 +24,7 @@ Inside your component, call the `useRef` Hook and pass the initial value that yo
 
 `useRef` returns an object like this:
 
-`{  current: 0 // The value you passed to useRef}`
+`{ current: 0 // The value you passed to useRef}`
 
 You can access the current value of that ref through the `ref.current` property. This value is intentionally mutable, meaning you can both read and write to it. It’s like a secret pocket of your component that React doesn’t track. (This is what makes it an “escape hatch” from React’s one-way data flow—more on that below!)
 
@@ -34,7 +34,7 @@ The ref points to a number, but, like state, you could point to anything: a stri
 
 Note that **the component doesn’t re-render with every increment.** Like state, refs are retained by React between re-renders. However, setting state re-renders a component. Changing a ref does not!
 
-## Example: building a stopwatch 
+## Example: building a stopwatch [](https://react.dev/learn/referencing-values-with-refs#example-building-a-stopwatch)
 
 You can combine refs and state in a single component. For example, let’s make a stopwatch that the user can start or stop by pressing a button. In order to display how much time has passed since the user pressed “Start”, you will need to keep track of when the Start button was pressed and what the current time is. **This information is used for rendering, so you’ll keep it in state:**
 
@@ -45,33 +45,33 @@ When the user presses “Start”, you’ll use `setInterval` in order to update
 import { useState } from 'react';
 
 export default function Stopwatch() {
-  const [startTime, setStartTime] = useState(null);
-  const [now, setNow] = useState(null);
+ const [startTime, setStartTime] = useState(null);
+ const [now, setNow] = useState(null);
 
-  function handleStart() {
-    
-    setStartTime(Date.now());
-    setNow(Date.now());
+ function handleStart() {
+ 
+ setStartTime(Date.now());
+ setNow(Date.now());
 
-    setInterval(() => {
-      
-      setNow(Date.now());
-    }, 10);
-  }
+ setInterval(() => {
+ 
+ setNow(Date.now());
+ }, 10);
+ }
 
-  let secondsPassed = 0;
-  if (startTime != null && now != null) {
-    secondsPassed = (now - startTime) / 1000;
-  }
+ let secondsPassed = 0;
+ if (startTime != null && now != null) {
+ secondsPassed = (now - startTime) / 1000;
+ }
 
-  return (
-    <>
-      <h1>Time passed: {secondsPassed.toFixed(3)}</h1>
-      <button onClick={handleStart}>
-        Start
-      </button>
-    </>
-  );
+ return (
+ <>
+ <h1>Time passed: {secondsPassed.toFixed(3)}</h1>
+ <button onClick={handleStart}>
+ Start
+ </button>
+ </>
+ );
 }
 
 When the “Stop” button is pressed, you need to cancel the existing interval so that it stops updating the `now` state variable. You can do this by calling `clearInterval`, but you need to give it the interval ID that was previously returned by the `setInterval` call when the user pressed Start. You need to keep the interval ID somewhere. **Since the interval ID is not used for rendering, you can keep it in a ref:**
@@ -79,45 +79,45 @@ When the “Stop” button is pressed, you need to cancel the existing interval 
 import { useState, useRef } from 'react';
 
 export default function Stopwatch() {
-  const [startTime, setStartTime] = useState(null);
-  const [now, setNow] = useState(null);
-  const intervalRef = useRef(null);
+ const [startTime, setStartTime] = useState(null);
+ const [now, setNow] = useState(null);
+ const intervalRef = useRef(null);
 
-  function handleStart() {
-    setStartTime(Date.now());
-    setNow(Date.now());
+ function handleStart() {
+ setStartTime(Date.now());
+ setNow(Date.now());
 
-    clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      setNow(Date.now());
-    }, 10);
-  }
+ clearInterval(intervalRef.current);
+ intervalRef.current = setInterval(() => {
+ setNow(Date.now());
+ }, 10);
+ }
 
-  function handleStop() {
-    clearInterval(intervalRef.current);
-  }
+ function handleStop() {
+ clearInterval(intervalRef.current);
+ }
 
-  let secondsPassed = 0;
-  if (startTime != null && now != null) {
-    secondsPassed = (now - startTime) / 1000;
-  }
+ let secondsPassed = 0;
+ if (startTime != null && now != null) {
+ secondsPassed = (now - startTime) / 1000;
+ }
 
-  return (
-    <>
-      <h1>Time passed: {secondsPassed.toFixed(3)}</h1>
-      <button onClick={handleStart}>
-        Start
-      </button>
-      <button onClick={handleStop}>
-        Stop
-      </button>
-    </>
-  );
+ return (
+ <>
+ <h1>Time passed: {secondsPassed.toFixed(3)}</h1>
+ <button onClick={handleStart}>
+ Start
+ </button>
+ <button onClick={handleStop}>
+ Stop
+ </button>
+ </>
+ );
 }
 
 When a piece of information is used for rendering, keep it in state. When a piece of information is only needed by event handlers and changing it doesn’t require a re-render, using a ref may be more efficient.
 
-## Differences between refs and state 
+## Differences between refs and state [](https://react.dev/learn/referencing-values-with-refs#differences-between-refs-and-state)
 
 Perhaps you’re thinking refs seem less “strict” than state—you can mutate them instead of always having to use a state setting function, for instance. But in most cases, you’ll want to use state. Refs are an “escape hatch” you won’t need often. Here’s how state and refs compare:
 
@@ -137,25 +137,25 @@ If you tried to implement this with a ref, React would never re-render the compo
 import { useRef } from 'react';
 
 export default function Counter() {
-  let countRef = useRef(0);
+ let countRef = useRef(0);
 
-  function handleClick() {
-    
-    countRef.current = countRef.current + 1;
-  }
+ function handleClick() {
+ 
+ countRef.current = countRef.current + 1;
+ }
 
-  return (
-    <button onClick={handleClick}>
-      You clicked {countRef.current} times
-    </button>
-  );
+ return (
+ <button onClick={handleClick}>
+ You clicked {countRef.current} times
+ </button>
+ );
 }
 
 This is why reading `ref.current` during render leads to unreliable code. If you need that, use state instead.
 
 ##### Deep Dive
 
-#### How does useRef work inside? 
+#### How does useRef work inside? [](https://react.dev/learn/referencing-values-with-refs#how-does-use-ref-work-inside)
 
 Although both `useState` and `useRef` are provided by React, in principle `useRef` could be implemented _on top of_`useState`. You can imagine that inside of React, `useRef` is implemented like this:
 
@@ -165,22 +165,22 @@ During the first render, `useRef` returns `{ current: initialValue }`. This obje
 
 React provides a built-in version of `useRef` because it is common enough in practice. But you can think of it as a regular state variable without a setter. If you’re familiar with object-oriented programming, refs might remind you of instance fields—but instead of `this.something` you write `somethingRef.current`.
 
-## When to use refs 
+## When to use refs [](https://react.dev/learn/referencing-values-with-refs#when-to-use-refs)
 
 Typically, you will use a ref when your component needs to “step outside” React and communicate with external APIs—often a browser API that won’t impact the appearance of the component. Here are a few of these rare situations:
 
-*   Storing timeout IDs
-*   Storing and manipulating DOM elements, which we cover on the next page
-*   Storing other objects that aren’t necessary to calculate the JSX.
+* Storing timeout IDs
+* Storing and manipulating DOM elements, which we cover on the next page
+* Storing other objects that aren’t necessary to calculate the JSX.
 
 If your component needs to store some value, but it doesn’t impact the rendering logic, choose refs.
 
-## Best practices for refs 
+## Best practices for refs [](https://react.dev/learn/referencing-values-with-refs#best-practices-for-refs)
 
 Following these principles will make your components more predictable:
 
-*   **Treat refs as an escape hatch.** Refs are useful when you work with external systems or browser APIs. If much of your application logic and data flow relies on refs, you might want to rethink your approach.
-*   **Don’t read or write `ref.current` during rendering.** If some information is needed during rendering, use state instead. Since React doesn’t know when `ref.current` changes, even reading it while rendering makes your component’s behavior difficult to predict. (The only exception to this is code like `if (!ref.current) ref.current = new Thing()` which only sets the ref once during the first render.)
+* **Treat refs as an escape hatch.** Refs are useful when you work with external systems or browser APIs. If much of your application logic and data flow relies on refs, you might want to rethink your approach.
+* **Don’t read or write `ref.current` during rendering.** If some information is needed during rendering, use state instead. Since React doesn’t know when `ref.current` changes, even reading it while rendering makes your component’s behavior difficult to predict. (The only exception to this is code like `if (!ref.current) ref.current = new Thing()` which only sets the ref once during the first render.)
 
 Limitations of React state don’t apply to refs. For example, state acts like a snapshot for every render and doesn’t update synchronously. But when you mutate the current value of a ref, it changes immediately:
 
@@ -190,18 +190,18 @@ This is because **the ref itself is a regular JavaScript object,** and so it beh
 
 You also don’t need to worry about avoiding mutation when you work with a ref. As long as the object you’re mutating isn’t used for rendering, React doesn’t care what you do with the ref or its contents.
 
-## Refs and the DOM 
+## Refs and the DOM [](https://react.dev/learn/referencing-values-with-refs#refs-and-the-dom)
 
 You can point a ref to any value. However, the most common use case for a ref is to access a DOM element. For example, this is handy if you want to focus an input programmatically. When you pass a ref to a `ref` attribute in JSX, like `<div ref={myRef}>`, React will put the corresponding DOM element into `myRef.current`. Once the element is removed from the DOM, React will update `myRef.current` to be `null`. You can read more about this in Manipulating the DOM with Refs.
 
-## Recap
+## Recap[](https://react.dev/learn/referencing-values-with-refs#recap)
 
-*   Refs are an escape hatch to hold onto values that aren’t used for rendering. You won’t need them often.
-*   A ref is a plain JavaScript object with a single property called `current`, which you can read or set.
-*   You can ask React to give you a ref by calling the `useRef` Hook.
-*   Like state, refs let you retain information between re-renders of a component.
-*   Unlike state, setting the ref’s `current` value does not trigger a re-render.
-*   Don’t read or write `ref.current` during rendering. This makes your component hard to predict.
+* Refs are an escape hatch to hold onto values that aren’t used for rendering. You won’t need them often.
+* A ref is a plain JavaScript object with a single property called `current`, which you can read or set.
+* You can ask React to give you a ref by calling the `useRef` Hook.
+* Like state, refs let you retain information between re-renders of a component.
+* Unlike state, setting the ref’s `current` value does not trigger a re-render.
+* Don’t read or write `ref.current` during rendering. This makes your component hard to predict.
 
 #### Challenge
 
@@ -211,47 +211,47 @@ of
 
 4:
 
-Fix a broken chat input 
+Fix a broken chat input [](https://react.dev/learn/referencing-values-with-refs#fix-a-broken-chat-input)
 
 Type a message and click “Send”. You will notice there is a three second delay before you see the “Sent!” alert. During this delay, you can see an “Undo” button. Click it. This “Undo” button is supposed to stop the “Sent!” message from appearing. It does this by calling `clearTimeout` for the timeout ID saved during `handleSend`. However, even after “Undo” is clicked, the “Sent!” message still appears. Find why it doesn’t work, and fix it.
 
 import { useState } from 'react';
 
 export default function Chat() {
-  const [text, setText] = useState('');
-  const [isSending, setIsSending] = useState(false);
-  let timeoutID = null;
+ const [text, setText] = useState('');
+ const [isSending, setIsSending] = useState(false);
+ let timeoutID = null;
 
-  function handleSend() {
-    setIsSending(true);
-    timeoutID = setTimeout(() => {
-      alert('Sent!');
-      setIsSending(false);
-    }, 3000);
-  }
+ function handleSend() {
+ setIsSending(true);
+ timeoutID = setTimeout(() => {
+ alert('Sent!');
+ setIsSending(false);
+ }, 3000);
+ }
 
-  function handleUndo() {
-    setIsSending(false);
-    clearTimeout(timeoutID);
-  }
+ function handleUndo() {
+ setIsSending(false);
+ clearTimeout(timeoutID);
+ }
 
-  return (
-    <>
-      <input
-        disabled={isSending}
-        value={text}
-        onChange={e => setText(e.target.value)}
-      />
-      <button
-        disabled={isSending}
-        onClick={handleSend}>
-        {isSending ? 'Sending...' : 'Send'}
-      </button>
-      {isSending &&
-        <button onClick={handleUndo}>
-          Undo
-        </button>
-      }
-    </>
-  );
+ return (
+ <>
+ <input
+ disabled={isSending}
+ value={text}
+ onChange={e => setText(e.target.value)}
+ />
+ <button
+ disabled={isSending}
+ onClick={handleSend}>
+ {isSending ? 'Sending...' : 'Send'}
+ </button>
+ {isSending &&
+ <button onClick={handleUndo}>
+ Undo
+ </button>
+ }
+ </>
+ );
 }

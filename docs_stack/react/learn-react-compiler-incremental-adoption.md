@@ -1,20 +1,19 @@
-Title: Incremental Adoption – React
+Copy
 
-URL Source: https://react.dev/learn/react-compiler/incremental-adoption
+# Incremental Adoption[](https://react.dev/learn/react-compiler/incremental-adoption#undefined)
 
-Markdown Content:
 React Compiler can be adopted incrementally, allowing you to try it on specific parts of your codebase first. This guide shows you how to gradually roll out the compiler in existing projects.
 
 ### You will learn
 
-*   Why incremental adoption is recommended
-*   Using Babel overrides for directory-based adoption
-*   Using the “use memo” directive for opt-in compilation
-*   Using the “use no memo” directive to exclude components
-*   Runtime feature flags with gating
-*   Monitoring your adoption progress
+* Why incremental adoption is recommended
+* Using Babel overrides for directory-based adoption
+* Using the “use memo” directive for opt-in compilation
+* Using the “use no memo” directive to exclude components
+* Runtime feature flags with gating
+* Monitoring your adoption progress
 
-## Why Incremental Adoption? 
+## Why Incremental Adoption? [](https://react.dev/learn/react-compiler/incremental-adoption#why-incremental-adoption)
 
 React Compiler is designed to optimize your entire codebase automatically, but you don’t have to adopt it all at once. Incremental adoption gives you control over the rollout process, letting you test the compiler on small parts of your app before expanding to the rest.
 
@@ -24,39 +23,39 @@ Incremental adoption also makes it easier to address any Rules of React violatio
 
 By controlling which parts of your code get compiled, you can also run A/B tests to measure the real-world impact of the compiler’s optimizations. This data helps you make informed decisions about full adoption and demonstrates the value to your team.
 
-## Approaches to Incremental Adoption 
+## Approaches to Incremental Adoption [](https://react.dev/learn/react-compiler/incremental-adoption#approaches-to-incremental-adoption)
 
 There are three main approaches to adopt React Compiler incrementally:
 
-1.   **Babel overrides** - Apply the compiler to specific directories
-2.   **Opt-in with “use memo”** - Only compile components that explicitly opt in
-3.   **Runtime gating** - Control compilation with feature flags
+1. **Babel overrides** - Apply the compiler to specific directories
+2. **Opt-in with “use memo”** - Only compile components that explicitly opt in
+3. **Runtime gating** - Control compilation with feature flags
 
 All approaches allow you to test the compiler on specific parts of your application before full rollout.
 
-## Directory-Based Adoption with Babel Overrides 
+## Directory-Based Adoption with Babel Overrides [](https://react.dev/learn/react-compiler/incremental-adoption#directory-based-adoption)
 
 Babel’s `overrides` option lets you apply different plugins to different parts of your codebase. This is ideal for gradually adopting React Compiler directory by directory.
 
-### Basic Configuration 
+### Basic Configuration [](https://react.dev/learn/react-compiler/incremental-adoption#basic-configuration)
 
 Start by applying the compiler to a specific directory:
 
-`// babel.config.jsmodule.exports = {plugins: [// Global plugins that apply to all files],overrides: [{test: './src/modern/**/*.{js,jsx,ts,tsx}',plugins: ['babel-plugin-react-compiler']}]};`
+`// babel.config.jsmodule.exports = { plugins: [ // Global plugins that apply to all files ], overrides: [ { test: './src/modern/**/*.{js,jsx,ts,tsx}', plugins: [ 'babel-plugin-react-compiler' ] } ]};`
 
-### Expanding Coverage 
+### Expanding Coverage [](https://react.dev/learn/react-compiler/incremental-adoption#expanding-coverage)
 
 As you gain confidence, add more directories:
 
-`// babel.config.jsmodule.exports = {plugins: [// Global plugins],overrides: [{test: ['./src/modern/**/*.{js,jsx,ts,tsx}', './src/features/**/*.{js,jsx,ts,tsx}'],plugins: ['babel-plugin-react-compiler']},{test: './src/legacy/**/*.{js,jsx,ts,tsx}',plugins: [// Different plugins for legacy code]}]};`
+`// babel.config.jsmodule.exports = { plugins: [ // Global plugins ], overrides: [ { test: ['./src/modern/**/*.{js,jsx,ts,tsx}', './src/features/**/*.{js,jsx,ts,tsx}'], plugins: [ 'babel-plugin-react-compiler' ] }, { test: './src/legacy/**/*.{js,jsx,ts,tsx}', plugins: [ // Different plugins for legacy code ] } ]};`
 
-### With Compiler Options 
+### With Compiler Options [](https://react.dev/learn/react-compiler/incremental-adoption#with-compiler-options)
 
 You can also configure compiler options per override:
 
-`// babel.config.jsmodule.exports = {plugins: [],overrides: [{test: './src/experimental/**/*.{js,jsx,ts,tsx}',plugins: [['babel-plugin-react-compiler', {// options ...}]]},{test: './src/production/**/*.{js,jsx,ts,tsx}',plugins: [['babel-plugin-react-compiler', {// options ...}]]}]};`
+`// babel.config.jsmodule.exports = { plugins: [], overrides: [ { test: './src/experimental/**/*.{js,jsx,ts,tsx}', plugins: [ ['babel-plugin-react-compiler', { // options ... }] ] }, { test: './src/production/**/*.{js,jsx,ts,tsx}', plugins: [ ['babel-plugin-react-compiler', { // options ... }] ] } ]};`
 
-## Opt-in Mode with “use memo” 
+## Opt-in Mode with “use memo” [](https://react.dev/learn/react-compiler/incremental-adoption#opt-in-mode-with-use-memo)
 
 For maximum control, you can use `compilationMode: 'annotation'` to only compile components and hooks that explicitly opt in with the `"use memo"` directive.
 
@@ -64,49 +63,49 @@ For maximum control, you can use `compilationMode: 'annotation'` to only compile
 
 This approach gives you fine-grained control over individual components and hooks. It’s useful when you want to test the compiler on specific components without affecting entire directories.
 
-### Annotation Mode Configuration 
+### Annotation Mode Configuration [](https://react.dev/learn/react-compiler/incremental-adoption#annotation-mode-configuration)
 
-`// babel.config.jsmodule.exports = {plugins: [['babel-plugin-react-compiler', {compilationMode: 'annotation',}],],};`
+`// babel.config.jsmodule.exports = { plugins: [ ['babel-plugin-react-compiler', { compilationMode: 'annotation', }], ],};`
 
-### Using the Directive 
+### Using the Directive [](https://react.dev/learn/react-compiler/incremental-adoption#using-the-directive)
 
 Add `"use memo"` at the beginning of functions you want to compile:
 
-`function TodoList({ todos }) {"use memo"; // Opt this component into compilationconst sortedTodos = todos.slice().sort();return (<ul>{sortedTodos.map(todo => (<TodoItem key={todo.id} todo={todo} />))}</ul>);}function useSortedData(data) {"use memo"; // Opt this hook into compilationreturn data.slice().sort();}`
+`function TodoList({ todos }) { "use memo"; // Opt this component into compilation const sortedTodos = todos.slice().sort(); return ( <ul> {sortedTodos.map(todo => ( <TodoItem key={todo.id} todo={todo} /> ))} </ul> );}function useSortedData(data) { "use memo"; // Opt this hook into compilation return data.slice().sort();}`
 
 With `compilationMode: 'annotation'`, you must:
 
-*   Add `"use memo"` to every component you want optimized
-*   Add `"use memo"` to every custom hook
-*   Remember to add it to new components
+* Add `"use memo"` to every component you want optimized
+* Add `"use memo"` to every custom hook
+* Remember to add it to new components
 
 This gives you precise control over which components are compiled while you evaluate the compiler’s impact.
 
-## Runtime Feature Flags with Gating 
+## Runtime Feature Flags with Gating [](https://react.dev/learn/react-compiler/incremental-adoption#runtime-feature-flags-with-gating)
 
 The `gating` option enables you to control compilation at runtime using feature flags. This is useful for running A/B tests or gradually rolling out the compiler based on user segments.
 
-### How Gating Works 
+### How Gating Works [](https://react.dev/learn/react-compiler/incremental-adoption#how-gating-works)
 
 The compiler wraps optimized code in a runtime check. If the gate returns `true`, the optimized version runs. Otherwise, the original code runs.
 
-### Gating Configuration 
+### Gating Configuration [](https://react.dev/learn/react-compiler/incremental-adoption#gating-configuration)
 
-`// babel.config.jsmodule.exports = {plugins: [['babel-plugin-react-compiler', {gating: {source: 'ReactCompilerFeatureFlags',importSpecifierName: 'isCompilerEnabled',},}],],};`
+`// babel.config.jsmodule.exports = { plugins: [ ['babel-plugin-react-compiler', { gating: { source: 'ReactCompilerFeatureFlags', importSpecifierName: 'isCompilerEnabled', }, }], ],};`
 
-### Implementing the Feature Flag 
+### Implementing the Feature Flag [](https://react.dev/learn/react-compiler/incremental-adoption#implementing-the-feature-flag)
 
 Create a module that exports your gating function:
 
-`// ReactCompilerFeatureFlags.jsexport function isCompilerEnabled() {// Use your feature flag systemreturn getFeatureFlag('react-compiler-enabled');}`
+`// ReactCompilerFeatureFlags.jsexport function isCompilerEnabled() { // Use your feature flag system return getFeatureFlag('react-compiler-enabled');}`
 
-## Troubleshooting Adoption 
+## Troubleshooting Adoption [](https://react.dev/learn/react-compiler/incremental-adoption#troubleshooting-adoption)
 
 If you encounter issues during adoption:
 
-1.   Use `"use no memo"` to temporarily exclude problematic components
-2.   Check the debugging guide for common issues
-3.   Fix Rules of React violations identified by the ESLint plugin
-4.   Consider using `compilationMode: 'annotation'` for more gradual adoption
+1. Use `"use no memo"` to temporarily exclude problematic components
+2. Check the debugging guide for common issues
+3. Fix Rules of React violations identified by the ESLint plugin
+4. Consider using `compilationMode: 'annotation'` for more gradual adoption
 
 ## Next Steps [](https://react.dev/learn/react-compiler/incremental-adoption#next-steps "

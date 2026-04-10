@@ -1,14 +1,12 @@
 Copy
 
-# Build a React app from Scratch
+# Build a React app from Scratch[](https://react.dev/learn/build-a-react-app-from-scratch#undefined)
 
 If your app has constraints not well-served by existing frameworks, you prefer to build your own framework, or you just want to learn the basics of a React app, you can build a React app from scratch.
 
 ##### Deep Dive
 
-#### Consider using a framework 
-
-Show Details
+#### Consider using a framework [](https://react.dev/learn/build-a-react-app-from-scratch#consider-using-a-framework)
 
 Starting from scratch is an easy way to get started using React, but a major tradeoff to be aware of is that going this route is often the same as building your own adhoc framework. As your requirements evolve, you may need to solve more framework-like problems that our recommended frameworks already have well developed and supported solutions for.
 
@@ -20,11 +18,11 @@ Going this route also makes it more difficult to get support, since the way you 
 
 For a list of recommended frameworks, check out Creating a React App.
 
-## Step 1: Install a build tool 
+## Step 1: Install a build tool [](https://react.dev/learn/build-a-react-app-from-scratch#step-1-install-a-build-tool)
 
 The first step is to install a build tool like `vite`, `parcel`, or `rsbuild`. These build tools provide features to package and run source code, provide a development server for local development and a build command to deploy your app to a production server.
 
-### Vite 
+### Vite [](https://react.dev/learn/build-a-react-app-from-scratch#vite)
 
 Vite is a build tool that aims to provide a faster and leaner development experience for modern web projects.
 
@@ -36,7 +34,7 @@ Vite is opinionated and comes with sensible defaults out of the box. Vite has a 
 
 Vite is already being used as a build tool in one of our recommended frameworks: React Router.
 
-### Parcel 
+### Parcel [](https://react.dev/learn/build-a-react-app-from-scratch#parcel)
 
 Parcel combines a great out-of-the-box development experience with a scalable architecture that can take your project from just getting started to massive production applications.
 
@@ -46,7 +44,7 @@ Parcel combines a great out-of-the-box development experience with a scalable ar
 
 Parcel supports fast refresh, JSX, TypeScript, Flow, and styling out of the box. See Parcel’s React recipe to get started.
 
-### Rsbuild 
+### Rsbuild [](https://react.dev/learn/build-a-react-app-from-scratch#rsbuild)
 
 Rsbuild is an Rspack-powered build tool that provides a seamless development experience for React applications. It comes with carefully tuned defaults and performance optimizations ready to use.
 
@@ -58,17 +56,17 @@ Rsbuild includes built-in support for React features like fast refresh, JSX, Typ
 
 ### Note
 
-#### Metro for React Native 
+#### Metro for React Native [](https://react.dev/learn/build-a-react-app-from-scratch#react-native)
 
 If you’re starting from scratch with React Native you’ll need to use Metro, the JavaScript bundler for React Native. Metro supports bundling for platforms like iOS and Android, but lacks many features when compared to the tools here. We recommend starting with Vite, Parcel, or Rsbuild unless your project requires React Native support.
 
-## Step 2: Build Common Application Patterns 
+## Step 2: Build Common Application Patterns [](https://react.dev/learn/build-a-react-app-from-scratch#step-2-build-common-application-patterns)
 
 The build tools listed above start off with a client-only, single-page app (SPA), but don’t include any further solutions for common functionality like routing, data fetching, or styling.
 
 The React ecosystem includes many tools for these problems. We’ve listed a few that are widely used as a starting point, but feel free to choose other tools if those work better for you.
 
-### Routing 
+### Routing [](https://react.dev/learn/build-a-react-app-from-scratch#routing)
 
 Routing determines what content or pages to display when a user visits a particular URL. You need to set up a router to map URLs to different parts of your app. You’ll also need to handle nested routes, route parameters, and query parameters. Routers can be configured within your code, or defined based on your component folder and file structures.
 
@@ -76,10 +74,10 @@ Routers are a core part of modern applications, and are usually integrated with 
 
 We suggest using:
 
-*   React Router
-*   Tanstack Router
+* React Router
+* Tanstack Router
 
-### Data Fetching 
+### Data Fetching [](https://react.dev/learn/build-a-react-app-from-scratch#data-fetching)
 
 Fetching data from a server or other data source is a key part of most applications. Doing this properly requires handling loading states, error states, and caching the fetched data, which can be complex.
 
@@ -89,16 +87,16 @@ Note that fetching data directly in components can lead to slower loading times 
 
 If you’re fetching data from most backends or REST-style APIs, we suggest using:
 
-*   TanStack Query
-*   SWR
-*   RTK Query
+* TanStack Query
+* SWR
+* RTK Query
 
 If you’re fetching data from a GraphQL API, we suggest using:
 
-*   Apollo
-*   Relay
+* Apollo
+* Relay
 
-### Code-splitting 
+### Code-splitting [](https://react.dev/learn/build-a-react-app-from-scratch#code-splitting)
 
 Code-splitting is the process of breaking your app into smaller bundles that can be loaded on demand. An app’s code size increases with every new feature and additional dependency. Apps can become slow to load because all of the code for the entire app needs to be sent before it can be used. Caching, reducing features/dependencies, and moving some code to run on the server can help mitigate slow loading but are incomplete solutions that can sacrifice functionality if overused.
 
@@ -108,27 +106,27 @@ Splitting code by route, when integrated with bundling and data fetching, can re
 
 For code-splitting instructions, see your build tool docs:
 
-*   Vite build optimizations
-*   Parcel code splitting
-*   Rsbuild code splitting
+* Vite build optimizations
+* Parcel code splitting
+* Rsbuild code splitting
 
-### Improving Application Performance 
+### Improving Application Performance [](https://react.dev/learn/build-a-react-app-from-scratch#improving-application-performance)
 
 Since the build tool you select only supports single page apps (SPAs), you’ll need to implement other rendering patterns like server-side rendering (SSR), static site generation (SSG), and/or React Server Components (RSC). Even if you don’t need these features at first, in the future there may be some routes that would benefit SSR, SSG or RSC.
 
-*   **Single-page apps (SPA)** load a single HTML page and dynamically updates the page as the user interacts with the app. SPAs are easier to get started with, but they can have slower initial load times. SPAs are the default architecture for most build tools.
+* **Single-page apps (SPA)** load a single HTML page and dynamically updates the page as the user interacts with the app. SPAs are easier to get started with, but they can have slower initial load times. SPAs are the default architecture for most build tools.
 
-*   **Streaming Server-side rendering (SSR)** renders a page on the server and sends the fully rendered page to the client. SSR can improve performance, but it can be more complex to set up and maintain than a single-page app. With the addition of streaming, SSR can be very complex to set up and maintain. See Vite’s SSR guide.
+* **Streaming Server-side rendering (SSR)** renders a page on the server and sends the fully rendered page to the client. SSR can improve performance, but it can be more complex to set up and maintain than a single-page app. With the addition of streaming, SSR can be very complex to set up and maintain. See Vite’s SSR guide.
 
-*   **Static site generation (SSG)** generates static HTML files for your app at build time. SSG can improve performance, but it can be more complex to set up and maintain than server-side rendering. See Vite’s SSG guide.
+* **Static site generation (SSG)** generates static HTML files for your app at build time. SSG can improve performance, but it can be more complex to set up and maintain than server-side rendering. See Vite’s SSG guide.
 
-*   **React Server Components (RSC)** lets you mix build-time, server-only, and interactive components in a single React tree. RSC can improve performance, but it currently requires deep expertise to set up and maintain. See Parcel’s RSC examples.
+* **React Server Components (RSC)** lets you mix build-time, server-only, and interactive components in a single React tree. RSC can improve performance, but it currently requires deep expertise to set up and maintain. See Parcel’s RSC examples.
 
 Your rendering strategies need to integrate with your router so apps built with your framework can choose the rendering strategy on a per-route level. This will enable different rendering strategies without having to rewrite your whole app. For example, the landing page for your app might benefit from being statically generated (SSG), while a page with a content feed might perform best with server-side rendering.
 
 Using the right rendering strategy for the right routes can decrease the time it takes for the first byte of content to be loaded (Time to First Byte), the first piece of content to render (First Contentful Paint), and the largest visible content of the app to render (Largest Contentful Paint).
 
-### And more… 
+### And more… [](https://react.dev/learn/build-a-react-app-from-scratch#and-more)
 
 These are just a few examples of the features a new app will need to consider when building from scratch. Many limitations you’ll hit can be difficult to solve as each problem is interconnected with the others and can require deep expertise in problem areas you may not be familiar with.
 

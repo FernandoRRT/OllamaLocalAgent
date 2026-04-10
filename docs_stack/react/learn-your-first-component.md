@@ -1,20 +1,20 @@
 Copy
 
-# Your First Component
+# Your First Component[](https://react.dev/learn/your-first-component#undefined)
 
 _Components_ are one of the core concepts of React. They are the foundation upon which you build user interfaces (UI), which makes them the perfect place to start your React journey!
 
 ### You will learn
 
-*   What a component is
-*   What role components play in a React application
-*   How to write your first React component
+* What a component is
+* What role components play in a React application
+* How to write your first React component
 
-## Components: UI building blocks 
+## Components: UI building blocks [](https://react.dev/learn/your-first-component#components-ui-building-blocks)
 
 On the Web, HTML lets us create rich structured documents with its built-in set of tags like `<h1>` and `<li>`:
 
-`<article>  <h1>My First Component</h1>  <ol>    <li>Components: UI Building Blocks</li>    <li>Defining a Component</li>    <li>Using a Component</li>  </ol></article>`
+`<article> <h1>My First Component</h1> <ol> <li>Components: UI Building Blocks</li> <li>Defining a Component</li> <li>Using a Component</li> </ol></article>`
 
 This markup represents this article `<article>`, its heading `<h1>`, and an (abbreviated) table of contents as an ordered list `<ol>`. Markup like this, combined with CSS for style, and JavaScript for interactivity, lies behind every sidebar, avatar, modal, dropdown—every piece of UI you see on the Web.
 
@@ -22,11 +22,11 @@ React lets you combine your markup, CSS, and JavaScript into custom “component
 
 Just like with HTML tags, you can compose, order and nest components to design whole pages. For example, the documentation page you’re reading is made out of React components:
 
-`<PageLayout>  <NavigationHeader>    <SearchBar />    <Link to="/docs">Docs</Link>  </NavigationHeader>  <Sidebar />  <PageContent>    <TableOfContents />    <DocumentationText />  </PageContent></PageLayout>`
+`<PageLayout> <NavigationHeader> <SearchBar /> <Link to="/docs">Docs</Link> </NavigationHeader> <Sidebar /> <PageContent> <TableOfContents /> <DocumentationText /> </PageContent></PageLayout>`
 
 As your project grows, you will notice that many of your designs can be composed by reusing components you already wrote, speeding up your development. Our table of contents above could be added to any screen with `<TableOfContents />`! You can even jumpstart your project with the thousands of components shared by the React open source community like Chakra UI and Material UI.
 
-## Defining a component 
+## Defining a component [](https://react.dev/learn/your-first-component#defining-a-component)
 
 Traditionally when creating web pages, web developers marked up their content and then added interaction by sprinkling on some JavaScript. This worked great when interaction was a nice-to-have on the web. Now it is expected for many sites and all apps. React puts interactivity first while still using the same technology: **a React component is a JavaScript function that you can _sprinkle with markup_.** Here’s what that looks like (you can edit the example below):
 
@@ -35,21 +35,21 @@ App.js
 App.js
 
 export default function Profile() {
-  return (
-    <img
-      src="https://react.dev/images/docs/scientists/MK3eW3Am.jpg"
-      alt="Katherine Johnson"
-    />
-  )
+ return (
+ <img
+ src="https://react.dev/images/docs/scientists/MK3eW3Am.jpg"
+ alt="Katherine Johnson"
+ />
+ )
 }
 
 And here’s how to build a component:
 
-### Step 1: Export the component 
+### Step 1: Export the component [](https://react.dev/learn/your-first-component#step-1-export-the-component)
 
 The `export default` prefix is a standard JavaScript syntax (not specific to React). It lets you mark the main function in a file so that you can later import it from other files. (More on importing in Importing and Exporting Components!)
 
-### Step 2: Define the function 
+### Step 2: Define the function [](https://react.dev/learn/your-first-component#step-2-define-the-function)
 
 With `function Profile() { }` you define a JavaScript function with the name `Profile`.
 
@@ -57,7 +57,7 @@ With `function Profile() { }` you define a JavaScript function with the name `Pr
 
 React components are regular JavaScript functions, but **their names must start with a capital letter** or they won’t work!
 
-### Step 3: Add markup 
+### Step 3: Add markup [](https://react.dev/learn/your-first-component#step-3-add-markup)
 
 The component returns an `<img />` tag with `src` and `alt` attributes. `<img />` is written like HTML, but it is actually JavaScript under the hood! This syntax is called JSX, and it lets you embed markup inside JavaScript.
 
@@ -67,13 +67,13 @@ Return statements can be written all on one line, as in this component:
 
 But if your markup isn’t all on the same line as the `return` keyword, you must wrap it in a pair of parentheses:
 
-`return (  <div>    <img src="https://react.dev/images/docs/scientists/MK3eW3As.jpg" alt="Katherine Johnson" />  </div>);`
+`return ( <div> <img src="https://react.dev/images/docs/scientists/MK3eW3As.jpg" alt="Katherine Johnson" /> </div>);`
 
 ### Pitfall
 
 Without parentheses, any code on the lines after `return`will be ignored!
 
-## Using a component 
+## Using a component [](https://react.dev/learn/your-first-component#using-a-component)
 
 Now that you’ve defined your `Profile` component, you can nest it inside other components. For example, you can export a `Gallery` component that uses multiple `Profile` components:
 
@@ -82,37 +82,37 @@ App.js
 App.js
 
 function Profile() {
-  return (
-    <img
-      src="https://react.dev/images/docs/scientists/MK3eW3As.jpg"
-      alt="Katherine Johnson"
-    />
-  );
+ return (
+ <img
+ src="https://react.dev/images/docs/scientists/MK3eW3As.jpg"
+ alt="Katherine Johnson"
+ />
+ );
 }
 
 export default function Gallery() {
-  return (
-    <section>
-      <h1>Amazing scientists</h1>
-      <Profile />
-      <Profile />
-      <Profile />
-    </section>
-  );
+ return (
+ <section>
+ <h1>Amazing scientists</h1>
+ <Profile />
+ <Profile />
+ <Profile />
+ </section>
+ );
 }
 
-### What the browser sees 
+### What the browser sees [](https://react.dev/learn/your-first-component#what-the-browser-sees)
 
 Notice the difference in casing:
 
-*   `<section>` is lowercase, so React knows we refer to an HTML tag.
-*   `<Profile />` starts with a capital `P`, so React knows that we want to use our component called `Profile`.
+* `<section>` is lowercase, so React knows we refer to an HTML tag.
+* `<Profile />` starts with a capital `P`, so React knows that we want to use our component called `Profile`.
 
 And `Profile` contains even more HTML: `<img />`. In the end, this is what the browser sees:
 
-`<section>  <h1>Amazing scientists</h1>  <img src="https://react.dev/images/docs/scientists/MK3eW3As.jpg" alt="Katherine Johnson" />  <img src="https://react.dev/images/docs/scientists/MK3eW3As.jpg" alt="Katherine Johnson" />  <img src="https://react.dev/images/docs/scientists/MK3eW3As.jpg" alt="Katherine Johnson" /></section>`
+`<section> <h1>Amazing scientists</h1> <img src="https://react.dev/images/docs/scientists/MK3eW3As.jpg" alt="Katherine Johnson" /> <img src="https://react.dev/images/docs/scientists/MK3eW3As.jpg" alt="Katherine Johnson" /> <img src="https://react.dev/images/docs/scientists/MK3eW3As.jpg" alt="Katherine Johnson" /></section>`
 
-### Nesting and organizing components 
+### Nesting and organizing components [](https://react.dev/learn/your-first-component#nesting-and-organizing-components)
 
 Components are regular JavaScript functions, so you can keep multiple components in the same file. This is convenient when components are relatively small or tightly related to each other. If this file gets crowded, you can always move `Profile` to a separate file. You will learn how to do this shortly on the page about imports.
 
@@ -122,19 +122,17 @@ Because the `Profile` components are rendered inside `Gallery`—even several ti
 
 Components can render other components, but **you must never nest their definitions:**
 
-`export default function Gallery() {  // 🔴 Never define a component inside another component!  function Profile() {    // ...  }  // ...}`
+`export default function Gallery() { // 🔴 Never define a component inside another component! function Profile() { // ... } // ...}`
 
 The snippet above is very slow and causes bugs. Instead, define every component at the top level:
 
-`export default function Gallery() {  // ...}// ✅ Declare components at the top levelfunction Profile() {  // ...}`
+`export default function Gallery() { // ...}// ✅ Declare components at the top levelfunction Profile() { // ...}`
 
 When a child component needs some data from a parent, pass it by props instead of nesting definitions.
 
 ##### Deep Dive
 
-#### Components all the way down 
-
-Show Details
+#### Components all the way down [](https://react.dev/learn/your-first-component#components-all-the-way-down)
 
 Your React application begins at a “root” component. Usually, it is created automatically when you start a new project. For example, if you use CodeSandbox or if you use the framework Next.js, the root component is defined in `pages/index.js`. In these examples, you’ve been exporting root components.
 
@@ -144,26 +142,26 @@ React-based frameworks take this a step further. Instead of using an empty HTML 
 
 Still, many websites only use React to add interactivity to existing HTML pages. They have many root components instead of a single one for the entire page. You can use as much—or as little—React as you need.
 
-## Recap
+## Recap[](https://react.dev/learn/your-first-component#recap)
 
 You’ve just gotten your first taste of React! Let’s recap some key points.
 
-*   React lets you create components, **reusable UI elements for your app.**
+* React lets you create components, **reusable UI elements for your app.**
 
-*   In a React app, every piece of UI is a component.
+* In a React app, every piece of UI is a component.
 
-*   React components are regular JavaScript functions except:
+* React components are regular JavaScript functions except:
 
-    1.   Their names always begin with a capital letter.
-    2.   They return JSX markup.
+ 1. Their names always begin with a capital letter.
+ 2. They return JSX markup.
 
-## Try out some challenges
+## Try out some challenges[](https://react.dev/learn/your-first-component#challenges)
 
 1. Export the component 2. Fix the return statement 3. Spot the mistake 4. Your own component 
 
 #### Challenge 1 of 4: 
 
-Export the component 
+Export the component [](https://react.dev/learn/your-first-component#export-the-component)
 
 This sandbox doesn’t work because the root component is not exported:
 
@@ -172,12 +170,12 @@ App.js
 App.js
 
 function Profile() {
-  return (
-    <img
-      src="https://react.dev/images/docs/scientists/lICfvbD.jpg"
-      alt="Aklilu Lemma"
-    />
-  );
+ return (
+ <img
+ src="https://react.dev/images/docs/scientists/lICfvbD.jpg"
+ alt="Aklilu Lemma"
+ />
+ );
 }
 
 Try to fix it yourself before looking at the solution!

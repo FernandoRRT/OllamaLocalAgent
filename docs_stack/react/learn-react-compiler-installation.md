@@ -1,35 +1,40 @@
-Title: Installation – React
+Copy
 
-URL Source: https://react.dev/learn/react-compiler/installation
+# Installation[](https://react.dev/learn/react-compiler/installation#undefined)
 
-Markdown Content:
 This guide will help you install and configure React Compiler in your React application.
 
 ### You will learn
 
-*   How to install React Compiler
-*   Basic configuration for different build tools
-*   How to verify your setup is working
+* How to install React Compiler
+* Basic configuration for different build tools
+* How to verify your setup is working
 
-## Prerequisites 
+## Prerequisites [](https://react.dev/learn/react-compiler/installation#prerequisites)
 
 React Compiler is designed to work best with React 19, but it also supports React 17 and 18. Learn more about React version compatibility.
 
-## Installation 
+## Installation [](https://react.dev/learn/react-compiler/installation#installation)
 
 Install React Compiler as a `devDependency`:
+
+ Terminal
 
 `npm install -D babel-plugin-react-compiler@latest`
 
 Or with Yarn:
 
+ Terminal
+
 `yarn add -D babel-plugin-react-compiler@latest`
 
 Or with pnpm:
 
+ Terminal
+
 `pnpm install -D babel-plugin-react-compiler@latest`
 
-## Basic Setup 
+## Basic Setup [](https://react.dev/learn/react-compiler/installation#basic-setup)
 
 React Compiler is designed to work by default without any configuration. However, if you need to configure it in special circumstances (for example, to target React versions below 19), refer to the compiler options reference.
 
@@ -39,61 +44,67 @@ The setup process depends on your build tool. React Compiler includes a Babel pl
 
 React Compiler must run **first** in your Babel plugin pipeline. The compiler needs the original source information for proper analysis, so it must process your code before other transformations.
 
-### Babel 
+### Babel [](https://react.dev/learn/react-compiler/installation#babel)
 
 Create or update your `babel.config.js`:
 
-`module.exports = {plugins: ['babel-plugin-react-compiler', // must run first!// ... other plugins],// ... other config};`
+`module.exports = { plugins: [ 'babel-plugin-react-compiler', // must run first! // ... other plugins ], // ... other config};`
 
-### Vite 
+### Vite [](https://react.dev/learn/react-compiler/installation#vite)
 
 If you use Vite, you can add the plugin to vite-plugin-react:
 
-`// vite.config.jsimport { defineConfig } from 'vite';import react from '@vitejs/plugin-react';export default defineConfig({plugins: [react({babel: {plugins: ['babel-plugin-react-compiler'],},}),],});`
+`// vite.config.jsimport { defineConfig } from 'vite';import react from '@vitejs/plugin-react';export default defineConfig({ plugins: [ react({ babel: { plugins: ['babel-plugin-react-compiler'], }, }), ],});`
 
 Alternatively, if you prefer a separate Babel plugin for Vite:
 
+ Terminal
+
 `npm install -D vite-plugin-babel`
 
-`// vite.config.jsimport babel from 'vite-plugin-babel';import { defineConfig } from 'vite';import react from '@vitejs/plugin-react';export default defineConfig({plugins: [react(),babel({babelConfig: {plugins: ['babel-plugin-react-compiler'],},}),],});`
+`// vite.config.jsimport babel from 'vite-plugin-babel';import { defineConfig } from 'vite';import react from '@vitejs/plugin-react';export default defineConfig({ plugins: [ react(), babel({ babelConfig: { plugins: ['babel-plugin-react-compiler'], }, }), ],});`
 
-### Next.js 
+### Next.js [](https://react.dev/learn/react-compiler/installation#usage-with-nextjs)
 
 Please refer to the Next.js docs for more information.
 
-### React Router 
+### React Router [](https://react.dev/learn/react-compiler/installation#usage-with-react-router)
 
 Install `vite-plugin-babel`, and add the compiler’s Babel plugin to it:
 
+ Terminal
+
 `npm install vite-plugin-babel`
 
-`// vite.config.jsimport { defineConfig } from "vite";import babel from "vite-plugin-babel";import { reactRouter } from "@react-router/dev/vite";const ReactCompilerConfig = { /* ... */ };export default defineConfig({plugins: [reactRouter(),babel({filter: /\.[jt]sx?$/,babelConfig: {presets: ["@babel/preset-typescript"], // if you use TypeScriptplugins: [["babel-plugin-react-compiler", ReactCompilerConfig],],},}),],});`
+`// vite.config.jsimport { defineConfig } from "vite";import babel from "vite-plugin-babel";import { reactRouter } from "@react-router/dev/vite";const ReactCompilerConfig = { /* ... */ };export default defineConfig({ plugins: [ reactRouter(), babel({ filter: /\.[jt]sx?$/, babelConfig: { presets: ["@babel/preset-typescript"], // if you use TypeScript plugins: [ ["babel-plugin-react-compiler", ReactCompilerConfig], ], }, }), ],});`
 
-### Webpack 
+### Webpack [](https://react.dev/learn/react-compiler/installation#usage-with-webpack)
 
 A community webpack loader is now available here.
 
-### Expo 
+### Expo [](https://react.dev/learn/react-compiler/installation#usage-with-expo)
 
 Please refer to Expo’s docs to enable and use the React Compiler in Expo apps.
 
-### Metro (React Native)  ")
+### Metro (React Native) [](https://react.dev/learn/react-compiler/installation#usage-with-react-native-metro)
 
 React Native uses Babel via Metro, so refer to the Usage with Babel section for installation instructions.
 
-### Rspack 
+### Rspack [](https://react.dev/learn/react-compiler/installation#usage-with-rspack)
 
 Please refer to Rspack’s docs to enable and use the React Compiler in Rspack apps.
 
-### Rsbuild 
+### Rsbuild [](https://react.dev/learn/react-compiler/installation#usage-with-rsbuild)
 
 Please refer to Rsbuild’s docs to enable and use the React Compiler in Rsbuild apps.
 
-## ESLint Integration 
+## ESLint Integration [](https://react.dev/learn/react-compiler/installation#eslint-integration)
 
 React Compiler includes an ESLint rule that helps identify code that can’t be optimized. When the ESLint rule reports an error, it means the compiler will skip optimizing that specific component or hook. This is safe: the compiler will continue optimizing other parts of your codebase. You don’t need to fix all violations immediately. Address them at your own pace to gradually increase the number of optimized components.
 
 Install the ESLint plugin:
+
+ Terminal
 
 `npm install -D eslint-plugin-react-hooks@latest`
 
@@ -101,42 +112,42 @@ If you haven’t already configured eslint-plugin-react-hooks, follow the instal
 
 The ESLint rule will:
 
-*   Identify violations of the Rules of React
-*   Show which components can’t be optimized
-*   Provide helpful error messages for fixing issues
+* Identify violations of the Rules of React
+* Show which components can’t be optimized
+* Provide helpful error messages for fixing issues
 
-## Verify Your Setup 
+## Verify Your Setup [](https://react.dev/learn/react-compiler/installation#verify-your-setup)
 
 After installation, verify that React Compiler is working correctly.
 
-### Check React DevTools 
+### Check React DevTools [](https://react.dev/learn/react-compiler/installation#check-react-devtools)
 
 Components optimized by React Compiler will show a “Memo ✨” badge in React DevTools:
 
-1.   Install the React Developer Tools browser extension
-2.   Open your app in development mode
-3.   Open React DevTools
-4.   Look for the ✨ emoji next to component names
+1. Install the React Developer Tools browser extension
+2. Open your app in development mode
+3. Open React DevTools
+4. Look for the ✨ emoji next to component names
 
 If the compiler is working:
 
-*   Components will show a “Memo ✨” badge in React DevTools
-*   Expensive calculations will be automatically memoized
-*   No manual `useMemo` is required
+* Components will show a “Memo ✨” badge in React DevTools
+* Expensive calculations will be automatically memoized
+* No manual `useMemo` is required
 
-### Check Build Output 
+### Check Build Output [](https://react.dev/learn/react-compiler/installation#check-build-output)
 
 You can also verify the compiler is running by checking your build output. The compiled code will include automatic memoization logic that the compiler adds automatically.
 
-`import { c as _c } from "react/compiler-runtime";export default function MyApp() {const $ = _c(1);let t0;if ($[0] === Symbol.for("react.memo_cache_sentinel")) {t0 = <div>Hello World</div>;$[0] = t0;} else {t0 = $[0];}return t0;}`
+`import { c as _c } from "react/compiler-runtime";export default function MyApp() { const $ = _c(1); let t0; if ($[0] === Symbol.for("react.memo_cache_sentinel")) { t0 = <div>Hello World</div>; $[0] = t0; } else { t0 = $[0]; } return t0;}`
 
-## Troubleshooting 
+## Troubleshooting [](https://react.dev/learn/react-compiler/installation#troubleshooting)
 
-### Opting out specific components 
+### Opting out specific components [](https://react.dev/learn/react-compiler/installation#opting-out-specific-components)
 
 If a component is causing issues after compilation, you can temporarily opt it out using the `"use no memo"` directive:
 
-`function ProblematicComponent() {"use no memo";// Component code here}`
+`function ProblematicComponent() { "use no memo"; // Component code here}`
 
 This tells the compiler to skip optimization for this specific component. You should fix the underlying issue and remove the directive once resolved.
 

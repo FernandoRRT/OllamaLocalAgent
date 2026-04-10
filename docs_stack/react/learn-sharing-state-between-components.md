@@ -7,16 +7,16 @@ Sometimes, you want the state of two components to always change together. To do
 
 ### You will learn
 
-*   How to share state between components by lifting it up
-*   What are controlled and uncontrolled components
+* How to share state between components by lifting it up
+* What are controlled and uncontrolled components
 
-## Lifting state up by example 
+## Lifting state up by example [](https://react.dev/learn/sharing-state-between-components#lifting-state-up-by-example)
 
 In this example, a parent `Accordion` component renders two separate `Panel`s:
 
-*   `Accordion`
-    *   `Panel`
-    *   `Panel`
+* `Accordion`
+ * `Panel`
+ * `Panel`
 
 Each `Panel` component has a boolean `isActive` state that determines whether its content is visible.
 
@@ -32,13 +32,13 @@ Clicking either `Panel`’s button will only update that `Panel`’s `isActive` 
 
 To coordinate these two panels, you need to “lift their state up” to a parent component in three steps:
 
-1.   **Remove** state from the child components.
-2.   **Pass** hardcoded data from the common parent.
-3.   **Add** state to the common parent and pass it down together with the event handlers.
+1. **Remove** state from the child components.
+2. **Pass** hardcoded data from the common parent.
+3. **Add** state to the common parent and pass it down together with the event handlers.
 
 This will allow the `Accordion` component to coordinate both `Panel`s and only expand one at a time.
 
-### Step 1: Remove state from the child components 
+### Step 1: Remove state from the child components [](https://react.dev/learn/sharing-state-between-components#step-1-remove-state-from-the-child-components)
 
 You will give control of the `Panel`’s `isActive` to its parent component. This means that the parent component will pass `isActive` to `Panel` as a prop instead. Start by **removing this line** from the `Panel` component:
 
@@ -50,50 +50,50 @@ And instead, add `isActive` to the `Panel`’s list of props:
 
 Now the `Panel`’s parent component can _control_`isActive` by passing it down as a prop. Conversely, the `Panel` component now has _no control_ over the value of `isActive`—it’s now up to the parent component!
 
-### Step 2: Pass hardcoded data from the common parent 
+### Step 2: Pass hardcoded data from the common parent [](https://react.dev/learn/sharing-state-between-components#step-2-pass-hardcoded-data-from-the-common-parent)
 
 To lift state up, you must locate the closest common parent component of _both_ of the child components that you want to coordinate:
 
-*   `Accordion`_(closest common parent)_
-    *   `Panel`
-    *   `Panel`
+* `Accordion`_(closest common parent)_
+ * `Panel`
+ * `Panel`
 
 In this example, it’s the `Accordion` component. Since it’s above both panels and can control their props, it will become the “source of truth” for which panel is currently active. Make the `Accordion` component pass a hardcoded value of `isActive` (for example, `true`) to both panels:
 
 import { useState } from 'react';
 
 export default function Accordion() {
-  return (
-    <>
-      <h2>Almaty, Kazakhstan</h2>
-      <Panel title="About" isActive={true}>
-        With a population of about 2 million, Almaty is Kazakhstan's largest city. From 1929 to 1997, it was its capital city.
-      </Panel>
-      <Panel title="Etymology" isActive={true}>
-        The name comes from <span lang="kk-KZ">алма</span>, the Kazakh word for "apple" and is often translated as "full of apples". In fact, the region surrounding Almaty is thought to be the ancestral home of the apple, and the wild <i lang="la">Malus sieversii</i> is considered a likely candidate for the ancestor of the modern domestic apple.
-      </Panel>
-    </>
-  );
+ return (
+ <>
+ <h2>Almaty, Kazakhstan</h2>
+ <Panel title="About" isActive={true}>
+ With a population of about 2 million, Almaty is Kazakhstan's largest city. From 1929 to 1997, it was its capital city.
+ </Panel>
+ <Panel title="Etymology" isActive={true}>
+ The name comes from <span lang="kk-KZ">алма</span>, the Kazakh word for "apple" and is often translated as "full of apples". In fact, the region surrounding Almaty is thought to be the ancestral home of the apple, and the wild <i lang="la">Malus sieversii</i> is considered a likely candidate for the ancestor of the modern domestic apple.
+ </Panel>
+ </>
+ );
 }
 
 function Panel({ title, children, isActive }) {
-  return (
-    <section className="panel">
-      <h3>{title}</h3>
-      {isActive ? (
-        <p>{children}</p>
-      ) : (
-        <button onClick={() => setIsActive(true)}>
-          Show
-        </button>
-      )}
-    </section>
-  );
+ return (
+ <section className="panel">
+ <h3>{title}</h3>
+ {isActive ? (
+ <p>{children}</p>
+ ) : (
+ <button onClick={() => setIsActive(true)}>
+ Show
+ </button>
+ )}
+ </section>
+ );
 }
 
 Try editing the hardcoded `isActive` values in the `Accordion` component and see the result on the screen.
 
-### Step 3: Add state to the common parent 
+### Step 3: Add state to the common parent [](https://react.dev/learn/sharing-state-between-components#step-3-add-state-to-the-common-parent)
 
 Lifting state up often changes the nature of what you’re storing as state.
 
@@ -105,53 +105,53 @@ When the `activeIndex` is `0`, the first panel is active, and when it’s `1`, i
 
 Clicking the “Show” button in either `Panel` needs to change the active index in `Accordion`. A `Panel` can’t set the `activeIndex` state directly because it’s defined inside the `Accordion`. The `Accordion` component needs to _explicitly allow_ the `Panel` component to change its state by passing an event handler down as a prop:
 
-`<><PanelisActive={activeIndex === 0}onShow={() => setActiveIndex(0)}>    ...</Panel><PanelisActive={activeIndex === 1}onShow={() => setActiveIndex(1)}>    ...</Panel></>`
+`<><PanelisActive={activeIndex === 0}onShow={() => setActiveIndex(0)}> ...</Panel><PanelisActive={activeIndex === 1}onShow={() => setActiveIndex(1)}> ...</Panel></>`
 
 The `<button>` inside the `Panel` will now use the `onShow` prop as its click event handler:
 
 import { useState } from 'react';
 
 export default function Accordion() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  return (
-    <>
-      <h2>Almaty, Kazakhstan</h2>
-      <Panel
-        title="About"
-        isActive={activeIndex === 0}
-        onShow={() => setActiveIndex(0)}
-      >
-        With a population of about 2 million, Almaty is Kazakhstan's largest city. From 1929 to 1997, it was its capital city.
-      </Panel>
-      <Panel
-        title="Etymology"
-        isActive={activeIndex === 1}
-        onShow={() => setActiveIndex(1)}
-      >
-        The name comes from <span lang="kk-KZ">алма</span>, the Kazakh word for "apple" and is often translated as "full of apples". In fact, the region surrounding Almaty is thought to be the ancestral home of the apple, and the wild <i lang="la">Malus sieversii</i> is considered a likely candidate for the ancestor of the modern domestic apple.
-      </Panel>
-    </>
-  );
+ const [activeIndex, setActiveIndex] = useState(0);
+ return (
+ <>
+ <h2>Almaty, Kazakhstan</h2>
+ <Panel
+ title="About"
+ isActive={activeIndex === 0}
+ onShow={() => setActiveIndex(0)}
+ >
+ With a population of about 2 million, Almaty is Kazakhstan's largest city. From 1929 to 1997, it was its capital city.
+ </Panel>
+ <Panel
+ title="Etymology"
+ isActive={activeIndex === 1}
+ onShow={() => setActiveIndex(1)}
+ >
+ The name comes from <span lang="kk-KZ">алма</span>, the Kazakh word for "apple" and is often translated as "full of apples". In fact, the region surrounding Almaty is thought to be the ancestral home of the apple, and the wild <i lang="la">Malus sieversii</i> is considered a likely candidate for the ancestor of the modern domestic apple.
+ </Panel>
+ </>
+ );
 }
 
 function Panel({
-  title,
-  children,
-  isActive,
-  onShow
+ title,
+ children,
+ isActive,
+ onShow
 }) {
-  return (
-    <section className="panel">
-      <h3>{title}</h3>
-      {isActive ? (
-        <p>{children}</p>
-      ) : (
-        <button onClick={onShow}>
-          Show
-        </button>
-      )}
-    </section>
-  );
+ return (
+ <section className="panel">
+ <h3>{title}</h3>
+ {isActive ? (
+ <p>{children}</p>
+ ) : (
+ <button onClick={onShow}>
+ Show
+ </button>
+ )}
+ </section>
+ );
 }
 
 This completes lifting state up! Moving state into the common parent component allowed you to coordinate the two panels. Using the active index instead of two “is shown” flags ensured that only one panel is active at a given time. And passing down the event handler to the child allowed the child to change the parent’s state.
@@ -162,7 +162,7 @@ When `Accordion`’s `activeIndex` state changes to `1`, the second `Panel` rece
 
 ##### Deep Dive
 
-#### Controlled and uncontrolled components 
+#### Controlled and uncontrolled components [](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components)
 
 It is common to call a component with some local state “uncontrolled”. For example, the original `Panel` component with an `isActive` state variable is uncontrolled because its parent cannot influence whether the panel is active or not.
 
@@ -174,7 +174,7 @@ In practice, “controlled” and “uncontrolled” aren’t strict technical t
 
 When writing a component, consider which information in it should be controlled (via props), and which information should be uncontrolled (via state). But you can always change your mind and refactor later.
 
-## A single source of truth for each state 
+## A single source of truth for each state [](https://react.dev/learn/sharing-state-between-components#a-single-source-of-truth-for-each-state)
 
 In a React application, many components will have their own state. Some state may “live” close to the leaf components (components at the bottom of the tree) like inputs. Other state may “live” closer to the top of the app. For example, even client-side routing libraries are usually implemented by storing the current route in the React state, and passing it down by props!
 
@@ -184,12 +184,12 @@ Your app will change as you work on it. It is common that you will move state do
 
 To see what this feels like in practice with a few more components, read Thinking in React.
 
-## Recap
+## Recap[](https://react.dev/learn/sharing-state-between-components#recap)
 
-*   When you want to coordinate two components, move their state to their common parent.
-*   Then pass the information down through props from their common parent.
-*   Finally, pass the event handlers down so that the children can change the parent’s state.
-*   It’s useful to consider components as “controlled” (driven by props) or “uncontrolled” (driven by state).
+* When you want to coordinate two components, move their state to their common parent.
+* Then pass the information down through props from their common parent.
+* Finally, pass the event handlers down so that the children can change the parent’s state.
+* It’s useful to consider components as “controlled” (driven by props) or “uncontrolled” (driven by state).
 
 #### Challenge
 
@@ -199,36 +199,36 @@ of
 
 2:
 
-Synced inputs 
+Synced inputs [](https://react.dev/learn/sharing-state-between-components#synced-inputs)
 
 These two inputs are independent. Make them stay in sync: editing one input should update the other input with the same text, and vice versa.
 
 import { useState } from 'react';
 
 export default function SyncedInputs() {
-  return (
-    <>
-      <Input label="First input" />
-      <Input label="Second input" />
-    </>
-  );
+ return (
+ <>
+ <Input label="First input" />
+ <Input label="Second input" />
+ </>
+ );
 }
 
 function Input({ label }) {
-  const [text, setText] = useState('');
+ const [text, setText] = useState('');
 
-  function handleChange(e) {
-    setText(e.target.value);
-  }
+ function handleChange(e) {
+ setText(e.target.value);
+ }
 
-  return (
-    <label>
-      {label}
-      {' '}
-      <input
-        value={text}
-        onChange={handleChange}
-      />
-    </label>
-  );
+ return (
+ <label>
+ {label}
+ {' '}
+ <input
+ value={text}
+ onChange={handleChange}
+ />
+ </label>
+ );
 }
