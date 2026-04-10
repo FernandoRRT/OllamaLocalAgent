@@ -1,13 +1,13 @@
-# Stack Tecnológica do Projeto - Documento de Referência
+# Project Technology Stack - Reference Document
 
-Este projeto utiliza obrigatoriamente as seguintes versões e tecnologias:
+This project requires the following versions and technologies:
 
-- **Frontend Core**: Next.js 16.0.10 (usando App Router).
+- **Frontend Core**: Next.js 16.0.10 (using App Router).
 - **React**: Version 19.0.0.
-- **Autenticação**: @auth0/nextjs-auth0 v4.16.1.
-- **Banco de Dados & ORM**: Knex ^3.1.0 e PostgreSQL.
-- **Busca Vetorial**: pgvector instalado no Postgres.
-- **Validação de Dados**: Zod v4.3.6.
-- **Interface (UI)**: MUI ^7.3.6 (Material UI) com Emotion para estilização.
+- **Authentication**: @auth0/nextjs-auth0 v4.16.1.
+- **Database & ORM**: Knex ^3.1.0 and PostgreSQL.
+- **Vector Search**: pgvector installed on Postgres.
+- **Data Validation**: Zod v4.3.6.
+- **User Interface (UI)**: MUI ^7.3.6 (Material UI) with Emotion for styling.
 
-Qualquer código gerado deve respeitar as APIs dessas versões específicas.
+Any generated code must respect the APIs of these specific versions.

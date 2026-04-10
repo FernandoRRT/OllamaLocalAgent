@@ -62,7 +62,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const results = await db('stack_knowledge')
         .select('content', 'metadata')
         .orderByRaw(`embedding <=> ?::vector`, [queryVector])
-        .limit(2); // Retorna os 2 melhores resultados
+        .limit(2); // Returns the 2 best results
 
       if (results.length > 0) {
         // Format the output for Claude

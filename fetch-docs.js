@@ -6,51 +6,51 @@ const targetUrl = process.argv[2];
 const savePath = process.argv[3];
 
 if (!targetUrl || !savePath) {
-  console.log("❌ Uso: node fetch-docs.js <URL> <CAMINHO_DE_SAIDA>");
+  console.log("❌ Use: node fetch-docs.js <URL> <EXIT_PATH>");
   process.exit(1);
 }
 
 async function fetchAndClean() {
-  console.log(`📥 Baixando de: ${targetUrl}...`);
+  console.log(`📥 Downloading from: ${targetUrl}...`);
   
   try {
     const response = await axios.get(`https://r.jina.ai/${targetUrl}`);
     let md = response.data;
 
-    console.log("🧹 Sanitizando conteúdo...");
+    console.log("🧹 Sanitizing content...");
 
-    // 1. CORTA O CABEÇALHO (O Menu Global)
-    // O Jina injeta 'Copy page' logo antes do H1 real do conteúdo.
+    // 1. CUT THE HEADER (THE GLOBAL MENU)
+    // Jina injects 'Copy page' right before the real H1 of the content.
     const copyIndex = md.indexOf('Copy page');
     if (copyIndex !== -1) {
-      // Corta tudo antes e inclui o tamanho do 'Copy page' para removê-lo também
+      // Cut everything before and include the length of 'Copy page' to remove it as well
       md = md.substring(copyIndex + 'Copy page'.length);
     } else {
-      // Fallback de segurança caso não tenha 'Copy page'
+      // Security fallback in case 'Copy page' is not present
       const onThisPageIndex = md.indexOf('On this page');
       if (onThisPageIndex !== -1) {
         md = md.substring(onThisPageIndex);
       }
     }
 
-    // 2. CORTA O RODAPÉ
+    // 2. CUT THE FOOTER
     const footerIndex = md.indexOf('Was this helpful?');
     if (footerIndex !== -1) {
       md = md.substring(0, footerIndex);
     }
 
-    // 3. REMOVE IMAGENS 
+    // 3. REMOVE IMAGES 
     md = md.replace(/!\[.*?\]\(.*?\)/g, '');
     md = md.replace(/!Image\s\d+:.*?(\n|$)/g, ''); 
 
-    // 4. REMOVE LINKS (Mantendo apenas o texto âncora)
+    // 4. REMOVE LINKS (Keep only the anchor text)
     md = md.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
 
-    // 5. LIMPEZA DE ESPAÇOS E TRAÇOS ÓRFÃOS (Gerados ao remover os links do menu)
-    md = md.replace(/^\*\s+$/gm, ''); // Remove bullets vazios
-    md = md.replace(/\n{3,}/g, '\n\n'); // Padroniza quebras de linha
+    // 5. CLEAN UP SPACES AND ORPHANED DASHES (Generated when removing links from the menu)
+    md = md.replace(/^\*\s+$/gm, ''); // Remove empty bullets
+    md = md.replace(/\n{3,}/g, '\n\n'); // Standardize line breaks
 
-    // Salva o arquivo final
+    // Save the final file
     const fullPath = path.resolve(__dirname, savePath);
     const dir = path.dirname(fullPath);
     
@@ -59,10 +59,10 @@ async function fetchAndClean() {
     }
 
     fs.writeFileSync(fullPath, md.trim(), 'utf-8');
-    console.log(`✅ Arquivo limpo e salvo em: ${fullPath}`);
+    console.log(`✅ File cleaned and saved to: ${fullPath}`);
 
   } catch (error) {
-    console.error("❌ Erro ao buscar documento:", error.message);
+    console.error("❌ Error fetching document:", error.message);
   }
 }
 
