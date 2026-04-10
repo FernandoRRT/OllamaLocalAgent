@@ -9,9 +9,9 @@ This repository contains the architecture and scripts for a Local Artificial Int
 
 This ecosystem was designed and tested to run locally on the following hardware (Server "Papai"):
 
-*  **Processor:** AMD Ryzen 9 7950X3D (16 Cores / 32 Threads)
-*  **RAM:** 64GB DDR5 6000MHz
-*  **GPU:** NVIDIA GeForce RTX 4090 (24GB VRAM)
+*  **Processor:** AMD Ryzen 9 5900XT (16 Cores / 32 Threads)
+*  **RAM:** 64GB DDR4 3200MHz
+*  **GPU:** NVIDIA GeForce RTX 2060 (12GB VRAM)
 *  **Storage:** NVMe Gen4 (High-speed Read/Write)
 *  **OS:** Linux Mint / Ubuntu
 
