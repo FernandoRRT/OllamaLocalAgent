@@ -3,9 +3,9 @@ const fs = require('fs');
 const path = require('path');
 
 const targetUrl = process.argv[2];
-const savePath = process.argv[3];
+const rawSavePath = process.argv[3];
 
-if (!targetUrl || !savePath) {
+if (!targetUrl || !rawSavePath) {
   console.log("❌ Use: node fetch-docs.js <URL> <EXIT_PATH>");
   process.exit(1);
 }
@@ -17,41 +17,59 @@ async function fetchAndClean() {
     const response = await axios.get(`https://r.jina.ai/${targetUrl}`);
     let md = response.data;
 
-    console.log("🧹 Sanitizing content...");
+    console.log("🧹 Sanitizing content for Vector DB...");
 
-    // 1. CUT THE HEADER (THE GLOBAL MENU)
-    // Jina injects 'Copy page' right before the real H1 of the content.
+    // 1. CUT THE HEADER
     const copyIndex = md.indexOf('Copy page');
     if (copyIndex !== -1) {
-      // Cut everything before and include the length of 'Copy page' to remove it as well
       md = md.substring(copyIndex + 'Copy page'.length);
     } else {
-      // Security fallback in case 'Copy page' is not present
       const onThisPageIndex = md.indexOf('On this page');
-      if (onThisPageIndex !== -1) {
+      if (onThisPageIndex !== -1 && onThisPageIndex < md.length / 3) {
+        // Only cut if 'On this page' is near the top (table of contents)
         md = md.substring(onThisPageIndex);
       }
     }
 
-    // 2. CUT THE FOOTER
-    const footerIndex = md.indexOf('Was this helpful?');
-    if (footerIndex !== -1) {
-      md = md.substring(0, footerIndex);
+// 2. DYNAMIC FOOTER CUT
+    const footerMarkers = ['Was this helpful?', 'Previous ', 'Next ', '## On this page'];
+    for (const marker of footerMarkers) {
+      const footerIndex = md.lastIndexOf(marker);
+      if (footerIndex !== -1 && footerIndex > md.length / 2) {
+        // Cut the footer
+        md = md.substring(0, footerIndex);
+        // Clean up hanging brackets or symbols left exactly at the cut point
+        md = md.replace(/[\[\(\-\s]+$/, ''); 
+      }
     }
 
-    // 3. REMOVE IMAGES 
+    // 3. REMOVE IMAGES
     md = md.replace(/!\[.*?\]\(.*?\)/g, '');
     md = md.replace(/!Image\s\d+:.*?(\n|$)/g, ''); 
 
-    // 4. REMOVE LINKS (Keep only the anchor text)
-    md = md.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+    // 4. REMOVE LINKS (Keep anchor text)
+    // FIX: Changed + to * to successfully catch and destroy EMPTY brackets like [](url)
+    md = md.replace(/\[([^\]]*)\]\([^)]+\)/g, '$1');
 
-    // 5. CLEAN UP SPACES AND ORPHANED DASHES (Generated when removing links from the menu)
-    md = md.replace(/^\*\s+$/gm, ''); // Remove empty bullets
-    md = md.replace(/\n{3,}/g, '\n\n'); // Standardize line breaks
+    // --- NEW: 5. KILL RAG NOISE & UI ARTIFACTS ---
+    
+    // 5.1 Remove leftover accessibility labels that might have escaped the link removal
+    md = md.replace(/Link for.*?(?=\n|$)/g, '');
+    
+    // 5.2 Remove isolated UI button text
+    md = md.replace(/^(Copy page Copy|Copy|Show more|Terminal)$/gm, '');
 
-    // Save the final file
-    const fullPath = path.resolve(__dirname, savePath);
+    // 5.3 Nuke Sandbox/Playground artifacts and massive URL-encoded strings
+    md = md.replace(/Reload ClearFork.*?(?=\n|$)/g, '');
+    md = md.replace(/(%[0-9A-F]{2}){10,}/gi, ''); 
+
+    // 6. CLEAN UP SPACES AND ORPHANED DASHES
+    md = md.replace(/^\*\s+$/gm, ''); 
+    md = md.replace(/\n{3,}/g, '\n\n');
+
+    // --- ENFORCED LOCAL STORAGE LOGIC ---
+    const cleanSavePath = rawSavePath.replace(/^(\.\/|\/)+/, '');
+    const fullPath = path.join(__dirname, 'docs_stack', cleanSavePath);
     const dir = path.dirname(fullPath);
     
     if (!fs.existsSync(dir)) {
