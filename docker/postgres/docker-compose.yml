@@ -1,0 +1,18 @@
+services:
+  postgres_ai_rag:
+    image: pgvector/pgvector:pg16
+    container_name: postgres_ai_rag
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pswroot # Substitua pela sua senha
+      POSTGRES_DB: rag_knowledge
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    restart: "no" # Como solicitado, ele não inicia com o SO
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d rag_knowledge"]
+      interval: 5s
+      timeout: 5s
+      retries: 5

@@ -1,0 +1,136 @@
+# use server
+
+Last updated April 8, 2026
+
+The `use server` directive designates a function or file to be executed on the **server side**. It can be used at the top of a file to indicate that all functions in the file are server-side, or inline at the top of a function to mark the function as a Server Function. This is a React feature.
+
+## Using `use server` at the top of a file[](https://nextjs.org/docs/app/api-reference/directives/use-server#using-use-server-at-the-top-of-a-file)
+
+The following example shows a file with a `use server` directive at the top. All functions in the file are executed on the server.
+
+app/actions.ts
+
+TypeScript
+
+```
+'use server'
+import { db } from '@/lib/db' // Your database client
+import { auth } from '@/lib/auth'
+ 
+export async function createUser(data: { name: string; email: string }) {
+  const session = await auth()
+  if (!session?.user) {
+    throw new Error('Unauthorized')
+  }
+ 
+  const user = await db.user.create({ data })
+  return { id: user.id, name: user.name }
+}
+```
+
+### Using Server Functions in a Client Component[](https://nextjs.org/docs/app/api-reference/directives/use-server#using-server-functions-in-a-client-component)
+
+To use Server Functions in Client Components you need to create your Server Functions in a dedicated file using the `use server` directive at the top of the file. These Server Functions can then be imported into Client and Server Components and executed.
+
+Assuming you have a `fetchUsers` Server Function in `actions.ts`:
+
+app/actions.ts
+
+TypeScript
+
+```
+'use server'
+import { db } from '@/lib/db' // Your database client
+import { auth } from '@/lib/auth'
+ 
+export async function fetchUsers() {
+  const session = await auth()
+  if (!session?.user) {
+    throw new Error('Unauthorized')
+  }
+ 
+  const users = await db.user.findMany({
+    select: { id: true, name: true, email: true },
+  })
+  return users
+}
+```
+
+Then you can import the `fetchUsers` Server Function into a Client Component and execute it on the client-side.
+
+app/components/my-button.tsx
+
+TypeScript
+
+```
+'use client'
+import { fetchUsers } from '../actions'
+ 
+export default function MyButton() {
+  return <button onClick={() => fetchUsers()}>Fetch Users</button>
+}
+```
+
+## Using `use server` inline[](https://nextjs.org/docs/app/api-reference/directives/use-server#using-use-server-inline)
+
+In the following example, `use server` is used inline at the top of a function to mark it as a Server Function:
+
+app/posts/[id]/page.tsx
+
+TypeScript
+
+```
+import { EditPost } from './edit-post'
+import { revalidatePath } from 'next/cache'
+ 
+export default async function PostPage({ params }: { params: { id: string } }) {
+  const post = await getPost(params.id)
+ 
+  async function updatePost(formData: FormData) {
+    'use server'
+    // Verify auth before saving (e.g. inside savePost)
+    await savePost(params.id, formData)
+    revalidatePath(`/posts/${params.id}`)
+  }
+ 
+  return <EditPost updatePostAction={updatePost} post={post} />
+}
+```
+
+## Security considerations[](https://nextjs.org/docs/app/api-reference/directives/use-server#security-considerations)
+
+Design your data access functions as secure primitives: validate inputs, check authentication and authorization, and constrain return types to only what the caller needs. When Server Functions delegate to a Data Access Layer, these guarantees live in one place and apply consistently.
+
+### Authentication and authorization[](https://nextjs.org/docs/app/api-reference/directives/use-server#authentication-and-authorization)
+
+Always authenticate and authorize users before performing sensitive server-side operations. Read authentication from cookies or headers rather than accepting tokens as function parameters.
+
+app/actions.ts
+
+TypeScript
+
+```
+'use server'
+ 
+import { db } from '@/lib/db' // Your database client
+import { auth } from '@/lib/auth' // Your authentication library
+ 
+export async function createUser(data: { name: string; email: string }) {
+  const session = await auth()
+  if (!session?.user) {
+    throw new Error('Unauthorized')
+  }
+  const newUser = await db.user.create({ data })
+  return { id: newUser.id, name: newUser.name }
+}
+```
+
+### Return values[](https://nextjs.org/docs/app/api-reference/directives/use-server#return-values)
+
+Server Function return values are serialized and sent to the client. Only return data the UI needs, not raw database records. See the Data Security guide for more details.
+
+## Reference[](https://nextjs.org/docs/app/api-reference/directives/use-server#reference)
+
+See the React documentation for more information on `use server`.
+
+Previous use clientNext Components
