@@ -10,9 +10,9 @@ This repository contains the architecture and scripts for a Local Artificial Int
 This ecosystem was designed and tested to run locally on the following hardware (Server "Papai"):
 
 *  **Processor:** AMD Ryzen 9 5900XT (16 Cores / 32 Threads)
-*  **RAM:** 64GB DDR4 3200MHz
+*  **RAM:** 48GB DDR4 3200MHz
 *  **GPU:** NVIDIA GeForce RTX 2060 (12GB VRAM)
-*  **Storage:** NVMe Gen4 (High-speed Read/Write)
+*  **Storage:** NVMe Gen4
 *  **OS:** Linux Mint / Ubuntu
 
 ---
@@ -46,7 +46,8 @@ This repository includes pre-fetched documentation (`docs_stack`) and all necess
 
 ```text
 .
-├── bulk-fetch.js # Script to scrape and format documentation
+├── bulk-fetch-next.js # Script to scrape and format documentation from next js
+├── bulk-fetch-react.js # same script, but to catch react docs
 ├── docker
 │ └── postgres
 │ └── docker-compose.yml # Postgres + pgvector container config
@@ -55,6 +56,7 @@ This repository includes pre-fetched documentation (`docs_stack`) and all necess
 │ ├── mui/
 │ ├── nextjs/ # 117 Next.js 16 documentation files
 │ └── react/
+├── fetch-docs.js # fetch a single documentation page
 ├── ingest.js # Chunks markdown and saves vectors to Postgres
 ├── mcp-rag.js # MCP Server linking the DB to OpenClaude
 ├── package.json # Node dependencies (knex, pg, axios, sdk)
@@ -107,7 +109,30 @@ ollama pull qwen2.5:14b
 > 
 > I also tested the qwen3.5:9b model. Besides not producing very good results, I noticed that 9b was the minimum number of parameters needed to get good responses on my hardware. Although I continue to recommend the 14b models, I believe that the smaller models will perform worse as the context expands.
 
-### 5. Ingest the Documentation (Populate the Brain)
+### 5. Download documentation
+
+You can download additional documentation pages using the script below. It will download the page content as markdown and save it to a file in the docs_stack folder of this project. To download a single document, run:
+
+```bash
+node fetch-docs.js https://example.com /example/doc-name.md
+``` 
+
+#### Bulk download
+
+The bulk download scripts contain links to documentation pages for various frameworks in the versions below:
+
+ - Next.js v16.2.3
+ - React v19.2
+
+If new versions of the framework have been released, check that the links remain the same. If you run the script again, it will delete the contents of the folder and download everything again. For example, you can download the Next documentation using:
+
+```bash
+node bulk-fetch-next.js
+``` 
+
+If you want to change the download folder, edit the constant `dirPath` at the top of the file.
+
+### 6. Ingest the Documentation (Populate the Brain)
 
 Run the ingestion script. This will read all Markdown files in the `docs_stack/` folder, chunk them to avoid context limits, generate embeddings via Ollama, and save them to PostgreSQL using a "Delete & Replace" strategy.
 
