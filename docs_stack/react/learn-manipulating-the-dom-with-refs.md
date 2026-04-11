@@ -1,6 +1,6 @@
 Copy
 
-# Manipulating the DOM with Refs[](https://react.dev/learn/manipulating-the-dom-with-refs#undefined)
+# Manipulating the DOM with Refs
 
 React automatically updates the DOM to match your render output, so your components won’t often need to manipulate it. However, sometimes you might need access to the DOM elements managed by React—for example, to focus a node, scroll to it, or measure its size and position. There is no built-in way to do those things in React, so you will need a _ref_ to the DOM node.
 
@@ -11,7 +11,7 @@ React automatically updates the DOM to match your render output, so your compone
 * How to access another component’s DOM node
 * In which cases it’s safe to modify the DOM managed by React
 
-## Getting a ref to the node [](https://react.dev/learn/manipulating-the-dom-with-refs#getting-a-ref-to-the-node)
+## Getting a ref to the node 
 
 To access a DOM node managed by React, first, import the `useRef` Hook:
 
@@ -29,7 +29,7 @@ The `useRef` Hook returns an object with a single property called `current`. Ini
 
 `// You can use any browser APIs, for example:myRef.current.scrollIntoView();`
 
-### Example: Focusing a text input [](https://react.dev/learn/manipulating-the-dom-with-refs#example-focusing-a-text-input)
+### Example: Focusing a text input 
 
 In this example, clicking the button will focus the input:
 
@@ -65,7 +65,7 @@ To implement this:
 
 While DOM manipulation is the most common use case for refs, the `useRef` Hook can be used for storing other things outside React, like timer IDs. Similarly to state, refs remain between renders. Refs are like state variables that don’t trigger re-renders when you set them. Read about refs in Referencing Values with Refs.
 
-### Example: Scrolling to an element [](https://react.dev/learn/manipulating-the-dom-with-refs#example-scrolling-to-an-element)
+### Example: Scrolling to an element 
 
 You can have more than a single ref in a component. In this example, there is a carousel of three images. Each button centers an image by calling the browser `scrollIntoView()` method on the corresponding DOM node:
 
@@ -148,7 +148,7 @@ export default function CatFriends() {
 
 ##### Deep Dive
 
-#### How to manage a list of refs using a ref callback [](https://react.dev/learn/manipulating-the-dom-with-refs#how-to-manage-a-list-of-refs-using-a-ref-callback)
+#### How to manage a list of refs using a ref callback 
 
 In the above examples, there is a predefined number of refs. However, sometimes you might need a ref to each item in the list, and you don’t know how many you will have. Something like this **wouldn’t work**:
 
@@ -252,7 +252,7 @@ When Strict Mode is enabled, ref callbacks will run twice in development.
 
 Read more about how this helps find bugs in callback refs.
 
-## Accessing another component’s DOM nodes [](https://react.dev/learn/manipulating-the-dom-with-refs#accessing-another-components-dom-nodes)
+## Accessing another component’s DOM nodes 
 
 ### Pitfall
 
@@ -295,7 +295,7 @@ export default function MyForm() {
 
 ##### Deep Dive
 
-#### Exposing a subset of the API with an imperative handle [](https://react.dev/learn/manipulating-the-dom-with-refs#exposing-a-subset-of-the-api-with-an-imperative-handle)
+#### Exposing a subset of the API with an imperative handle 
 
 In the above example, the ref passed to `MyInput` is passed on to the original DOM input element. This lets the parent component call `focus()` on it. However, this also lets the parent component do something else—for example, change its CSS styles. In uncommon cases, you may want to restrict the exposed functionality. You can do that with `useImperativeHandle`:
 
@@ -333,7 +333,7 @@ export default function Form() {
 
 Here, `realInputRef` inside `MyInput` holds the actual input DOM node. However, `useImperativeHandle` instructs React to provide your own special object as the value of a ref to the parent component. So `inputRef.current` inside the `Form` component will only have the `focus` method. In this case, the ref “handle” is not the DOM node, but the custom object you create inside `useImperativeHandle` call.
 
-## When React attaches the refs [](https://react.dev/learn/manipulating-the-dom-with-refs#when-react-attaches-the-refs)
+## When React attaches the refs 
 
 In React, every update is split in two phases:
 
@@ -348,7 +348,7 @@ React sets `ref.current` during the commit. Before updating the DOM, React sets 
 
 ##### Deep Dive
 
-#### Flushing state updates synchronously with flushSync [](https://react.dev/learn/manipulating-the-dom-with-refs#flushing-state-updates-synchronously-with-flush-sync)
+#### Flushing state updates synchronously with flushSync 
 
 Consider code like this, which adds a new todo and scrolls the screen down to the last child of the list. Notice how, for some reason, it always scrolls to the todo that was _just before_ the last added one:
 
@@ -467,7 +467,7 @@ for (let i = 0; i < 20; i++) {
  });
 }
 
-## Best practices for DOM manipulation with refs [](https://react.dev/learn/manipulating-the-dom-with-refs#best-practices-for-dom-manipulation-with-refs)
+## Best practices for DOM manipulation with refs 
 
 Refs are an escape hatch. You should only use them when you have to “step outside React”. Common examples of this include managing focus, scroll position, or calling browser APIs that React does not expose.
 
@@ -512,7 +512,7 @@ After you’ve manually removed the DOM element, trying to use `setState` to sho
 
 However, this doesn’t mean that you can’t do it at all. It requires caution. **You can safely modify parts of the DOM that React has _no reason_ to update.** For example, if some `<div>` is always empty in the JSX, React won’t have a reason to touch its children list. Therefore, it is safe to manually add or remove elements there.
 
-## Recap[](https://react.dev/learn/manipulating-the-dom-with-refs#recap)
+## Recap
 
 * Refs are a generic concept, but most often you’ll use them to hold DOM elements.
 * You instruct React to put a DOM node into `myRef.current` by passing `<div ref={myRef}>`.
@@ -521,13 +521,13 @@ However, this doesn’t mean that you can’t do it at all. It requires caution.
 * Avoid changing DOM nodes managed by React.
 * If you do modify DOM nodes managed by React, modify parts that React has no reason to update.
 
-## Try out some challenges[](https://react.dev/learn/manipulating-the-dom-with-refs#challenges)
+## Try out some challenges
 
 1. Play and pause the video 2. Focus the search field 3. Scrolling an image carousel 4. Focus the search field with separate components 
 
 #### Challenge 1 of 4: 
 
-Play and pause the video [](https://react.dev/learn/manipulating-the-dom-with-refs#play-and-pause-the-video)
+Play and pause the video 
 
 In this example, the button toggles a state variable to switch between a playing and a paused state. However, in order to actually play or pause the video, toggling state is not enough. You also need to call `play()` and `pause()` on the DOM element for the `<video>`. Add a ref to it, and make the button work.
 
@@ -562,4 +562,56 @@ export default function VideoPlayer() {
 
 For an extra challenge, keep the “Play” button in sync with whether the video is playing even if the user right-clicks the video and plays it using the built-in browser media controls. You might want to listen to `onPlay` and `onPause` on the video to do that.
 
-Show solution
+Show solution Next Challenge
+
+Previous Referencing Values with RefsNext Synchronizing with Effects
+
+* * *
+
+Copyright © Meta Platforms, Inc
+
+no uwu plz
+
+uwu?
+
+Logo by@sawaratsuki1004
+
+Learn React
+
+Quick Start
+
+Installation
+
+Describing the UI
+
+Adding Interactivity
+
+Managing State
+
+Escape Hatches
+
+API Reference
+
+React APIs
+
+React DOM APIs
+
+Community
+
+Code of Conduct
+
+Meet the Team
+
+Docs Contributors
+
+Acknowledgements
+
+More
+
+Blog
+
+React Native
+
+Privacy
+
+Terms

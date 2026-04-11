@@ -1,6 +1,6 @@
 Copy
 
-# Passing Data Deeply with Context[](https://react.dev/learn/passing-data-deeply-with-context#undefined)
+# Passing Data Deeply with Context
 
 Usually, you will pass information from a parent component to a child component via props. But passing props can become verbose and inconvenient if you have to pass them through many components in the middle, or if many components in your app need the same information. _Context_ lets the parent component make some information available to any component in the tree below it—no matter how deep—without passing it explicitly through props.
 
@@ -11,7 +11,7 @@ Usually, you will pass information from a parent component to a child component 
 * Common use cases for context
 * Common alternatives to context
 
-## The problem with passing props [](https://react.dev/learn/passing-data-deeply-with-context#the-problem-with-passing-props)
+## The problem with passing props 
 
 Passing props is a great way to explicitly pipe data through your UI tree to the components that use it.
 
@@ -23,7 +23,7 @@ Prop drilling
 
 Wouldn’t it be great if there were a way to “teleport” data to the components in the tree that need it without passing props? With React’s context feature, there is!
 
-## Context: an alternative to passing props [](https://react.dev/learn/passing-data-deeply-with-context#context-an-alternative-to-passing-props)
+## Context: an alternative to passing props 
 
 Context lets a parent component provide data to the entire tree below it. There are many uses for context. Here is one example. Consider this `Heading` component that accepts a `level` for its size:
 
@@ -101,7 +101,7 @@ Using context in close children
 
 Using context in distant children
 
-### Step 1: Create the context [](https://react.dev/learn/passing-data-deeply-with-context#step-1-create-the-context)
+### Step 1: Create the context 
 
 First, you need to create the context. You’ll need to **export it from a file** so that your components can use it:
 
@@ -115,7 +115,7 @@ export const LevelContext = createContext(1);
 
 The only argument to `createContext` is the _default_ value. Here, `1` refers to the biggest heading level, but you could pass any kind of value (even an object). You will see the significance of the default value in the next step.
 
-### Step 2: Use the context [](https://react.dev/learn/passing-data-deeply-with-context#step-2-use-the-context)
+### Step 2: Use the context 
 
 Import the `useContext` Hook from React and your context:
 
@@ -175,7 +175,7 @@ Notice this example doesn’t quite work, yet! All the headings have the same si
 
 If you don’t provide the context, React will use the default value you’ve specified in the previous step. In this example, you specified `1` as the argument to `createContext`, so `useContext(LevelContext)` returns `1`, setting all those headings to `<h1>`. Let’s fix this problem by having each `Section` provide its own context.
 
-### Step 3: Provide the context [](https://react.dev/learn/passing-data-deeply-with-context#step-3-provide-the-context)
+### Step 3: Provide the context 
 
 The `Section` component currently renders its children:
 
@@ -223,7 +223,7 @@ It’s the same result as the original code, but you did not need to pass the `l
 2. `Section` wraps its children into `<LevelContext value={level}>`.
 3. `Heading` asks the closest value of `LevelContext` above with `useContext(LevelContext)`.
 
-## Using and providing context from the same component [](https://react.dev/learn/passing-data-deeply-with-context#using-and-providing-context-from-the-same-component)
+## Using and providing context from the same component 
 
 Currently, you still have to specify each section’s `level` manually:
 
@@ -271,7 +271,7 @@ Now both `Heading` and `Section` read the `LevelContext` to figure out how “de
 
 This example uses heading levels because they show visually how nested components can override context. But context is useful for many other use cases too. You can pass down any information needed by the entire subtree: the current color theme, the currently logged in user, and so on.
 
-## Context passes through intermediate components [](https://react.dev/learn/passing-data-deeply-with-context#context-passes-through-intermediate-components)
+## Context passes through intermediate components 
 
 You can insert as many components as you like between the component that provides context and the one that uses it. This includes both built-in components like `<div>` and components you might build yourself.
 
@@ -341,7 +341,7 @@ How context works might remind you of CSS property inheritance. In CSS, you can 
 
 In CSS, different properties like `color` and `background-color` don’t override each other. You can set all `<div>`’s `color` to red without impacting `background-color`. Similarly, **different React contexts don’t override each other.** Each context that you make with `createContext()` is completely separate from other ones, and ties together components using and providing _that particular_ context. One component may use or provide many different contexts without a problem.
 
-## Before you use context [](https://react.dev/learn/passing-data-deeply-with-context#before-you-use-context)
+## Before you use context 
 
 Context is very tempting to use! However, this also means it’s too easy to overuse it. **Just because you need to pass some props several levels deep doesn’t mean you should put that information into context.**
 
@@ -352,7 +352,7 @@ Here’s a few alternatives you should consider before using context:
 
 If neither of these approaches works well for you, consider context.
 
-## Use cases for context [](https://react.dev/learn/passing-data-deeply-with-context#use-cases-for-context)
+## Use cases for context 
 
 * **Theming:** If your app lets the user change its appearance (e.g. dark mode), you can put a context provider at the top of your app, and use that context in components that need to adjust their visual look.
 * **Current account:** Many components might need to know the currently logged in user. Putting it in context makes it convenient to read it anywhere in the tree. Some apps also let you operate multiple accounts at the same time (e.g. to leave a comment as a different user). In those cases, it can be convenient to wrap a part of the UI into a nested provider with a different current account value.
@@ -363,7 +363,7 @@ Context is not limited to static values. If you pass a different value on the ne
 
 In general, if some information is needed by distant components in different parts of the tree, it’s a good indication that context will help you.
 
-## Recap[](https://react.dev/learn/passing-data-deeply-with-context#recap)
+## Recap
 
 * Context lets a component provide some information to the entire tree below it.
 * To pass context:
@@ -375,11 +375,11 @@ In general, if some information is needed by distant components in different par
 * Context lets you write components that “adapt to their surroundings”.
 * Before you use context, try passing props or passing JSX as `children`.
 
-## Try out some challenges[](https://react.dev/learn/passing-data-deeply-with-context#challenges)
+## Try out some challenges
 
 #### Challenge 1 of 1: 
 
-Replace prop drilling with context [](https://react.dev/learn/passing-data-deeply-with-context#replace-prop-drilling-with-context)
+Replace prop drilling with context 
 
 In this example, toggling the checkbox changes the `imageSize` prop passed to each `<PlaceImage>`. The checkbox state is held in the top-level `App` component, but each `<PlaceImage>` needs to be aware of it.
 
@@ -455,3 +455,55 @@ function PlaceImage({ place, imageSize }) {
 }
 
 Show solution
+
+Previous Extracting State Logic into a ReducerNext Scaling Up with Reducer and Context
+
+* * *
+
+Copyright © Meta Platforms, Inc
+
+no uwu plz
+
+uwu?
+
+Logo by@sawaratsuki1004
+
+Learn React
+
+Quick Start
+
+Installation
+
+Describing the UI
+
+Adding Interactivity
+
+Managing State
+
+Escape Hatches
+
+API Reference
+
+React APIs
+
+React DOM APIs
+
+Community
+
+Code of Conduct
+
+Meet the Team
+
+Docs Contributors
+
+Acknowledgements
+
+More
+
+Blog
+
+React Native
+
+Privacy
+
+Terms

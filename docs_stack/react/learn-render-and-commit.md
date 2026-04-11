@@ -1,6 +1,95 @@
-Copy
+# Render and Commit – React
 
-# Render and Commit[](https://react.dev/learn/render-and-commit#undefined)
+React
+
+v 19.2
+
+Search⌘Ctrl K
+
+Learn
+
+Reference
+
+Community
+
+Blog
+
+### GET STARTED
+
+* Quick Start
+
+ * Tutorial: Tic-Tac-Toe
+ * Thinking in React
+
+* Installation
+
+ * Creating a React App
+ * Build a React App from Scratch
+ * Add React to an Existing Project
+
+* Setup
+
+ * Editor Setup
+ * Using TypeScript
+ * React Developer Tools
+
+* React Compiler
+
+ * Introduction
+ * Installation
+ * Incremental Adoption
+ * Debugging and Troubleshooting
+
+### LEARN REACT
+
+* Describing the UI
+
+ * Your First Component
+ * Importing and Exporting Components
+ * Writing Markup with JSX
+ * JavaScript in JSX with Curly Braces
+ * Passing Props to a Component
+ * Conditional Rendering
+ * Rendering Lists
+ * Keeping Components Pure
+ * Your UI as a Tree
+
+* Adding Interactivity
+
+ * Responding to Events
+ * State: A Component's Memory
+ * Render and Commit
+ * State as a Snapshot
+ * Queueing a Series of State Updates
+ * Updating Objects in State
+ * Updating Arrays in State
+
+* Managing State
+
+ * Reacting to Input with State
+ * Choosing the State Structure
+ * Sharing State Between Components
+ * Preserving and Resetting State
+ * Extracting State Logic into a Reducer
+ * Passing Data Deeply with Context
+ * Scaling Up with Reducer and Context
+
+* Escape Hatches
+
+ * Referencing Values with Refs
+ * Manipulating the DOM with Refs
+ * Synchronizing with Effects
+ * You Might Not Need an Effect
+ * Lifecycle of Reactive Effects
+ * Separating Events from Effects
+ * Removing Effect Dependencies
+ * Reusing Logic with Custom Hooks
+
+Learn React
+
+Adding Interactivity
+
+# Render and Commit
 
 Before your components are displayed on screen, they must be rendered by React. Understanding the steps in this process will help you think about how your code executes and explain its behavior.
 
@@ -31,14 +120,14 @@ Commit
 
 Illustrated byRachel Lee Nabors
 
-## Step 1: Trigger a render [](https://react.dev/learn/render-and-commit#step-1-trigger-a-render)
+## Step 1: Trigger a render 
 
 There are two reasons for a component to render:
 
 1. It’s the component’s **initial render.**
 2. The component’s (or one of its ancestors’) **state has been updated.**
 
-### Initial render [](https://react.dev/learn/render-and-commit#initial-render)
+### Initial render 
 
 When your app starts, you need to trigger the initial render. Frameworks and sandboxes sometimes hide this code, but it’s done by calling `createRoot` with the target DOM node, and then calling its `render` method with your component:
 
@@ -54,7 +143,7 @@ root.render(<Image />);
 
 Try commenting out the `root.render()` call and see the component disappear!
 
-### Re-renders when state updates [](https://react.dev/learn/render-and-commit#re-renders-when-state-updates)
+### Re-renders when state updates 
 
 Once the component has been initially rendered, you can trigger further renders by updating its state with the `set` function. Updating your component’s state automatically queues a render. (You can imagine these as a restaurant guest ordering tea, dessert, and all sorts of things after putting in their first order, depending on the state of their thirst or hunger.)
 
@@ -72,7 +161,7 @@ State update...
 
 Illustrated byRachel Lee Nabors
 
-## Step 2: React renders your components [](https://react.dev/learn/render-and-commit#step-2-react-renders-your-components)
+## Step 2: React renders your components 
 
 After you trigger a render, React calls your components to figure out what to display on screen. **“Rendering” is React calling your components.**
 
@@ -121,11 +210,11 @@ Otherwise, you can encounter confusing bugs and unpredictable behavior as your c
 
 ##### Deep Dive
 
-#### Optimizing performance [](https://react.dev/learn/render-and-commit#optimizing-performance)
+#### Optimizing performance 
 
 The default behavior of rendering all components nested within the updated component is not optimal for performance if the updated component is very high in the tree. If you run into a performance issue, there are several opt-in ways to solve it described in the Performance section. **Don’t optimize prematurely!**
 
-## Step 3: React commits changes to the DOM [](https://react.dev/learn/render-and-commit#step-3-react-commits-changes-to-the-dom)
+## Step 3: React commits changes to the DOM 
 
 After rendering (calling) your components, React will modify the DOM.
 
@@ -149,13 +238,13 @@ export default function Clock({ time }) {
 
 This works because during this last step, React only updates the content of `<h1>` with the new `time`. It sees that the `<input>` appears in the JSX in the same place as last time, so React doesn’t touch the `<input>`—or its `value`!
 
-## Epilogue: Browser paint [](https://react.dev/learn/render-and-commit#epilogue-browser-paint)
+## Epilogue: Browser paint 
 
 After rendering is done and React updated the DOM, the browser will repaint the screen. Although this process is known as “browser rendering”, we’ll refer to it as “painting” to avoid confusion throughout the docs.
 
 Illustrated byRachel Lee Nabors
 
-## Recap[](https://react.dev/learn/render-and-commit#recap)
+## Recap
 
 * Any screen update in a React app happens in three steps:
  1. Trigger
@@ -164,3 +253,55 @@ Illustrated byRachel Lee Nabors
 
 * You can use Strict Mode to find mistakes in your components
 * React does not touch the DOM if the rendering result is the same as last time
+
+Previous State: A Component's MemoryNext State as a Snapshot
+
+* * *
+
+Copyright © Meta Platforms, Inc
+
+no uwu plz
+
+uwu?
+
+Logo by@sawaratsuki1004
+
+Learn React
+
+Quick Start
+
+Installation
+
+Describing the UI
+
+Adding Interactivity
+
+Managing State
+
+Escape Hatches
+
+API Reference
+
+React APIs
+
+React DOM APIs
+
+Community
+
+Code of Conduct
+
+Meet the Team
+
+Docs Contributors
+
+Acknowledgements
+
+More
+
+Blog
+
+React Native
+
+Privacy
+
+Terms

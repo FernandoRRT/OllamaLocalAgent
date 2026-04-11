@@ -1,10 +1,10 @@
 Copy
 
-# Thinking in React[](https://react.dev/learn/thinking-in-react#undefined)
+# Thinking in React
 
 React can change how you think about the designs you look at and the apps you build. When you build a user interface with React, you will first break it apart into pieces called _components_. Then, you will describe the different visual states for each of your components. Finally, you will connect your components together so that the data flows through them. In this tutorial, we’ll guide you through the thought process of building a searchable product data table with React.
 
-## Start with the mockup [](https://react.dev/learn/thinking-in-react#start-with-the-mockup)
+## Start with the mockup 
 
 Imagine that you already have a JSON API and a mockup from a designer.
 
@@ -16,7 +16,7 @@ The mockup looks like this:
 
 To implement a UI in React, you will usually follow the same five steps.
 
-## Step 1: Break the UI into a component hierarchy [](https://react.dev/learn/thinking-in-react#step-1-break-the-ui-into-a-component-hierarchy)
+## Step 1: Break the UI into a component hierarchy 
 
 Start by drawing boxes around every component and subcomponent in the mockup and naming them. If you work with a designer, they may have already named these components in their design tool. Ask them!
 
@@ -46,7 +46,7 @@ Now that you’ve identified the components in the mockup, arrange them into a h
  * `ProductCategoryRow`
  * `ProductRow`
 
-## Step 2: Build a static version in React [](https://react.dev/learn/thinking-in-react#step-2-build-a-static-version-in-react)
+## Step 2: Build a static version in React 
 
 Now that you have your component hierarchy, it’s time to implement your app. The most straightforward approach is to build a version that renders the UI from your data model without adding any interactivity… yet! It’s often easier to build the static version first and add interactivity later. Building a static version requires a lot of typing and no thinking, but adding interactivity requires a lot of thinking and not a lot of typing.
 
@@ -158,7 +158,7 @@ After building your components, you’ll have a library of reusable components t
 
 At this point, you should not be using any state values. That’s for the next step!
 
-## Step 3: Find the minimal but complete representation of UI state [](https://react.dev/learn/thinking-in-react#step-3-find-the-minimal-but-complete-representation-of-ui-state)
+## Step 3: Find the minimal but complete representation of UI state 
 
 To make the UI interactive, you need to let users change your underlying data model. You will use _state_ for this.
 
@@ -190,7 +190,7 @@ This means only the search text and the value of the checkbox are state! Nicely 
 
 ##### Deep Dive
 
-#### Props vs State [](https://react.dev/learn/thinking-in-react#props-vs-state)
+#### Props vs State 
 
 There are two types of “model” data in React: props and state. The two are very different:
 
@@ -199,7 +199,7 @@ There are two types of “model” data in React: props and state. The two are v
 
 Props and state are different, but they work together. A parent component will often keep some information in state (so that it can change it), and _pass it down_ to child components as their props. It’s okay if the difference still feels fuzzy on the first read. It takes a bit of practice for it to really stick!
 
-## Step 4: Identify where your state should live [](https://react.dev/learn/thinking-in-react#step-4-identify-where-your-state-should-live)
+## Step 4: Identify where your state should live 
 
 After identifying your app’s minimal state data, you need to identify which component is responsible for changing this state, or _owns_ the state. Remember: React uses one-way data flow, passing data down the component hierarchy from parent to child component. It may not be immediately clear which component should own what state. This can be challenging if you’re new to this concept, but you can figure it out by following these steps!
 
@@ -368,7 +368,7 @@ In the sandbox above, `ProductTable` and `SearchBar` read the `filterText` and `
 
 However, you haven’t added any code to respond to the user actions like typing yet. This will be your final step.
 
-## Step 5: Add inverse data flow [](https://react.dev/learn/thinking-in-react#step-5-add-inverse-data-flow)
+## Step 5: Add inverse data flow 
 
 Currently your app renders correctly with props and state flowing down the hierarchy. But to change the state according to user input, you will need to support data flowing the other way: the form components deep in the hierarchy need to update the state in `FilterableProductTable`.
 
@@ -515,6 +515,58 @@ export default function App() {
 
 You can learn all about handling events and updating state in the Adding Interactivity section.
 
-## Where to go from here [](https://react.dev/learn/thinking-in-react#where-to-go-from-here)
+## Where to go from here 
 
 This was a very brief introduction to how to think about building components and applications with React. You can start a React project right now or dive deeper on all the syntax used in this tutorial.
+
+Previous Tutorial: Tic-Tac-ToeNext Installation
+
+* * *
+
+Copyright © Meta Platforms, Inc
+
+no uwu plz
+
+uwu?
+
+Logo by@sawaratsuki1004
+
+Learn React
+
+Quick Start
+
+Installation
+
+Describing the UI
+
+Adding Interactivity
+
+Managing State
+
+Escape Hatches
+
+API Reference
+
+React APIs
+
+React DOM APIs
+
+Community
+
+Code of Conduct
+
+Meet the Team
+
+Docs Contributors
+
+Acknowledgements
+
+More
+
+Blog
+
+React Native
+
+Privacy
+
+Terms

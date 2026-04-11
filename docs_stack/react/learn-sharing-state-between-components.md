@@ -1,8 +1,3 @@
-Title: Sharing State Between Components – React
-
-URL Source: https://react.dev/learn/sharing-state-between-components
-
-Markdown Content:
 Sometimes, you want the state of two components to always change together. To do it, remove state from both of them, move it to their closest common parent, and then pass it down to them via props. This is known as _lifting state up,_ and it’s one of the most common things you will do writing React code.
 
 ### You will learn
@@ -10,7 +5,7 @@ Sometimes, you want the state of two components to always change together. To do
 * How to share state between components by lifting it up
 * What are controlled and uncontrolled components
 
-## Lifting state up by example [](https://react.dev/learn/sharing-state-between-components#lifting-state-up-by-example)
+## Lifting state up by example 
 
 In this example, a parent `Accordion` component renders two separate `Panel`s:
 
@@ -38,7 +33,7 @@ To coordinate these two panels, you need to “lift their state up” to a paren
 
 This will allow the `Accordion` component to coordinate both `Panel`s and only expand one at a time.
 
-### Step 1: Remove state from the child components [](https://react.dev/learn/sharing-state-between-components#step-1-remove-state-from-the-child-components)
+### Step 1: Remove state from the child components 
 
 You will give control of the `Panel`’s `isActive` to its parent component. This means that the parent component will pass `isActive` to `Panel` as a prop instead. Start by **removing this line** from the `Panel` component:
 
@@ -50,7 +45,7 @@ And instead, add `isActive` to the `Panel`’s list of props:
 
 Now the `Panel`’s parent component can _control_`isActive` by passing it down as a prop. Conversely, the `Panel` component now has _no control_ over the value of `isActive`—it’s now up to the parent component!
 
-### Step 2: Pass hardcoded data from the common parent [](https://react.dev/learn/sharing-state-between-components#step-2-pass-hardcoded-data-from-the-common-parent)
+### Step 2: Pass hardcoded data from the common parent 
 
 To lift state up, you must locate the closest common parent component of _both_ of the child components that you want to coordinate:
 
@@ -93,7 +88,7 @@ function Panel({ title, children, isActive }) {
 
 Try editing the hardcoded `isActive` values in the `Accordion` component and see the result on the screen.
 
-### Step 3: Add state to the common parent [](https://react.dev/learn/sharing-state-between-components#step-3-add-state-to-the-common-parent)
+### Step 3: Add state to the common parent 
 
 Lifting state up often changes the nature of what you’re storing as state.
 
@@ -162,7 +157,7 @@ When `Accordion`’s `activeIndex` state changes to `1`, the second `Panel` rece
 
 ##### Deep Dive
 
-#### Controlled and uncontrolled components [](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components)
+#### Controlled and uncontrolled components 
 
 It is common to call a component with some local state “uncontrolled”. For example, the original `Panel` component with an `isActive` state variable is uncontrolled because its parent cannot influence whether the panel is active or not.
 
@@ -174,7 +169,7 @@ In practice, “controlled” and “uncontrolled” aren’t strict technical t
 
 When writing a component, consider which information in it should be controlled (via props), and which information should be uncontrolled (via state). But you can always change your mind and refactor later.
 
-## A single source of truth for each state [](https://react.dev/learn/sharing-state-between-components#a-single-source-of-truth-for-each-state)
+## A single source of truth for each state 
 
 In a React application, many components will have their own state. Some state may “live” close to the leaf components (components at the bottom of the tree) like inputs. Other state may “live” closer to the top of the app. For example, even client-side routing libraries are usually implemented by storing the current route in the React state, and passing it down by props!
 
@@ -184,7 +179,7 @@ Your app will change as you work on it. It is common that you will move state do
 
 To see what this feels like in practice with a few more components, read Thinking in React.
 
-## Recap[](https://react.dev/learn/sharing-state-between-components#recap)
+## Recap
 
 * When you want to coordinate two components, move their state to their common parent.
 * Then pass the information down through props from their common parent.
@@ -199,7 +194,7 @@ of
 
 2:
 
-Synced inputs [](https://react.dev/learn/sharing-state-between-components#synced-inputs)
+Synced inputs 
 
 These two inputs are independent. Make them stay in sync: editing one input should update the other input with the same text, and vice versa.
 

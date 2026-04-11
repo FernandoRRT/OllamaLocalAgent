@@ -1,6 +1,6 @@
 Copy
 
-# Using TypeScript[](https://react.dev/learn/typescript#undefined)
+# Using TypeScript
 
 TypeScript is a popular way to add type definitions to JavaScript codebases. Out of the box, TypeScript supports JSX and you can get full React Web support by adding `@types/react` and `@types/react-dom` to your project.
 
@@ -11,7 +11,7 @@ TypeScript is a popular way to add type definitions to JavaScript codebases. Out
 * Common types from `@types/react`
 * Further learning locations
 
-## Installation [](https://react.dev/learn/typescript#installation)
+## Installation 
 
 All production-grade React frameworks offer support for using TypeScript. Follow the framework specific guide for installation:
 
@@ -20,7 +20,7 @@ All production-grade React frameworks offer support for using TypeScript. Follow
 * Gatsby
 * Expo
 
-### Adding TypeScript to an existing React project [](https://react.dev/learn/typescript#adding-typescript-to-an-existing-react-project)
+### Adding TypeScript to an existing React project 
 
 To install the latest version of React’s type definitions:
 
@@ -33,7 +33,7 @@ The following compiler options need to be set in your `tsconfig.json`:
 1. `dom` must be included in `lib` (Note: If no `lib` option is specified, `dom` is included by default).
 2. `jsx` must be set to one of the valid options. `preserve` should suffice for most applications. If you’re publishing a library, consult the `jsx` documentation on what value to choose.
 
-## TypeScript with React Components [](https://react.dev/learn/typescript#typescript-with-react-components)
+## TypeScript with React Components 
 
 ### Note
 
@@ -96,13 +96,13 @@ export default function MyApp() {
 
 The type describing your component’s props can be as simple or as complex as you need, though they should be an object type described with either a `type` or `interface`. You can learn about how TypeScript describes objects in Object Types but you may also be interested in using Union Types to describe a prop that can be one of a few different types and the Creating Types from Types guide for more advanced use cases.
 
-## Example Hooks [](https://react.dev/learn/typescript#example-hooks)
+## Example Hooks 
 
 The type definitions from `@types/react` include types for the built-in Hooks, so you can use them in your components without any additional setup. They are built to take into account the code you write in your component, so you will get inferred types a lot of the time and ideally do not need to handle the minutiae of providing the types.
 
 However, we can look at a few examples of how to provide types for Hooks.
 
-### `useState`[](https://react.dev/learn/typescript#typing-usestate)
+### `useState`
 
 The `useState` Hook will re-use the value passed in as the initial state to determine what the type of the value should be. For example:
 
@@ -120,7 +120,7 @@ Or, as recommended in Principles for structuring state, you can group related st
 
 `type RequestState = | { status: 'idle' } | { status: 'loading' } | { status: 'success', data: any } | { status: 'error', error: Error };const [requestState, setRequestState] = useState<RequestState>({ status: 'idle' });`
 
-### `useReducer`[](https://react.dev/learn/typescript#typing-usereducer)
+### `useReducer`
 
 The `useReducer` Hook is a more complex Hook that takes a reducer function and an initial state. The types for the reducer function are inferred from the initial state. You can optionally provide a type argument to the `useReducer` call to provide a type for the state, but it is often better to set the type on the initial state instead:
 
@@ -179,7 +179,7 @@ A more explicit alternative to setting the type on `initialState` is to provide 
 
 `import { stateReducer, State } from './your-reducer-implementation';const initialState = { count: 0 };export default function App() { const [state, dispatch] = useReducer<State>(stateReducer, initialState);}`
 
-### `useContext`[](https://react.dev/learn/typescript#typing-usecontext)
+### `useContext`
 
 The `useContext` Hook is a technique for passing data down the component tree without having to pass props through components. It is used by creating a provider component and often by creating a Hook to consume the value in a child component.
 
@@ -222,7 +222,7 @@ This causes the issue that you need to eliminate the `| null` in the type for co
 
 `import { createContext, useContext, useState, useMemo } from 'react';// This is a simpler example, but you can imagine a more complex object heretype ComplexObject = { kind: string};// The context is created with `| null` in the type, to accurately reflect the default value.const Context = createContext<ComplexObject | null>(null);// The `| null` will be removed via the check in the Hook.const useGetComplexObject = () => { const object = useContext(Context); if (!object) { throw new Error("useGetComplexObject must be used within a Provider") } return object;}export default function MyApp() { const object = useMemo(() => ({ kind: "complex" }), []); return ( <Context value={object}> <MyComponent /> </Context> )}function MyComponent() { const object = useGetComplexObject(); return ( <div> <p>Current object: {object.kind}</p> </div> )}`
 
-### `useMemo`[](https://react.dev/learn/typescript#typing-usememo)
+### `useMemo`
 
 ### Note
 
@@ -232,7 +232,7 @@ The `useMemo` Hooks will create/re-access a memorized value from a function call
 
 `// The type of visibleTodos is inferred from the return value of filterTodosconst visibleTodos = useMemo(() => filterTodos(todos, tab), [todos, tab]);`
 
-### `useCallback`[](https://react.dev/learn/typescript#typing-usecallback)
+### `useCallback`
 
 ### Note
 
@@ -248,11 +248,11 @@ Depending on your code-style preferences, you could use the `*EventHandler` func
 
 `import { useState, useCallback } from 'react';export default function Form() { const [value, setValue] = useState("Change me"); const handleChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>((event) => { setValue(event.currentTarget.value); }, [setValue]) return ( <> <input value={value} onChange={handleChange} /> <p>Value: {value}</p> </> );}`
 
-## Useful Types [](https://react.dev/learn/typescript#useful-types)
+## Useful Types 
 
 There is quite an expansive set of types which come from the `@types/react` package, it is worth a read when you feel comfortable with how React and TypeScript interact. You can find them in React’s folder in DefinitelyTyped. We will cover a few of the more common types here.
 
-### DOM Events [](https://react.dev/learn/typescript#typing-dom-events)
+### DOM Events 
 
 When working with DOM events in React, the type of the event can often be inferred from the event handler. However, when you want to extract a function to be passed to an event handler, you will need to explicitly set the type of the event.
 
@@ -283,7 +283,7 @@ When determining the type you are looking for you can first look at the hover in
 
 If you need to use an event that is not included in this list, you can use the `React.SyntheticEvent` type, which is the base type for all events.
 
-### Children [](https://react.dev/learn/typescript#typing-children)
+### Children 
 
 There are two common paths to describing the children of a component. The first is to use the `React.ReactNode` type, which is a union of all the possible types that can be passed as children in JSX:
 
@@ -297,13 +297,13 @@ Note, that you cannot use TypeScript to describe that the children are a certain
 
 You can see an example of both `React.ReactNode` and `React.ReactElement` with the type-checker in this TypeScript playground.
 
-### Style Props [](https://react.dev/learn/typescript#typing-style-props)
+### Style Props 
 
 When using inline styles in React, you can use `React.CSSProperties` to describe the object passed to the `style` prop. This type is a union of all the possible CSS properties, and is a good way to ensure you are passing valid CSS properties to the `style` prop, and to get auto-complete in your editor.
 
 `interface MyComponentProps { style: React.CSSProperties;}`
 
-## Further learning [](https://react.dev/learn/typescript#further-learning)
+## Further learning 
 
 This guide has covered the basics of using TypeScript with React, but there is a lot more to learn. Individual API pages on the docs may contain more in-depth documentation on how to use them with TypeScript.
 
@@ -316,3 +316,55 @@ We recommend the following resources:
 * React TypeScript Cheatsheet is a community-maintained cheatsheet for using TypeScript with React, covering a lot of useful edge cases and providing more breadth than this document.
 
 * TypeScript Community Discord is a great place to ask questions and get help with TypeScript and React issues.
+
+Previous Editor SetupNext React Developer Tools
+
+* * *
+
+Copyright © Meta Platforms, Inc
+
+no uwu plz
+
+uwu?
+
+Logo by@sawaratsuki1004
+
+Learn React
+
+Quick Start
+
+Installation
+
+Describing the UI
+
+Adding Interactivity
+
+Managing State
+
+Escape Hatches
+
+API Reference
+
+React APIs
+
+React DOM APIs
+
+Community
+
+Code of Conduct
+
+Meet the Team
+
+Docs Contributors
+
+Acknowledgements
+
+More
+
+Blog
+
+React Native
+
+Privacy
+
+Terms

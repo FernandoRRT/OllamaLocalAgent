@@ -1,6 +1,6 @@
 Copy
 
-# State: A Component's Memory[](https://react.dev/learn/state-a-components-memory#undefined)
+# State: A Component's Memory
 
 Components often need to change what’s on the screen as a result of an interaction. Typing into the form should update the input field, clicking “next” on an image carousel should change which image is displayed, clicking “buy” should put a product in the shopping cart. Components need to “remember” things: the current input value, the current image, the shopping cart. In React, this kind of component-specific memory is called _state_.
 
@@ -11,7 +11,7 @@ Components often need to change what’s on the screen as a result of an interac
 * How to add more than one state variable
 * Why state is called local
 
-## When a regular variable isn’t enough [](https://react.dev/learn/state-a-components-memory#when-a-regular-variable-isnt-enough)
+## When a regular variable isn’t enough 
 
 Here’s a component that renders a sculpture image. Clicking the “Next” button should show the next sculpture by changing the `index` to `1`, then `2`, and so on. However, this **won’t work** (you can try it!):
 
@@ -67,7 +67,7 @@ The `useState` Hook provides those two things:
 1. A **state variable** to retain the data between renders.
 2. A **state setter function** to update the variable and trigger React to render the component again.
 
-## Adding a state variable [](https://react.dev/learn/state-a-components-memory#adding-a-state-variable)
+## Adding a state variable 
 
 To add a state variable, import `useState` from React at the top of the file:
 
@@ -129,7 +129,7 @@ export default function Gallery() {
  );
 }
 
-### Meet your first Hook [](https://react.dev/learn/state-a-components-memory#meet-your-first-hook)
+### Meet your first Hook 
 
 In React, `useState`, as well as any other function starting with “`use`”, is called a Hook.
 
@@ -141,7 +141,7 @@ State is just one of those features, but you will meet the other Hooks later.
 
 **Hooks—functions starting with `use`—can only be called at the top level of your components or your own Hooks.** You can’t call Hooks inside conditions, loops, or other nested functions. Hooks are functions, but it’s helpful to think of them as unconditional declarations about your component’s needs. You “use” React features at the top of your component similar to how you “import” modules at the top of your file.
 
-### Anatomy of `useState`[](https://react.dev/learn/state-a-components-memory#anatomy-of-usestate)
+### Anatomy of `useState`
 
 When you call `useState`, you are telling React that you want this component to remember something:
 
@@ -169,7 +169,7 @@ Here’s how that happens in action:
 3. **Your component’s second render.** React still sees `useState(0)`, but because React _remembers_ that you set `index` to `1`, it returns `[1, setIndex]` instead.
 4. And so on!
 
-## Giving a component multiple state variables [](https://react.dev/learn/state-a-components-memory#giving-a-component-multiple-state-variables)
+## Giving a component multiple state variables 
 
 You can have as many state variables of as many types as you like in one component. This component has two state variables, a number `index` and a boolean `showMore` that’s toggled when you click “Show details”:
 
@@ -221,7 +221,7 @@ It is a good idea to have multiple state variables if their state is unrelated, 
 
 ##### Deep Dive
 
-#### How does React know which state to return? [](https://react.dev/learn/state-a-components-memory#how-does-react-know-which-state-to-return)
+#### How does React know which state to return? 
 
 You might have noticed that the `useState` call does not receive any information about _which_ state variable it refers to. There is no “identifier” that is passed to `useState`, so how does it know which of the state variables to return? Does it rely on some magic like parsing your functions? The answer is no.
 
@@ -401,7 +401,7 @@ updateDOM();
 
 You don’t have to understand it to use React, but you might find this a helpful mental model.
 
-## State is isolated and private [](https://react.dev/learn/state-a-components-memory#state-is-isolated-and-private)
+## State is isolated and private 
 
 State is local to a component instance on the screen. In other words, **if you render the same component twice, each copy will have completely isolated state!** Changing one of them will not affect the other.
 
@@ -428,7 +428,7 @@ Also notice how the `Page` component doesn’t “know” anything about the `Ga
 
 What if you wanted both galleries to keep their states in sync? The right way to do it in React is to _remove_ state from child components and add it to their closest shared parent. The next few pages will focus on organizing state of a single component, but we will return to this topic in Sharing State Between Components.
 
-## Recap[](https://react.dev/learn/state-a-components-memory#recap)
+## Recap
 
 * Use a state variable when a component needs to “remember” some information between renders.
 * State variables are declared by calling the `useState` Hook.
@@ -438,13 +438,13 @@ What if you wanted both galleries to keep their states in sync? The right way to
 * You can have more than one state variable. Internally, React matches them up by their order.
 * State is private to the component. If you render it in two places, each copy gets its own state.
 
-## Try out some challenges[](https://react.dev/learn/state-a-components-memory#challenges)
+## Try out some challenges
 
 1. Complete the gallery 2. Fix stuck form inputs 3. Fix a crash 4. Remove unnecessary state 
 
 #### Challenge 1 of 4: 
 
-Complete the gallery [](https://react.dev/learn/state-a-components-memory#complete-the-gallery)
+Complete the gallery 
 
 When you press “Next” on the last sculpture, the code crashes. Fix the logic to prevent the crash. You may do this by adding extra logic to event handler or by disabling the button when the action is not possible.
 
@@ -494,4 +494,56 @@ export default function Gallery() {
  );
 }
 
-Show solution
+Show solution Next Challenge
+
+Previous Responding to EventsNext Render and Commit
+
+* * *
+
+Copyright © Meta Platforms, Inc
+
+no uwu plz
+
+uwu?
+
+Logo by@sawaratsuki1004
+
+Learn React
+
+Quick Start
+
+Installation
+
+Describing the UI
+
+Adding Interactivity
+
+Managing State
+
+Escape Hatches
+
+API Reference
+
+React APIs
+
+React DOM APIs
+
+Community
+
+Code of Conduct
+
+Meet the Team
+
+Docs Contributors
+
+Acknowledgements
+
+More
+
+Blog
+
+React Native
+
+Privacy
+
+Terms

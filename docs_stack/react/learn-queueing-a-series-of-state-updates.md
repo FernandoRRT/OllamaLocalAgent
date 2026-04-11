@@ -1,6 +1,6 @@
 Copy
 
-# Queueing a Series of State Updates[](https://react.dev/learn/queueing-a-series-of-state-updates#undefined)
+# Queueing a Series of State Updates
 
 Setting a state variable will queue another render. But sometimes you might want to perform multiple operations on the value before queueing the next render. To do this, it helps to understand how React batches state updates.
 
@@ -9,7 +9,7 @@ Setting a state variable will queue another render. But sometimes you might want
 * What “batching” is and how React uses it to process multiple state updates
 * How to apply several updates to the same state variable in a row
 
-## React batches state updates [](https://react.dev/learn/queueing-a-series-of-state-updates#react-batches-state-updates)
+## React batches state updates 
 
 You might expect that clicking the “+3” button will increment the counter three times because it calls `setNumber(number + 1)` three times:
 
@@ -48,7 +48,7 @@ This lets you update multiple state variables—even from multiple components—
 
 **React does not batch across _multiple_ intentional events like clicks**—each click is handled separately. Rest assured that React only does batching when it’s generally safe to do. This ensures that, for example, if the first button click disables a form, the second click would not submit it again.
 
-## Updating the same state multiple times before the next render [](https://react.dev/learn/queueing-a-series-of-state-updates#updating-the-same-state-multiple-times-before-the-next-render)
+## Updating the same state multiple times before the next render 
 
 It is an uncommon use case, but if you would like to update the same state variable multiple times before the next render, instead of passing the _next state value_ like `setNumber(number + 1)`, you can pass a _function_ that calculates the next state based on the previous one in the queue, like `setNumber(n => n + 1)`. It is a way to tell React to “do something with the state value” instead of just replacing it.
 
@@ -100,7 +100,7 @@ React stores `3` as the final result and returns it from `useState`.
 
 This is why clicking “+3” in the above example correctly increments the value by 3.
 
-### What happens if you update state after replacing it [](https://react.dev/learn/queueing-a-series-of-state-updates#what-happens-if-you-update-state-after-replacing-it)
+### What happens if you update state after replacing it 
 
 What about this event handler? What do you think `number` will be in the next render?
 
@@ -144,7 +144,7 @@ React stores `6` as the final result and returns it from `useState`.
 
 You may have noticed that `setState(5)` actually works like `setState(n => 5)`, but `n` is unused!
 
-### What happens if you replace state after updating it [](https://react.dev/learn/queueing-a-series-of-state-updates#what-happens-if-you-replace-state-after-updating-it)
+### What happens if you replace state after updating it 
 
 Let’s try one more example. What do you think `number` will be in the next render?
 
@@ -194,7 +194,7 @@ To summarize, here’s how you can think of what you’re passing to the `setNum
 
 After the event handler completes, React will trigger a re-render. During the re-render, React will process the queue. Updater functions run during rendering, so **updater functions must be pure** and only _return_ the result. Don’t try to set state from inside of them or run other side effects. In Strict Mode, React will run each updater function twice (but discard the second result) to help you find mistakes.
 
-### Naming conventions [](https://react.dev/learn/queueing-a-series-of-state-updates#naming-conventions)
+### Naming conventions 
 
 It’s common to name the updater function argument by the first letters of the corresponding state variable:
 
@@ -202,19 +202,19 @@ It’s common to name the updater function argument by the first letters of the 
 
 If you prefer more verbose code, another common convention is to repeat the full state variable name, like `setEnabled(enabled => !enabled)`, or to use a prefix like `setEnabled(prevEnabled => !prevEnabled)`.
 
-## Recap[](https://react.dev/learn/queueing-a-series-of-state-updates#recap)
+## Recap
 
 * Setting state does not change the variable in the existing render, but it requests a new render.
 * React processes state updates after event handlers have finished running. This is called batching.
 * To update some state multiple times in one event, you can use `setNumber(n => n + 1)` updater function.
 
-## Try out some challenges[](https://react.dev/learn/queueing-a-series-of-state-updates#challenges)
+## Try out some challenges
 
 1. Fix a request counter 2. Implement the state queue yourself 
 
 #### Challenge 1 of 2: 
 
-Fix a request counter [](https://react.dev/learn/queueing-a-series-of-state-updates#fix-a-request-counter)
+Fix a request counter 
 
 You’re working on an art marketplace app that lets the user submit multiple orders for an art item at the same time. Each time the user presses the “Buy” button, the “Pending” counter should increase by one. After three seconds, the “Pending” counter should decrease, and the “Completed” counter should increase.
 
@@ -260,4 +260,56 @@ function delay(ms) {
  });
 }
 
-Show solution
+Show solution Next Challenge
+
+Previous State as a SnapshotNext Updating Objects in State
+
+* * *
+
+Copyright © Meta Platforms, Inc
+
+no uwu plz
+
+uwu?
+
+Logo by@sawaratsuki1004
+
+Learn React
+
+Quick Start
+
+Installation
+
+Describing the UI
+
+Adding Interactivity
+
+Managing State
+
+Escape Hatches
+
+API Reference
+
+React APIs
+
+React DOM APIs
+
+Community
+
+Code of Conduct
+
+Meet the Team
+
+Docs Contributors
+
+Acknowledgements
+
+More
+
+Blog
+
+React Native
+
+Privacy
+
+Terms

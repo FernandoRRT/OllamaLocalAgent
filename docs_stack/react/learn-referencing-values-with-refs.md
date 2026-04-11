@@ -1,8 +1,7 @@
-Title: Referencing Values with Refs – React
+Copy
 
-URL Source: https://react.dev/learn/referencing-values-with-refs
+# Referencing Values with Refs
 
-Markdown Content:
 When you want a component to “remember” some information, but you don’t want that information to trigger new renders, you can use a _ref_.
 
 ### You will learn
@@ -12,7 +11,7 @@ When you want a component to “remember” some information, but you don’t wa
 * How refs are different from state
 * How to use refs safely
 
-## Adding a ref to your component [](https://react.dev/learn/referencing-values-with-refs#adding-a-ref-to-your-component)
+## Adding a ref to your component 
 
 You can add a ref to your component by importing the `useRef` Hook from React:
 
@@ -26,21 +25,48 @@ Inside your component, call the `useRef` Hook and pass the initial value that yo
 
 `{ current: 0 // The value you passed to useRef}`
 
+Illustrated byRachel Lee Nabors
+
 You can access the current value of that ref through the `ref.current` property. This value is intentionally mutable, meaning you can both read and write to it. It’s like a secret pocket of your component that React doesn’t track. (This is what makes it an “escape hatch” from React’s one-way data flow—more on that below!)
 
 Here, a button will increment `ref.current` on every click:
+
+App.js
+
+App.js
+
+import { useRef } from 'react';
+
+export default function Counter() {
+ let ref = useRef(0);
+
+ function handleClick() {
+ ref.current = ref.current + 1;
+ alert('You clicked ' + ref.current + ' times!');
+ }
+
+ return (
+ <button onClick={handleClick}>
+ Click me!
+ </button>
+ );
+}
 
 The ref points to a number, but, like state, you could point to anything: a string, an object, or even a function. Unlike state, ref is a plain JavaScript object with the `current` property that you can read and modify.
 
 Note that **the component doesn’t re-render with every increment.** Like state, refs are retained by React between re-renders. However, setting state re-renders a component. Changing a ref does not!
 
-## Example: building a stopwatch [](https://react.dev/learn/referencing-values-with-refs#example-building-a-stopwatch)
+## Example: building a stopwatch 
 
 You can combine refs and state in a single component. For example, let’s make a stopwatch that the user can start or stop by pressing a button. In order to display how much time has passed since the user pressed “Start”, you will need to keep track of when the Start button was pressed and what the current time is. **This information is used for rendering, so you’ll keep it in state:**
 
 `const [startTime, setStartTime] = useState(null);const [now, setNow] = useState(null);`
 
 When the user presses “Start”, you’ll use `setInterval` in order to update the time every 10 milliseconds:
+
+App.js
+
+App.js
 
 import { useState } from 'react';
 
@@ -49,12 +75,12 @@ export default function Stopwatch() {
  const [now, setNow] = useState(null);
 
  function handleStart() {
- 
+ // Start counting.
  setStartTime(Date.now());
  setNow(Date.now());
 
  setInterval(() => {
- 
+ // Update the current time every 10ms.
  setNow(Date.now());
  }, 10);
  }
@@ -75,6 +101,10 @@ export default function Stopwatch() {
 }
 
 When the “Stop” button is pressed, you need to cancel the existing interval so that it stops updating the `now` state variable. You can do this by calling `clearInterval`, but you need to give it the interval ID that was previously returned by the `setInterval` call when the user pressed Start. You need to keep the interval ID somewhere. **Since the interval ID is not used for rendering, you can keep it in a ref:**
+
+App.js
+
+App.js
 
 import { useState, useRef } from 'react';
 
@@ -117,7 +147,7 @@ export default function Stopwatch() {
 
 When a piece of information is used for rendering, keep it in state. When a piece of information is only needed by event handlers and changing it doesn’t require a re-render, using a ref may be more efficient.
 
-## Differences between refs and state [](https://react.dev/learn/referencing-values-with-refs#differences-between-refs-and-state)
+## Differences between refs and state 
 
 Perhaps you’re thinking refs seem less “strict” than state—you can mutate them instead of always having to use a state setting function, for instance. But in most cases, you’ll want to use state. Refs are an “escape hatch” you won’t need often. Here’s how state and refs compare:
 
@@ -130,9 +160,33 @@ Perhaps you’re thinking refs seem less “strict” than state—you can mutat
 
 Here is a counter button that’s implemented with state:
 
+App.js
+
+App.js
+
+import { useState } from 'react';
+
+export default function Counter() {
+ const [count, setCount] = useState(0);
+
+ function handleClick() {
+ setCount(count + 1);
+ }
+
+ return (
+ <button onClick={handleClick}>
+ You clicked {count} times
+ </button>
+ );
+}
+
 Because the `count` value is displayed, it makes sense to use a state value for it. When the counter’s value is set with `setCount()`, React re-renders the component and the screen updates to reflect the new count.
 
 If you tried to implement this with a ref, React would never re-render the component, so you’d never see the count change! See how clicking this button **does not update its text**:
+
+App.js
+
+App.js
 
 import { useRef } from 'react';
 
@@ -140,7 +194,7 @@ export default function Counter() {
  let countRef = useRef(0);
 
  function handleClick() {
- 
+ // This doesn't re-render the component!
  countRef.current = countRef.current + 1;
  }
 
@@ -155,17 +209,17 @@ This is why reading `ref.current` during render leads to unreliable code. If you
 
 ##### Deep Dive
 
-#### How does useRef work inside? [](https://react.dev/learn/referencing-values-with-refs#how-does-use-ref-work-inside)
+#### How does useRef work inside? 
 
 Although both `useState` and `useRef` are provided by React, in principle `useRef` could be implemented _on top of_`useState`. You can imagine that inside of React, `useRef` is implemented like this:
 
-`// Inside of Reactfunction useRef(initialValue) {const [ref, unused] = useState({ current: initialValue });return ref;}`
+`// Inside of Reactfunction useRef(initialValue) { const [ref, unused] = useState({ current: initialValue }); return ref;}`
 
 During the first render, `useRef` returns `{ current: initialValue }`. This object is stored by React, so during the next render the same object will be returned. Note how the state setter is unused in this example. It is unnecessary because `useRef` always needs to return the same object!
 
 React provides a built-in version of `useRef` because it is common enough in practice. But you can think of it as a regular state variable without a setter. If you’re familiar with object-oriented programming, refs might remind you of instance fields—but instead of `this.something` you write `somethingRef.current`.
 
-## When to use refs [](https://react.dev/learn/referencing-values-with-refs#when-to-use-refs)
+## When to use refs 
 
 Typically, you will use a ref when your component needs to “step outside” React and communicate with external APIs—often a browser API that won’t impact the appearance of the component. Here are a few of these rare situations:
 
@@ -175,7 +229,7 @@ Typically, you will use a ref when your component needs to “step outside” Re
 
 If your component needs to store some value, but it doesn’t impact the rendering logic, choose refs.
 
-## Best practices for refs [](https://react.dev/learn/referencing-values-with-refs#best-practices-for-refs)
+## Best practices for refs 
 
 Following these principles will make your components more predictable:
 
@@ -190,11 +244,11 @@ This is because **the ref itself is a regular JavaScript object,** and so it beh
 
 You also don’t need to worry about avoiding mutation when you work with a ref. As long as the object you’re mutating isn’t used for rendering, React doesn’t care what you do with the ref or its contents.
 
-## Refs and the DOM [](https://react.dev/learn/referencing-values-with-refs#refs-and-the-dom)
+## Refs and the DOM 
 
 You can point a ref to any value. However, the most common use case for a ref is to access a DOM element. For example, this is handy if you want to focus an input programmatically. When you pass a ref to a `ref` attribute in JSX, like `<div ref={myRef}>`, React will put the corresponding DOM element into `myRef.current`. Once the element is removed from the DOM, React will update `myRef.current` to be `null`. You can read more about this in Manipulating the DOM with Refs.
 
-## Recap[](https://react.dev/learn/referencing-values-with-refs#recap)
+## Recap
 
 * Refs are an escape hatch to hold onto values that aren’t used for rendering. You won’t need them often.
 * A ref is a plain JavaScript object with a single property called `current`, which you can read or set.
@@ -203,17 +257,19 @@ You can point a ref to any value. However, the most common use case for a ref is
 * Unlike state, setting the ref’s `current` value does not trigger a re-render.
 * Don’t read or write `ref.current` during rendering. This makes your component hard to predict.
 
-#### Challenge
+## Try out some challenges
 
-1
+1. Fix a broken chat input 2. Fix a component failing to re-render 3. Fix debouncing 4. Read the latest state 
 
-of
+#### Challenge 1 of 4: 
 
-4:
-
-Fix a broken chat input [](https://react.dev/learn/referencing-values-with-refs#fix-a-broken-chat-input)
+Fix a broken chat input 
 
 Type a message and click “Send”. You will notice there is a three second delay before you see the “Sent!” alert. During this delay, you can see an “Undo” button. Click it. This “Undo” button is supposed to stop the “Sent!” message from appearing. It does this by calling `clearTimeout` for the timeout ID saved during `handleSend`. However, even after “Undo” is clicked, the “Sent!” message still appears. Find why it doesn’t work, and fix it.
+
+App.js
+
+App.js
 
 import { useState } from 'react';
 
@@ -255,3 +311,59 @@ export default function Chat() {
  </>
  );
 }
+
+Show hint Show solution
+
+Next Challenge
+
+Previous Escape HatchesNext Manipulating the DOM with Refs
+
+* * *
+
+Copyright © Meta Platforms, Inc
+
+no uwu plz
+
+uwu?
+
+Logo by@sawaratsuki1004
+
+Learn React
+
+Quick Start
+
+Installation
+
+Describing the UI
+
+Adding Interactivity
+
+Managing State
+
+Escape Hatches
+
+API Reference
+
+React APIs
+
+React DOM APIs
+
+Community
+
+Code of Conduct
+
+Meet the Team
+
+Docs Contributors
+
+Acknowledgements
+
+More
+
+Blog
+
+React Native
+
+Privacy
+
+Terms

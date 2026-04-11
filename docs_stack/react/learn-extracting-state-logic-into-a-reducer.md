@@ -1,6 +1,6 @@
 Copy
 
-# Extracting State Logic into a Reducer[](https://react.dev/learn/extracting-state-logic-into-a-reducer#undefined)
+# Extracting State Logic into a Reducer
 
 Components with many state updates spread across many event handlers can get overwhelming. For these cases, you can consolidate all the state update logic outside your component in a single function, called a _reducer._
 
@@ -11,7 +11,7 @@ Components with many state updates spread across many event handlers can get ove
 * When to use a reducer
 * How to write one well
 
-## Consolidate state logic with a reducer [](https://react.dev/learn/extracting-state-logic-into-a-reducer#consolidate-state-logic-with-a-reducer)
+## Consolidate state logic with a reducer 
 
 As your components grow in complexity, it can get harder to see at a glance all the different ways in which a component’s state gets updated. For example, the `TaskApp` component below holds an array of `tasks` in state and uses three different event handlers to add, remove, and edit tasks:
 
@@ -81,7 +81,7 @@ Reducers are a different way to handle state. You can migrate from `useState` to
 2. **Write** a reducer function.
 3. **Use** the reducer from your component.
 
-### Step 1: Move from setting state to dispatching actions [](https://react.dev/learn/extracting-state-logic-into-a-reducer#step-1-move-from-setting-state-to-dispatching-actions)
+### Step 1: Move from setting state to dispatching actions 
 
 Your event handlers currently specify _what to do_ by setting state:
 
@@ -111,7 +111,7 @@ By convention, it is common to give it a string `type` that describes what happe
 
 `dispatch({ // specific to component type: 'what_happened', // other fields go here});`
 
-### Step 2: Write a reducer function [](https://react.dev/learn/extracting-state-logic-into-a-reducer#step-2-write-a-reducer-function)
+### Step 2: Write a reducer function 
 
 A reducer function is where you will put your state logic. It takes two arguments, the current state and the action object, and it returns the next state:
 
@@ -145,7 +145,7 @@ If you’re not yet comfortable with switch statements, using if/else is complet
 
 ##### Deep Dive
 
-#### Why are reducers called this way? [](https://react.dev/learn/extracting-state-logic-into-a-reducer#why-are-reducers-called-this-way)
+#### Why are reducers called this way? 
 
 Although reducers can “reduce” the amount of code inside your component, they are actually named after the `reduce()` operation that you can perform on arrays.
 
@@ -178,7 +178,7 @@ output.textContent = JSON.stringify(finalState, null, 2);
 
 You probably won’t need to do this yourself, but this is similar to what React does!
 
-### Step 3: Use the reducer from your component [](https://react.dev/learn/extracting-state-logic-into-a-reducer#step-3-use-the-reducer-from-your-component)
+### Step 3: Use the reducer from your component 
 
 Finally, you need to hook up the `tasksReducer` to your component. Import the `useReducer` Hook from React:
 
@@ -347,7 +347,7 @@ const initialTasks = [
 
 Component logic can be easier to read when you separate concerns like this. Now the event handlers only specify _what happened_ by dispatching actions, and the reducer function determines _how the state updates_ in response to them.
 
-## Comparing `useState` and `useReducer`[](https://react.dev/learn/extracting-state-logic-into-a-reducer#comparing-usestate-and-usereducer)
+## Comparing `useState` and `useReducer`
 
 Reducers are not without downsides! Here’s a few ways you can compare them:
 
@@ -359,14 +359,14 @@ Reducers are not without downsides! Here’s a few ways you can compare them:
 
 We recommend using a reducer if you often encounter bugs due to incorrect state updates in some component, and want to introduce more structure to its code. You don’t have to use reducers for everything: feel free to mix and match! You can even `useState` and `useReducer` in the same component.
 
-## Writing reducers well [](https://react.dev/learn/extracting-state-logic-into-a-reducer#writing-reducers-well)
+## Writing reducers well 
 
 Keep these two tips in mind when writing reducers:
 
 * **Reducers must be pure.** Similar to state updater functions, reducers run during rendering! (Actions are queued until the next render.) This means that reducers must be pure—same inputs always result in the same output. They should not send requests, schedule timeouts, or perform any side effects (operations that impact things outside the component). They should update objects and arrays without mutations.
 * **Each action describes a single user interaction, even if that leads to multiple changes in the data.** For example, if a user presses “Reset” on a form with five fields managed by a reducer, it makes more sense to dispatch one `reset_form` action rather than five separate `set_field` actions. If you log every action in a reducer, that log should be clear enough for you to reconstruct what interactions or responses happened in what order. This helps with debugging!
 
-## Writing concise reducers with Immer [](https://react.dev/learn/extracting-state-logic-into-a-reducer#writing-concise-reducers-with-immer)
+## Writing concise reducers with Immer 
 
 Just like with updating objects and arrays in regular state, you can use the Immer library to make reducers more concise. Here, `useImmerReducer` lets you mutate the state with `push` or `arr[i] =` assignment:
 
@@ -393,7 +393,7 @@ package.json
 
 Reducers must be pure, so they shouldn’t mutate state. But Immer provides you with a special `draft` object which is safe to mutate. Under the hood, Immer will create a copy of your state with the changes you made to the `draft`. This is why reducers managed by `useImmerReducer` can mutate their first argument and don’t need to return state.
 
-## Recap[](https://react.dev/learn/extracting-state-logic-into-a-reducer#recap)
+## Recap
 
 * To convert from `useState` to `useReducer`:
  1. Dispatch actions from event handlers.
@@ -405,13 +405,13 @@ Reducers must be pure, so they shouldn’t mutate state. But Immer provides you 
 * Each action describes a single user interaction.
 * Use Immer if you want to write reducers in a mutating style.
 
-## Try out some challenges[](https://react.dev/learn/extracting-state-logic-into-a-reducer#challenges)
+## Try out some challenges
 
 1. Dispatch actions from event handlers 2. Clear the input on sending a message 3. Restore input values when switching between tabs 4. Implement `useReducer` from scratch 
 
 #### Challenge 1 of 4: 
 
-Dispatch actions from event handlers [](https://react.dev/learn/extracting-state-logic-into-a-reducer#dispatch-actions-from-event-handlers)
+Dispatch actions from event handlers 
 
 Currently, the event handlers in `ContactList.js` and `Chat.js` have `// TODO` comments. This is why typing into the input doesn’t work, and clicking on the buttons doesn’t change the selected recipient.
 
@@ -454,3 +454,57 @@ const contacts = [
 ];
 
 Show hint Show solution
+
+Next Challenge
+
+Previous Preserving and Resetting StateNext Passing Data Deeply with Context
+
+* * *
+
+Copyright © Meta Platforms, Inc
+
+no uwu plz
+
+uwu?
+
+Logo by@sawaratsuki1004
+
+Learn React
+
+Quick Start
+
+Installation
+
+Describing the UI
+
+Adding Interactivity
+
+Managing State
+
+Escape Hatches
+
+API Reference
+
+React APIs
+
+React DOM APIs
+
+Community
+
+Code of Conduct
+
+Meet the Team
+
+Docs Contributors
+
+Acknowledgements
+
+More
+
+Blog
+
+React Native
+
+Privacy
+
+Terms

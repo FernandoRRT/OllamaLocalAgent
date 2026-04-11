@@ -10,9 +10,17 @@ export async function fetchAndClean(targetUrl, destinationDir) {
 
     // --- CLEAN-UP RAG-GRADE LOGIC ---
 
-    // 1. CUT THE HEADER
+    // 1. CUT THE JINA METADATA & HEADERS
+    const jinaHeaderMatch = md.match(/Markdown Content:\n+/);
+    if (jinaHeaderMatch) {
+      const cutIndex = jinaHeaderMatch.index + jinaHeaderMatch[0].length;
+      if (cutIndex < 1000) {
+        md = md.substring(cutIndex);
+      }
+    }
+
     const copyIndex = md.indexOf('Copy page');
-    if (copyIndex !== -1) {
+    if (copyIndex !== -1 && copyIndex < md.length / 3) {
       md = md.substring(copyIndex + 'Copy page'.length);
     } else {
       const onThisPageIndex = md.indexOf('On this page');
@@ -21,8 +29,8 @@ export async function fetchAndClean(targetUrl, destinationDir) {
       }
     }
 
-    // 2. DYNAMIC FOOTER CUT
-    const footerMarkers = ['Was this helpful?', 'Previous ', 'Next ', '## On this page'];
+    // 2. DYNAMIC FOOTER CUT (Fixed False Positives)
+    const footerMarkers = ['Was this helpful?', '\nPrevious\n', '\nNext\n', '## On this page'];
     for (const marker of footerMarkers) {
       const footerIndex = md.lastIndexOf(marker);
       if (footerIndex !== -1 && footerIndex > md.length / 2) {
@@ -31,25 +39,28 @@ export async function fetchAndClean(targetUrl, destinationDir) {
       }
     }
 
-    // 3. REMOVE IMAGES
+    // 3. REMOVE TABLE OF CONTENTS (TOC) BLOAT
+    md = md.replace(/^[\s\-*]+\[.*?\]\(#.*?\)\s*$/gm, '');
+
+    // 4. REMOVE IMAGES
     md = md.replace(/!\[.*?\]\(.*?\)/g, '');
     md = md.replace(/!Image\s\d+:.*?(\n|$)/g, '');
 
-    // 4. REMOVE LINKS (Keep anchor text safely)
-    // First, remove the "Link for this heading" accessibility garbage BEFORE evaluating normal links.
-    // This removes the nested parenthesis problem at the source.
+    // 5. REMOVE LINKS (Keep anchor text safely)
+    // 5.a Remove the "Link for this heading" accessibility garbage
     md = md.replace(/ "Link for.*?"\)/g, ')');
-
-    // Then, safely extract the anchor text, explicitly forbidding nested brackets to prevent backtracking.
+    // 5.b DESTROY EMPTY LINKS (e.g., GitHub header anchors like [](url))
+    md = md.replace(/\[\s*\]\([^)\n]+\)/g, '');
+    // 5.c Safely extract the anchor text, explicitly forbidding nested brackets
     md = md.replace(/\[([^\[\]\n]+)\]\([^)\n]+\)/g, '$1');
 
-    // 5. KILL RAG NOISE & UI ARTIFACTS
+    // 6. KILL RAG NOISE & UI ARTIFACTS
     md = md.replace(/Link for.*?(?=\n|$)/g, '');
     md = md.replace(/^(Copy page Copy|Copy|Show more|Show Details|Terminal)$/gm, '');
     md = md.replace(/Reload ClearFork.*?(?=\n|$)/g, '');
     md = md.replace(/(%[0-9A-F]{2}){10,}/gi, '');
 
-    // 6. CLEAN UP SPACES AND ORPHANED DASHES
+    // 7. CLEAN UP SPACES AND ORPHANED DASHES
     md = md.replace(/^\*\s+$/gm, '');
     md = md.replace(/[ \t]{2,}/g, ' ');
     md = md.replace(/\n{3,}/g, '\n\n');
@@ -57,11 +68,13 @@ export async function fetchAndClean(targetUrl, destinationDir) {
     // --- NAME GENERATION AND SAVING (Bulk Logic) ---
 
     const urlObj = new URL(targetUrl);
-    // Extract the path to create a secure filename (e.g., learn-typescript.md)
     const pathParts = urlObj.pathname.split('/').filter(p => p !== 'docs' && p !== 'app' && p !== '');
-    const safeFileName = pathParts.join('-') + '.md';
+    
+    let safeFileName = pathParts.join('-');
+    if (!safeFileName.toLowerCase().endsWith('.md')) {
+      safeFileName += '.md';
+    }
 
-    // Final path within docs_stack/react
     const fullPath = path.join(destinationDir, safeFileName);
     const dir = path.dirname(fullPath);
 

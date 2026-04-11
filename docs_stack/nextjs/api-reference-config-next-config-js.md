@@ -1,3 +1,1029 @@
+# Configuration: next.config.js | Next.js
+Skip to content
+
+Search documentation...CtrlK Search...⌘K
+
+ShowcaseDocsBlogTemplatesEnterprise
+
+Search documentation...CtrlK Search...⌘K FeedbackLearn
+
+Menu
+
+Using App Router
+
+Features available in /app
+
+Latest Version
+
+16.2.3
+
+* Getting Started
+
+ * Installation
+ * Project Structure
+ * Layouts and Pages
+ * Linking and Navigating
+ * Server and Client Components
+ * Fetching Data
+ * Mutating Data
+ * Caching
+ * Revalidating
+ * Error Handling
+ * CSS
+ * Image Optimization
+ * Font Optimization
+ * Metadata and OG images
+ * Route Handlers
+ * Proxy
+ * Deploying
+ * Upgrading
+
+* Guides
+
+ * AI Coding Agents
+ * Analytics
+ * Authentication
+ * Backend for Frontend
+ * Caching (Previous Model)
+ * CDN Caching
+ * CI Build Caching
+ * Content Security Policy
+ * CSS-in-JS
+ * Custom Server
+ * Data Security
+ * Debugging
+ * Deploying to Platforms
+ * Draft Mode
+ * Environment Variables
+ * Forms
+ * How Revalidation Works
+ * ISR
+ * Instrumentation
+ * Internationalization
+ * JSON-LD
+ * Lazy Loading
+ * Development Environment
+ * Next.js MCP Server
+ * MDX
+ * Memory Usage
+ * Migrating
+
+ * App Router
+ * Create React App
+ * Vite
+
+ * Migrating to Cache Components
+ * Multi-tenant
+ * Multi-zones
+ * OpenTelemetry
+ * Package Bundling
+ * PPR Platform Guide
+ * Prefetching
+ * Preserving UI state
+ * Production
+ * PWAs
+ * Public pages
+ * Redirecting
+ * Rendering Philosophy
+ * Sass
+ * Scripts
+ * Self-Hosting
+ * SPAs
+ * Static Exports
+ * Streaming
+ * Tailwind CSS v3
+ * Testing
+
+ * Cypress
+ * Jest
+ * Playwright
+ * Vitest
+
+ * Third Party Libraries
+ * Upgrading
+
+ * Codemods
+ * Version 14
+ * Version 15
+ * Version 16
+
+ * Videos
+ * View transitions
+
+* API Reference
+
+ * Directives
+
+ * use cache
+ * use cache: private
+ * use cache: remote
+ * use client
+ * use server
+
+ * Components
+
+ * Font
+ * Form Component
+ * Image Component
+ * Link Component
+ * Script Component
+
+ * File-system conventions
+
+ * default.js
+ * Dynamic Segments
+ * error.js
+ * forbidden.js
+ * instrumentation.js
+ * instrumentation-client.js
+ * Intercepting Routes
+ * layout.js
+ * loading.js
+ * mdx-components.js
+ * not-found.js
+ * page.js
+ * Parallel Routes
+ * proxy.js
+ * public
+ * route.js
+
+ * dynamicParams
+ * maxDuration
+ * preferredRegion
+ * runtime
+
+ * Route Groups
+ * src
+ * template.js
+ * unauthorized.js
+ * Metadata Files
+
+ * favicon, icon, and apple-icon
+ * manifest.json
+ * opengraph-image and twitter-image
+ * robots.txt
+ * sitemap.xml
+
+ * Route Segment Config
+
+ * dynamicParams
+ * maxDuration
+ * preferredRegion
+ * runtime
+
+ * Functions
+
+ * after
+ * cacheLife
+ * cacheTag
+ * unstable_catchError
+ * connection
+ * cookies
+ * draftMode
+ * fetch
+ * forbidden
+ * generateImageMetadata
+ * generateMetadata
+ * generateSitemaps
+ * generateStaticParams
+ * generateViewport
+ * headers
+ * ImageResponse
+ * NextRequest
+ * NextResponse
+ * notFound
+ * permanentRedirect
+ * redirect
+ * refresh
+ * revalidatePath
+ * revalidateTag
+ * unauthorized
+ * unstable_cache
+ * unstable_noStore
+ * unstable_rethrow
+ * updateTag
+ * useLinkStatus
+ * useParams
+ * usePathname
+ * useReportWebVitals
+ * useRouter
+ * useSearchParams
+ * useSelectedLayoutSegment
+ * useSelectedLayoutSegments
+ * userAgent
+
+ * Configuration
+
+ * next.config.js
+
+ * adapterPath
+ * allowedDevOrigins
+ * appDir
+ * assetPrefix
+ * authInterrupts
+ * basePath
+ * cacheComponents
+ * cacheHandlers
+ * cacheLife
+ * compress
+ * crossOrigin
+ * cssChunking
+ * deploymentId
+ * devIndicators
+ * distDir
+ * env
+ * expireTime
+ * exportPathMap
+ * generateBuildId
+ * generateEtags
+ * headers
+ * htmlLimitedBots
+ * httpAgentOptions
+ * images
+ * cacheHandler
+ * inlineCss
+ * logging
+ * mdxRs
+ * onDemandEntries
+ * optimizePackageImports
+ * output
+ * pageExtensions
+ * poweredByHeader
+ * productionBrowserSourceMaps
+ * proxyClientMaxBodySize
+ * reactCompiler
+ * reactMaxHeadersLength
+ * reactStrictMode
+ * redirects
+ * rewrites
+ * sassOptions
+ * serverActions
+ * serverComponentsHmrCache
+ * serverExternalPackages
+ * staleTimes
+ * staticGeneration*
+ * taint
+ * trailingSlash
+ * transpilePackages
+ * turbopack
+ * turbopackFileSystemCache
+ * turbopack.ignoreIssue
+ * typedRoutes
+ * typescript
+ * urlImports
+ * useLightningcss
+ * viewTransition
+ * webpack
+ * webVitalsAttribution
+
+ * TypeScript
+ * ESLint
+
+ * CLI
+
+ * create-next-app
+ * next CLI
+
+ * Adapters
+
+ * Configuration
+ * Creating an Adapter
+ * API Reference
+ * Testing Adapters
+ * Routing with @next/routing
+ * Implementing PPR in an Adapter
+ * Runtime Integration
+ * Invoking Entrypoints
+ * Output Types
+ * Routing Information
+ * Use Cases
+
+ * Edge Runtime
+ * Turbopack
+
+* Glossary
+
+* Getting Started
+
+ * Installation
+ * Project Structure
+ * Images
+ * Fonts
+ * CSS
+ * Deploying
+
+* Guides
+
+ * Analytics
+ * Authentication
+ * Babel
+ * CI Build Caching
+ * Content Security Policy
+ * CSS-in-JS
+ * Custom Server
+ * Debugging
+ * Draft Mode
+ * Environment Variables
+ * Forms
+ * ISR
+ * Instrumentation
+ * Internationalization
+ * Lazy Loading
+ * MDX
+ * Migrating
+
+ * App Router
+ * Create React App
+ * Vite
+
+ * Multi-Zones
+ * OpenTelemetry
+ * Package Bundling
+ * PostCSS
+ * Preview Mode
+ * Production
+ * Redirecting
+ * Sass
+ * Scripts
+ * Self-Hosting
+ * Static Exports
+ * Tailwind CSS
+ * Testing
+
+ * Cypress
+ * Jest
+ * Playwright
+ * Vitest
+
+ * Third Party Libraries
+ * Upgrading
+
+ * Codemods
+ * Version 10
+ * Version 11
+ * Version 12
+ * Version 13
+ * Version 14
+ * Version 9
+
+* Building Your Application
+
+ * Routing
+
+ * Pages and Layouts
+ * Dynamic Routes
+ * Linking and Navigating
+ * Custom App
+ * Custom Document
+ * API Routes
+ * Custom Errors
+
+ * Rendering
+
+ * Server-side Rendering (SSR)
+ * Static Site Generation (SSG)
+ * Automatic Static Optimization
+ * Client-side Rendering (CSR)
+
+ * Data Fetching
+
+ * getStaticProps
+ * getStaticPaths
+ * Forms and Mutations
+ * getServerSideProps
+ * Client-side Fetching
+
+ * Configuring
+
+ * Error Handling
+
+* API Reference
+
+ * Components
+
+ * Font
+ * Form
+ * Head
+ * Image
+ * Image (Legacy)
+ * Link
+ * Script
+
+ * File-system conventions
+
+ * instrumentation.js
+ * Proxy
+ * public
+ * src Directory
+
+ * Functions
+
+ * getInitialProps
+ * getServerSideProps
+ * getStaticPaths
+ * getStaticProps
+ * NextRequest
+ * NextResponse
+ * useParams
+ * useReportWebVitals
+ * useRouter
+ * useSearchParams
+ * userAgent
+
+ * Configuration
+
+ * next.config.js Options
+
+ * adapterPath
+ * allowedDevOrigins
+ * assetPrefix
+ * basePath
+ * bundlePagesRouterDependencies
+ * compress
+ * crossOrigin
+ * deploymentId
+ * devIndicators
+ * distDir
+ * env
+ * exportPathMap
+ * generateBuildId
+ * generateEtags
+ * headers
+ * httpAgentOptions
+ * images
+ * logging
+ * onDemandEntries
+ * optimizePackageImports
+ * output
+ * pageExtensions
+ * poweredByHeader
+ * productionBrowserSourceMaps
+ * experimental.proxyClientMaxBodySize
+ * reactStrictMode
+ * redirects
+ * rewrites
+ * serverExternalPackages
+ * trailingSlash
+ * transpilePackages
+ * turbopack
+ * typescript
+ * urlImports
+ * useLightningcss
+ * webpack
+ * webVitalsAttribution
+
+ * TypeScript
+ * ESLint
+
+ * CLI
+
+ * create-next-app CLI
+ * next CLI
+
+ * Adapters
+
+ * Configuration
+ * Creating an Adapter
+ * API Reference
+ * Testing Adapters
+ * Routing with @next/routing
+ * Implementing PPR in an Adapter
+ * Runtime Integration
+ * Invoking Entrypoints
+ * Output Types
+ * Routing Information
+ * Use Cases
+
+ * Edge Runtime
+ * Turbopack
+
+* Architecture
+
+ * Accessibility
+ * Fast Refresh
+ * Next.js Compiler
+ * Supported Browsers
+
+* Community
+
+ * Contribution Guide
+ * Rspack
+
+Using App Router
+
+Features available in /app
+
+Latest Version
+
+16.2.3
+
+* Getting Started
+
+ * Installation
+ * Project Structure
+ * Layouts and Pages
+ * Linking and Navigating
+ * Server and Client Components
+ * Fetching Data
+ * Mutating Data
+ * Caching
+ * Revalidating
+ * Error Handling
+ * CSS
+ * Image Optimization
+ * Font Optimization
+ * Metadata and OG images
+ * Route Handlers
+ * Proxy
+ * Deploying
+ * Upgrading
+
+* Guides
+
+ * AI Coding Agents
+ * Analytics
+ * Authentication
+ * Backend for Frontend
+ * Caching (Previous Model)
+ * CDN Caching
+ * CI Build Caching
+ * Content Security Policy
+ * CSS-in-JS
+ * Custom Server
+ * Data Security
+ * Debugging
+ * Deploying to Platforms
+ * Draft Mode
+ * Environment Variables
+ * Forms
+ * How Revalidation Works
+ * ISR
+ * Instrumentation
+ * Internationalization
+ * JSON-LD
+ * Lazy Loading
+ * Development Environment
+ * Next.js MCP Server
+ * MDX
+ * Memory Usage
+ * Migrating
+
+ * App Router
+ * Create React App
+ * Vite
+
+ * Migrating to Cache Components
+ * Multi-tenant
+ * Multi-zones
+ * OpenTelemetry
+ * Package Bundling
+ * PPR Platform Guide
+ * Prefetching
+ * Preserving UI state
+ * Production
+ * PWAs
+ * Public pages
+ * Redirecting
+ * Rendering Philosophy
+ * Sass
+ * Scripts
+ * Self-Hosting
+ * SPAs
+ * Static Exports
+ * Streaming
+ * Tailwind CSS v3
+ * Testing
+
+ * Cypress
+ * Jest
+ * Playwright
+ * Vitest
+
+ * Third Party Libraries
+ * Upgrading
+
+ * Codemods
+ * Version 14
+ * Version 15
+ * Version 16
+
+ * Videos
+ * View transitions
+
+* API Reference
+
+ * Directives
+
+ * use cache
+ * use cache: private
+ * use cache: remote
+ * use client
+ * use server
+
+ * Components
+
+ * Font
+ * Form Component
+ * Image Component
+ * Link Component
+ * Script Component
+
+ * File-system conventions
+
+ * default.js
+ * Dynamic Segments
+ * error.js
+ * forbidden.js
+ * instrumentation.js
+ * instrumentation-client.js
+ * Intercepting Routes
+ * layout.js
+ * loading.js
+ * mdx-components.js
+ * not-found.js
+ * page.js
+ * Parallel Routes
+ * proxy.js
+ * public
+ * route.js
+
+ * dynamicParams
+ * maxDuration
+ * preferredRegion
+ * runtime
+
+ * Route Groups
+ * src
+ * template.js
+ * unauthorized.js
+ * Metadata Files
+
+ * favicon, icon, and apple-icon
+ * manifest.json
+ * opengraph-image and twitter-image
+ * robots.txt
+ * sitemap.xml
+
+ * Route Segment Config
+
+ * dynamicParams
+ * maxDuration
+ * preferredRegion
+ * runtime
+
+ * Functions
+
+ * after
+ * cacheLife
+ * cacheTag
+ * unstable_catchError
+ * connection
+ * cookies
+ * draftMode
+ * fetch
+ * forbidden
+ * generateImageMetadata
+ * generateMetadata
+ * generateSitemaps
+ * generateStaticParams
+ * generateViewport
+ * headers
+ * ImageResponse
+ * NextRequest
+ * NextResponse
+ * notFound
+ * permanentRedirect
+ * redirect
+ * refresh
+ * revalidatePath
+ * revalidateTag
+ * unauthorized
+ * unstable_cache
+ * unstable_noStore
+ * unstable_rethrow
+ * updateTag
+ * useLinkStatus
+ * useParams
+ * usePathname
+ * useReportWebVitals
+ * useRouter
+ * useSearchParams
+ * useSelectedLayoutSegment
+ * useSelectedLayoutSegments
+ * userAgent
+
+ * Configuration
+
+ * next.config.js
+
+ * adapterPath
+ * allowedDevOrigins
+ * appDir
+ * assetPrefix
+ * authInterrupts
+ * basePath
+ * cacheComponents
+ * cacheHandlers
+ * cacheLife
+ * compress
+ * crossOrigin
+ * cssChunking
+ * deploymentId
+ * devIndicators
+ * distDir
+ * env
+ * expireTime
+ * exportPathMap
+ * generateBuildId
+ * generateEtags
+ * headers
+ * htmlLimitedBots
+ * httpAgentOptions
+ * images
+ * cacheHandler
+ * inlineCss
+ * logging
+ * mdxRs
+ * onDemandEntries
+ * optimizePackageImports
+ * output
+ * pageExtensions
+ * poweredByHeader
+ * productionBrowserSourceMaps
+ * proxyClientMaxBodySize
+ * reactCompiler
+ * reactMaxHeadersLength
+ * reactStrictMode
+ * redirects
+ * rewrites
+ * sassOptions
+ * serverActions
+ * serverComponentsHmrCache
+ * serverExternalPackages
+ * staleTimes
+ * staticGeneration*
+ * taint
+ * trailingSlash
+ * transpilePackages
+ * turbopack
+ * turbopackFileSystemCache
+ * turbopack.ignoreIssue
+ * typedRoutes
+ * typescript
+ * urlImports
+ * useLightningcss
+ * viewTransition
+ * webpack
+ * webVitalsAttribution
+
+ * TypeScript
+ * ESLint
+
+ * CLI
+
+ * create-next-app
+ * next CLI
+
+ * Adapters
+
+ * Configuration
+ * Creating an Adapter
+ * API Reference
+ * Testing Adapters
+ * Routing with @next/routing
+ * Implementing PPR in an Adapter
+ * Runtime Integration
+ * Invoking Entrypoints
+ * Output Types
+ * Routing Information
+ * Use Cases
+
+ * Edge Runtime
+ * Turbopack
+
+* Glossary
+
+* Getting Started
+
+ * Installation
+ * Project Structure
+ * Images
+ * Fonts
+ * CSS
+ * Deploying
+
+* Guides
+
+ * Analytics
+ * Authentication
+ * Babel
+ * CI Build Caching
+ * Content Security Policy
+ * CSS-in-JS
+ * Custom Server
+ * Debugging
+ * Draft Mode
+ * Environment Variables
+ * Forms
+ * ISR
+ * Instrumentation
+ * Internationalization
+ * Lazy Loading
+ * MDX
+ * Migrating
+
+ * App Router
+ * Create React App
+ * Vite
+
+ * Multi-Zones
+ * OpenTelemetry
+ * Package Bundling
+ * PostCSS
+ * Preview Mode
+ * Production
+ * Redirecting
+ * Sass
+ * Scripts
+ * Self-Hosting
+ * Static Exports
+ * Tailwind CSS
+ * Testing
+
+ * Cypress
+ * Jest
+ * Playwright
+ * Vitest
+
+ * Third Party Libraries
+ * Upgrading
+
+ * Codemods
+ * Version 10
+ * Version 11
+ * Version 12
+ * Version 13
+ * Version 14
+ * Version 9
+
+* Building Your Application
+
+ * Routing
+
+ * Pages and Layouts
+ * Dynamic Routes
+ * Linking and Navigating
+ * Custom App
+ * Custom Document
+ * API Routes
+ * Custom Errors
+
+ * Rendering
+
+ * Server-side Rendering (SSR)
+ * Static Site Generation (SSG)
+ * Automatic Static Optimization
+ * Client-side Rendering (CSR)
+
+ * Data Fetching
+
+ * getStaticProps
+ * getStaticPaths
+ * Forms and Mutations
+ * getServerSideProps
+ * Client-side Fetching
+
+ * Configuring
+
+ * Error Handling
+
+* API Reference
+
+ * Components
+
+ * Font
+ * Form
+ * Head
+ * Image
+ * Image (Legacy)
+ * Link
+ * Script
+
+ * File-system conventions
+
+ * instrumentation.js
+ * Proxy
+ * public
+ * src Directory
+
+ * Functions
+
+ * getInitialProps
+ * getServerSideProps
+ * getStaticPaths
+ * getStaticProps
+ * NextRequest
+ * NextResponse
+ * useParams
+ * useReportWebVitals
+ * useRouter
+ * useSearchParams
+ * userAgent
+
+ * Configuration
+
+ * next.config.js Options
+
+ * adapterPath
+ * allowedDevOrigins
+ * assetPrefix
+ * basePath
+ * bundlePagesRouterDependencies
+ * compress
+ * crossOrigin
+ * deploymentId
+ * devIndicators
+ * distDir
+ * env
+ * exportPathMap
+ * generateBuildId
+ * generateEtags
+ * headers
+ * httpAgentOptions
+ * images
+ * logging
+ * onDemandEntries
+ * optimizePackageImports
+ * output
+ * pageExtensions
+ * poweredByHeader
+ * productionBrowserSourceMaps
+ * experimental.proxyClientMaxBodySize
+ * reactStrictMode
+ * redirects
+ * rewrites
+ * serverExternalPackages
+ * trailingSlash
+ * transpilePackages
+ * turbopack
+ * typescript
+ * urlImports
+ * useLightningcss
+ * webpack
+ * webVitalsAttribution
+
+ * TypeScript
+ * ESLint
+
+ * CLI
+
+ * create-next-app CLI
+ * next CLI
+
+ * Adapters
+
+ * Configuration
+ * Creating an Adapter
+ * API Reference
+ * Testing Adapters
+ * Routing with @next/routing
+ * Implementing PPR in an Adapter
+ * Runtime Integration
+ * Invoking Entrypoints
+ * Output Types
+ * Routing Information
+ * Use Cases
+
+ * Edge Runtime
+ * Turbopack
+
+* Architecture
+
+ * Accessibility
+ * Fast Refresh
+ * Next.js Compiler
+ * Supported Browsers
+
+* Community
+
+ * Contribution Guide
+ * Rspack
+
+On this page
+
+* ECMAScript Modules
+* Configuration as a Function
+* Async Configuration
+* Phase
+* TypeScript
+* Unit Testing (experimental)
+
+Edit this page on GitHubScroll to top 
+
+API ReferenceConfigurationnext.config.js
+
+Copy page
+
 # next.config.js
 
 Last updated April 8, 2026
@@ -155,3 +1181,5 @@ expect(getRedirectUrl(response)).toEqual('https://nextjs.org/test2')
 ```
 
 ### adapterPath Configure a custom adapter for Next.js to hook into the build process.### allowedDevOrigins Use `allowedDevOrigins` to configure additional origins that can request the dev server.### appDir Enable the App Router to use layouts, streaming, and more.### assetPrefix Learn how to use the assetPrefix config option to configure your CDN.### authInterrupts Learn how to enable the experimental `authInterrupts` configuration option to use `forbidden` and `unauthorized`.### basePath Use `basePath` to deploy a Next.js application under a sub-path of a domain.### cacheComponents Learn how to enable the cacheComponents flag in Next.js.### cacheHandlers Configure custom cache handlers for use cache directives in Next.js.### cacheLife Learn how to set up cacheLife configurations in Next.js.### compress Next.js provides gzip compression to compress rendered content and static files, it only works with the server target. Learn more about it here.### crossOrigin Use the `crossOrigin` option to add a crossOrigin tag on the `script` tags generated by `next/script`.### cssChunking Use the `cssChunking` option to control how CSS files are chunked in your Next.js application.### deploymentId Configure a deployment identifier used for version skew protection and cache busting.### devIndicators Configuration options for the on-screen indicator that gives context about the current route you're viewing during development.### distDir Set a custom build directory to use instead of the default .next directory.### env Learn to add and access environment variables in your Next.js application at build time.### expireTime Customize stale-while-revalidate expire time for ISR enabled pages.### exportPathMap Customize the pages that will be exported as HTML files when using `next export`.### generateBuildId Configure the build id, which is used to identify the current build in which your application is being served.### generateEtags Next.js will generate etags for every page by default. Learn more about how to disable etag generation here.### headers Add custom HTTP headers to your Next.js app.### htmlLimitedBots Specify a list of user agents that should receive blocking metadata.### httpAgentOptions Next.js will automatically use HTTP Keep-Alive by default. Learn more about how to disable HTTP Keep-Alive here.### images Custom configuration for the next/image loader### cacheHandler Configure the Next.js cache used for storing and revalidating data to use any external service like Redis, Memcached, or others.### inlineCss Enable inline CSS support.### logging Configure logging behavior in the terminal when running Next.js in development mode, including fetch logging, incoming requests, and forwarding browser console logs to the terminal.### mdxRs Use the new Rust compiler to compile MDX files in the App Router.### onDemandEntries Configure how Next.js will dispose and keep in memory pages created in development.### optimizePackageImports API Reference for optimizePackageImports Next.js Config Option### output Next.js automatically traces which files are needed by each page to allow for easy deployment of your application. Learn how it works here.### pageExtensions Extend the default page extensions used by Next.js when resolving pages in the Pages Router.### poweredByHeader Next.js will add the `x-powered-by` header by default. Learn to opt-out of it here.### productionBrowserSourceMaps Enables browser source map generation during the production build.### proxyClientMaxBodySize Configure the maximum request body size when using proxy.### reactCompiler Enable the React Compiler to automatically optimize component rendering.### reactMaxHeadersLength The maximum length of the headers that are emitted by React and added to the response.### reactStrictMode The complete Next.js runtime is now Strict Mode-compliant, learn how to opt-in### redirects Add redirects to your Next.js app.### rewrites Add rewrites to your Next.js app.### sassOptions Configure Sass options.### serverActions Configure Server Actions behavior in your Next.js application.### serverComponentsHmrCache Configure whether fetch responses in Server Components are cached across HMR refresh requests.### serverExternalPackages Opt-out specific dependencies from the Server Components bundling and use native Node.js `require`.### staleTimes Learn how to override the invalidation time of the client cache.### staticGeneration* Learn how to configure static generation in your Next.js application.### taint Enable tainting Objects and Values.### trailingSlash Configure Next.js pages to resolve with or without a trailing slash.### transpilePackages Automatically transpile and bundle dependencies from local packages (like monorepos) or from external dependencies (`node_modules`).### turbopack Configure Next.js with Turbopack-specific options### turbopackFileSystemCache Learn how to enable FileSystem Caching for Turbopack builds### turbopack.ignoreIssue Suppress specific Turbopack errors and warnings from the CLI output and error overlay.### typedRoutes Enable support for statically typed links.### typescript Configure how Next.js handles TypeScript errors during production builds and specify a custom tsconfig file.### urlImports Configure Next.js to allow importing modules from external URLs.### useLightningcss Enable experimental support for Lightning CSS.### viewTransition Enable ViewTransition API from React in App Router### webpack Learn how to customize the webpack config used by Next.js### webVitalsAttribution Learn how to use the webVitalsAttribution option to pinpoint the source of Web Vitals issues.
+
+Previous ConfigurationNext adapterPath

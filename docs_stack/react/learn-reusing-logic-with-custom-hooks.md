@@ -1,7 +1,3 @@
-Copy
-
-# Reusing Logic with Custom Hooks[](https://react.dev/learn/reusing-logic-with-custom-hooks#undefined)
-
 React comes with several built-in Hooks like `useState`, `useContext`, and `useEffect`. Sometimes, you’ll wish that there was a Hook for some more specific purpose: for example, to fetch data, to keep track of whether the user is online, or to connect to a chat room. You might not find these Hooks in React, but you can create your own Hooks for your application’s needs.
 
 ### You will learn
@@ -11,7 +7,7 @@ React comes with several built-in Hooks like `useState`, `useContext`, and `useE
 * How to name and structure your custom Hooks
 * When and why to extract custom Hooks
 
-## Custom Hooks: Sharing logic between components [](https://react.dev/learn/reusing-logic-with-custom-hooks#custom-hooks-sharing-logic-between-components)
+## Custom Hooks: Sharing logic between components 
 
 Imagine you’re developing an app that heavily relies on the network (as most apps do). You want to warn the user if their network connection has accidentally gone off while they were using your app. How would you go about it? It seems like you’ll need two things in your component:
 
@@ -20,91 +16,25 @@ Imagine you’re developing an app that heavily relies on the network (as most a
 
 This will keep your component synchronized with the network status. You might start with something like this:
 
-App.js
-
-App.js
-
-import { useState, useEffect } from 'react';
-
-export default function StatusBar() {
- const [isOnline, setIsOnline] = useState(true);
- useEffect(() => {
- function handleOnline() {
- setIsOnline(true);
- }
- function handleOffline() {
- setIsOnline(false);
- }
- window.addEventListener('online', handleOnline);
- window.addEventListener('offline', handleOffline);
- return () => {
- window.removeEventListener('online', handleOnline);
- window.removeEventListener('offline', handleOffline);
- };
- }, []);
-
- return <h1>{isOnline ? '✅ Online' : '❌ Disconnected'}</h1>;
-}
-
 Try turning your network on and off, and notice how this `StatusBar` updates in response to your actions.
 
 Now imagine you _also_ want to use the same logic in a different component. You want to implement a Save button that will become disabled and show “Reconnecting…” instead of “Save” while the network is off.
 
 To start, you can copy and paste the `isOnline` state and the Effect into `SaveButton`:
 
-App.js
-
-App.js
-
-import { useState, useEffect } from 'react';
-
-export default function SaveButton() {
- const [isOnline, setIsOnline] = useState(true);
- useEffect(() => {
- function handleOnline() {
- setIsOnline(true);
- }
- function handleOffline() {
- setIsOnline(false);
- }
- window.addEventListener('online', handleOnline);
- window.addEventListener('offline', handleOffline);
- return () => {
- window.removeEventListener('online', handleOnline);
- window.removeEventListener('offline', handleOffline);
- };
- }, []);
-
- function handleSaveClick() {
- console.log('✅ Progress saved');
- }
-
- return (
- <button disabled={!isOnline} onClick={handleSaveClick}>
- {isOnline ? 'Save progress' : 'Reconnecting...'}
- </button>
- );
-}
-
 Verify that, if you turn off the network, the button will change its appearance.
 
 These two components work fine, but the duplication in logic between them is unfortunate. It seems like even though they have different _visual appearance,_ you want to reuse the logic between them.
 
-### Extracting your own custom Hook from a component [](https://react.dev/learn/reusing-logic-with-custom-hooks#extracting-your-own-custom-hook-from-a-component)
-
 Imagine for a moment that, similar to `useState` and `useEffect`, there was a built-in `useOnlineStatus` Hook. Then both of these components could be simplified and you could remove the duplication between them:
 
-`function StatusBar() { const isOnline = useOnlineStatus(); return <h1>{isOnline ? '✅ Online' : '❌ Disconnected'}</h1>;}function SaveButton() { const isOnline = useOnlineStatus(); function handleSaveClick() { console.log('✅ Progress saved'); } return ( <button disabled={!isOnline} onClick={handleSaveClick}> {isOnline ? 'Save progress' : 'Reconnecting...'} </button> );}`
+`function StatusBar() {const isOnline = useOnlineStatus();return <h1>{isOnline ? '✅ Online' : '❌ Disconnected'}</h1>;}function SaveButton() {const isOnline = useOnlineStatus();function handleSaveClick() {console.log('✅ Progress saved');}return (<button disabled={!isOnline} onClick={handleSaveClick}>{isOnline ? 'Save progress' : 'Reconnecting...'}</button>);}`
 
 Although there is no such built-in Hook, you can write it yourself. Declare a function called `useOnlineStatus` and move all the duplicated code into it from the components you wrote earlier:
 
-`function useOnlineStatus() { const [isOnline, setIsOnline] = useState(true); useEffect(() => { function handleOnline() { setIsOnline(true); } function handleOffline() { setIsOnline(false); } window.addEventListener('online', handleOnline); window.addEventListener('offline', handleOffline); return () => { window.removeEventListener('online', handleOnline); window.removeEventListener('offline', handleOffline); }; }, []); return isOnline;}`
+`function useOnlineStatus() {const [isOnline, setIsOnline] = useState(true);useEffect(() => {function handleOnline() {setIsOnline(true);}function handleOffline() {setIsOnline(false);}window.addEventListener('online', handleOnline);window.addEventListener('offline', handleOffline);return () => {window.removeEventListener('online', handleOnline);window.removeEventListener('offline', handleOffline);};}, []);return isOnline;}`
 
 At the end of the function, return `isOnline`. This lets your components read that value:
-
-App.js useOnlineStatus.js
-
-App.js
 
 import { useOnlineStatus } from './useOnlineStatus.js';
 
@@ -142,7 +72,7 @@ Now your components don’t have as much repetitive logic. **More importantly, t
 
 When you extract logic into custom Hooks, you can hide the gnarly details of how you deal with some external system or a browser API. The code of your components expresses your intent, not the implementation.
 
-### Hook names always start with `use`[](https://react.dev/learn/reusing-logic-with-custom-hooks#hook-names-always-start-with-use)
+### Hook names always start with `use`
 
 React applications are built from components. Components are built from Hooks, whether built-in or custom. You’ll likely often use custom Hooks created by others, but occasionally you might write one yourself!
 
@@ -159,45 +89,39 @@ If your linter is configured for React, it will enforce this naming convention. 
 
 ##### Deep Dive
 
-#### Should all functions called during rendering start with the use prefix? [](https://react.dev/learn/reusing-logic-with-custom-hooks#should-all-functions-called-during-rendering-start-with-the-use-prefix)
+#### Should all functions called during rendering start with the use prefix? 
 
 No. Functions that don’t _call_ Hooks don’t need to _be_ Hooks.
 
 If your function doesn’t call any Hooks, avoid the `use` prefix. Instead, write it as a regular function _without_ the `use` prefix. For example, `useSorted` below doesn’t call Hooks, so call it `getSorted` instead:
 
-`// 🔴 Avoid: A Hook that doesn't use Hooksfunction useSorted(items) { return items.slice().sort();}// ✅ Good: A regular function that doesn't use Hooksfunction getSorted(items) { return items.slice().sort();}`
+`// 🔴 Avoid: A Hook that doesn't use Hooksfunction useSorted(items) {return items.slice().sort();}// ✅ Good: A regular function that doesn't use Hooksfunction getSorted(items) {return items.slice().sort();}`
 
 This ensures that your code can call this regular function anywhere, including conditions:
 
-`function List({ items, shouldSort }) { let displayedItems = items; if (shouldSort) { // ✅ It's ok to call getSorted() conditionally because it's not a Hook displayedItems = getSorted(items); } // ...}`
+`function List({ items, shouldSort }) {let displayedItems = items;if (shouldSort) {// ✅ It's ok to call getSorted() conditionally because it's not a HookdisplayedItems = getSorted(items);}// ...}`
 
 You should give `use` prefix to a function (and thus make it a Hook) if it uses at least one Hook inside of it:
 
-`// ✅ Good: A Hook that uses other Hooksfunction useAuth() { return useContext(Auth);}`
+`// ✅ Good: A Hook that uses other Hooksfunction useAuth() {return useContext(Auth);}`
 
 Technically, this isn’t enforced by React. In principle, you could make a Hook that doesn’t call other Hooks. This is often confusing and limiting so it’s best to avoid that pattern. However, there may be rare cases where it is helpful. For example, maybe your function doesn’t use any Hooks right now, but you plan to add some Hook calls to it in the future. Then it makes sense to name it with the `use` prefix:
 
-`// ✅ Good: A Hook that will likely use some other Hooks laterfunction useAuth() { // TODO: Replace with this line when authentication is implemented: // return useContext(Auth); return TEST_USER;}`
+`// ✅ Good: A Hook that will likely use some other Hooks laterfunction useAuth() {// TODO: Replace with this line when authentication is implemented:// return useContext(Auth);return TEST_USER;}`
 
 Then components won’t be able to call it conditionally. This will become important when you actually add Hook calls inside. If you don’t plan to use Hooks inside it (now or later), don’t make it a Hook.
 
-### Custom Hooks let you share stateful logic, not state itself [](https://react.dev/learn/reusing-logic-with-custom-hooks#custom-hooks-let-you-share-stateful-logic-not-state-itself)
-
 In the earlier example, when you turned the network on and off, both components updated together. However, it’s wrong to think that a single `isOnline` state variable is shared between them. Look at this code:
 
-`function StatusBar() { const isOnline = useOnlineStatus(); // ...}function SaveButton() { const isOnline = useOnlineStatus(); // ...}`
+`function StatusBar() {const isOnline = useOnlineStatus();// ...}function SaveButton() {const isOnline = useOnlineStatus();// ...}`
 
 It works the same way as before you extracted the duplication:
 
-`function StatusBar() { const [isOnline, setIsOnline] = useState(true); useEffect(() => { // ... }, []); // ...}function SaveButton() { const [isOnline, setIsOnline] = useState(true); useEffect(() => { // ... }, []); // ...}`
+`function StatusBar() {const [isOnline, setIsOnline] = useState(true);useEffect(() => {// ...}, []);// ...}function SaveButton() {const [isOnline, setIsOnline] = useState(true);useEffect(() => {// ...}, []);// ...}`
 
 These are two completely independent state variables and Effects! They happened to have the same value at the same time because you synchronized them with the same external value (whether the network is on).
 
 To better illustrate this, we’ll need a different example. Consider this `Form` component:
-
-App.js
-
-App.js
 
 import { useState } from 'react';
 
@@ -236,10 +160,6 @@ There’s some repetitive logic for each form field:
 
 You can extract the repetitive logic into this `useFormInput` custom Hook:
 
-App.js useFormInput.js
-
-useFormInput.js
-
 import { useState } from 'react';
 
 export function useFormInput(initialValue) {
@@ -261,7 +181,7 @@ Notice that it only declares _one_ state variable called `value`.
 
 However, the `Form` component calls `useFormInput`_two times:_
 
-`function Form() { const firstNameProps = useFormInput('Mary'); const lastNameProps = useFormInput('Poppins'); // ...`
+`function Form() {const firstNameProps = useFormInput('Mary');const lastNameProps = useFormInput('Poppins');// ...`
 
 This is why it works like declaring two separate state variables!
 
@@ -269,15 +189,11 @@ This is why it works like declaring two separate state variables!
 
 When you need to share the state itself between multiple components, lift it up and pass it down instead.
 
-## Passing reactive values between Hooks [](https://react.dev/learn/reusing-logic-with-custom-hooks#passing-reactive-values-between-hooks)
+## Passing reactive values between Hooks 
 
 The code inside your custom Hooks will re-run during every re-render of your component. This is why, like components, custom Hooks need to be pure. Think of custom Hooks’ code as part of your component’s body!
 
 Because custom Hooks re-render together with your component, they always receive the latest props and state. To see what this means, consider this chat room example. Change the server URL or the chat room:
-
-App.js ChatRoom.js chat.js notifications.js
-
-ChatRoom.js
 
 import { useState, useEffect } from 'react';
 import { createConnection } from './chat.js';
@@ -314,19 +230,15 @@ When you change `serverUrl` or `roomId`, the Effect “reacts” to your changes
 
 Now move the Effect’s code into a custom Hook:
 
-`export function useChatRoom({ serverUrl, roomId }) { useEffect(() => { const options = { serverUrl: serverUrl, roomId: roomId }; const connection = createConnection(options); connection.connect(); connection.on('message', (msg) => { showNotification('New message: ' + msg); }); return () => connection.disconnect(); }, [roomId, serverUrl]);}`
+`export function useChatRoom({ serverUrl, roomId }) {useEffect(() => {const options = {serverUrl: serverUrl,roomId: roomId};const connection = createConnection(options);connection.connect();connection.on('message', (msg) => {showNotification('New message: ' + msg);});return () => connection.disconnect();}, [roomId, serverUrl]);}`
 
 This lets your `ChatRoom` component call your custom Hook without worrying about how it works inside:
 
-`export default function ChatRoom({ roomId }) { const [serverUrl, setServerUrl] = useState('https://localhost:1234'); useChatRoom({ roomId: roomId, serverUrl: serverUrl }); return ( <> <label> Server URL: <input value={serverUrl} onChange={e => setServerUrl(e.target.value)} /> </label> <h1>Welcome to the {roomId} room!</h1> </> );}`
+`export default function ChatRoom({ roomId }) {const [serverUrl, setServerUrl] = useState('https://localhost:1234');useChatRoom({roomId: roomId,serverUrl: serverUrl});return (<><label> Server URL:<input value={serverUrl} onChange={e => setServerUrl(e.target.value)} /></label><h1>Welcome to the {roomId} room!</h1></>);}`
 
 This looks much simpler! (But it does the same thing.)
 
 Notice that the logic _still responds_ to prop and state changes. Try editing the server URL or the selected room:
-
-App.js ChatRoom.js useChatRoom.js chat.js notifications.js
-
-ChatRoom.js
 
 import { useState } from 'react';
 import { useChatRoom } from './useChatRoom.js';
@@ -352,39 +264,35 @@ export default function ChatRoom({ roomId }) {
 
 Notice how you’re taking the return value of one Hook:
 
-`export default function ChatRoom({ roomId }) { const [serverUrl, setServerUrl] = useState('https://localhost:1234'); useChatRoom({ roomId: roomId, serverUrl: serverUrl }); // ...`
+`export default function ChatRoom({ roomId }) {const [serverUrl, setServerUrl] = useState('https://localhost:1234');useChatRoom({roomId: roomId,serverUrl: serverUrl});// ...`
 
 and passing it as an input to another Hook:
 
-`export default function ChatRoom({ roomId }) { const [serverUrl, setServerUrl] = useState('https://localhost:1234'); useChatRoom({ roomId: roomId, serverUrl: serverUrl }); // ...`
+`export default function ChatRoom({ roomId }) {const [serverUrl, setServerUrl] = useState('https://localhost:1234');useChatRoom({roomId: roomId,serverUrl: serverUrl});// ...`
 
 Every time your `ChatRoom` component re-renders, it passes the latest `roomId` and `serverUrl` to your Hook. This is why your Effect re-connects to the chat whenever their values are different after a re-render. (If you ever worked with audio or video processing software, chaining Hooks like this might remind you of chaining visual or audio effects. It’s as if the output of `useState` “feeds into” the input of the `useChatRoom`.)
 
-### Passing event handlers to custom Hooks [](https://react.dev/learn/reusing-logic-with-custom-hooks#passing-event-handlers-to-custom-hooks)
+### Passing event handlers to custom Hooks 
 
 As you start using `useChatRoom` in more components, you might want to let components customize its behavior. For example, currently, the logic for what to do when a message arrives is hardcoded inside the Hook:
 
-`export function useChatRoom({ serverUrl, roomId }) { useEffect(() => { const options = { serverUrl: serverUrl, roomId: roomId }; const connection = createConnection(options); connection.connect(); connection.on('message', (msg) => { showNotification('New message: ' + msg); }); return () => connection.disconnect(); }, [roomId, serverUrl]);}`
+`export function useChatRoom({ serverUrl, roomId }) {useEffect(() => {const options = {serverUrl: serverUrl,roomId: roomId};const connection = createConnection(options);connection.connect();connection.on('message', (msg) => {showNotification('New message: ' + msg);});return () => connection.disconnect();}, [roomId, serverUrl]);}`
 
 Let’s say you want to move this logic back to your component:
 
-`export default function ChatRoom({ roomId }) { const [serverUrl, setServerUrl] = useState('https://localhost:1234'); useChatRoom({ roomId: roomId, serverUrl: serverUrl, onReceiveMessage(msg) { showNotification('New message: ' + msg); } }); // ...`
+`export default function ChatRoom({ roomId }) {const [serverUrl, setServerUrl] = useState('https://localhost:1234');useChatRoom({roomId: roomId,serverUrl: serverUrl,onReceiveMessage(msg) {showNotification('New message: ' + msg);}});// ...`
 
 To make this work, change your custom Hook to take `onReceiveMessage` as one of its named options:
 
-`export function useChatRoom({ serverUrl, roomId, onReceiveMessage }) { useEffect(() => { const options = { serverUrl: serverUrl, roomId: roomId }; const connection = createConnection(options); connection.connect(); connection.on('message', (msg) => { onReceiveMessage(msg); }); return () => connection.disconnect(); }, [roomId, serverUrl, onReceiveMessage]); // ✅ All dependencies declared}`
+`export function useChatRoom({ serverUrl, roomId, onReceiveMessage }) {useEffect(() => {const options = {serverUrl: serverUrl,roomId: roomId};const connection = createConnection(options);connection.connect();connection.on('message', (msg) => {onReceiveMessage(msg);});return () => connection.disconnect();}, [roomId, serverUrl, onReceiveMessage]); // ✅ All dependencies declared}`
 
 This will work, but there’s one more improvement you can do when your custom Hook accepts event handlers.
 
 Adding a dependency on `onReceiveMessage` is not ideal because it will cause the chat to re-connect every time the component re-renders. Wrap this event handler into an Effect Event to remove it from the dependencies:
 
-`import { useEffect, useEffectEvent } from 'react';// ...export function useChatRoom({ serverUrl, roomId, onReceiveMessage }) { const onMessage = useEffectEvent(onReceiveMessage); useEffect(() => { const options = { serverUrl: serverUrl, roomId: roomId }; const connection = createConnection(options); connection.connect(); connection.on('message', (msg) => { onMessage(msg); }); return () => connection.disconnect(); }, [roomId, serverUrl]); // ✅ All dependencies declared}`
+`import { useEffect, useEffectEvent } from 'react';// ...export function useChatRoom({ serverUrl, roomId, onReceiveMessage }) {const onMessage = useEffectEvent(onReceiveMessage);useEffect(() => {const options = {serverUrl: serverUrl,roomId: roomId};const connection = createConnection(options);connection.connect();connection.on('message', (msg) => {onMessage(msg);});return () => connection.disconnect();}, [roomId, serverUrl]); // ✅ All dependencies declared}`
 
 Now the chat won’t re-connect every time that the `ChatRoom` component re-renders. Here is a fully working demo of passing an event handler to a custom Hook that you can play with:
-
-App.js ChatRoom.js useChatRoom.js chat.js notifications.js
-
-ChatRoom.js
 
 import { useState } from 'react';
 import { useChatRoom } from './useChatRoom.js';
@@ -414,7 +322,7 @@ export default function ChatRoom({ roomId }) {
 
 Notice how you no longer need to know _how_`useChatRoom` works in order to use it. You could add it to any other component, pass any other options, and it would work the same way. That’s the power of custom Hooks.
 
-## When to use custom Hooks [](https://react.dev/learn/reusing-logic-with-custom-hooks#when-to-use-custom-hooks)
+## When to use custom Hooks 
 
 You don’t need to extract a custom Hook for every little duplicated bit of code. Some duplication is fine. For example, extracting a `useFormInput` Hook to wrap a single `useState` call like earlier is probably unnecessary.
 
@@ -422,21 +330,21 @@ However, whenever you write an Effect, consider whether it would be clearer to a
 
 For example, consider a `ShippingForm` component that displays two dropdowns: one shows the list of cities, and another shows the list of areas in the selected city. You might start with some code that looks like this:
 
-`function ShippingForm({ country }) { const [cities, setCities] = useState(null); // This Effect fetches cities for a country useEffect(() => { let ignore = false; fetch(`/api/cities?country=${country}`) .then(response => response.json()) .then(json => { if (!ignore) { setCities(json); } }); return () => { ignore = true; }; }, [country]); const [city, setCity] = useState(null); const [areas, setAreas] = useState(null); // This Effect fetches areas for the selected city useEffect(() => { if (city) { let ignore = false; fetch(`/api/areas?city=${city}`) .then(response => response.json()) .then(json => { if (!ignore) { setAreas(json); } }); return () => { ignore = true; }; } }, [city]); // ...`
+`function ShippingForm({ country }) {const [cities, setCities] = useState(null);// This Effect fetches cities for a countryuseEffect(() => {let ignore = false;fetch(`/api/cities?country=${country}`) .then(response => response.json()) .then(json => {if (!ignore) {setCities(json);}});return () => {ignore = true;};}, [country]);const [city, setCity] = useState(null);const [areas, setAreas] = useState(null);// This Effect fetches areas for the selected cityuseEffect(() => {if (city) {let ignore = false;fetch(`/api/areas?city=${city}`) .then(response => response.json()) .then(json => {if (!ignore) {setAreas(json);}});return () => {ignore = true;};}}, [city]);// ...`
 
 Although this code is quite repetitive, it’s correct to keep these Effects separate from each other. They synchronize two different things, so you shouldn’t merge them into one Effect. Instead, you can simplify the `ShippingForm` component above by extracting the common logic between them into your own `useData` Hook:
 
-`function useData(url) { const [data, setData] = useState(null); useEffect(() => { if (url) { let ignore = false; fetch(url) .then(response => response.json()) .then(json => { if (!ignore) { setData(json); } }); return () => { ignore = true; }; } }, [url]); return data;}`
+`function useData(url) {const [data, setData] = useState(null);useEffect(() => {if (url) {let ignore = false;fetch(url) .then(response => response.json()) .then(json => {if (!ignore) {setData(json);}});return () => {ignore = true;};}}, [url]);return data;}`
 
 Now you can replace both Effects in the `ShippingForm` components with calls to `useData`:
 
-`function ShippingForm({ country }) { const cities = useData(`/api/cities?country=${country}`); const [city, setCity] = useState(null); const areas = useData(city ? `/api/areas?city=${city}` : null); // ...`
+`function ShippingForm({ country }) {const cities = useData(`/api/cities?country=${country}`);const [city, setCity] = useState(null);const areas = useData(city ? `/api/areas?city=${city}` : null);// ...`
 
 Extracting a custom Hook makes the data flow explicit. You feed the `url` in and you get the `data` out. By “hiding” your Effect inside `useData`, you also prevent someone working on the `ShippingForm` component from adding unnecessary dependencies to it. With time, most of your app’s Effects will be in custom Hooks.
 
 ##### Deep Dive
 
-#### Keep your custom Hooks focused on concrete high-level use cases [](https://react.dev/learn/reusing-logic-with-custom-hooks#keep-your-custom-hooks-focused-on-concrete-high-level-use-cases)
+#### Keep your custom Hooks focused on concrete high-level use cases 
 
 Start by choosing your custom Hook’s name. If you struggle to pick a clear name, it might mean that your Effect is too coupled to the rest of your component’s logic, and is not yet ready to be extracted.
 
@@ -460,29 +368,25 @@ When you synchronize with an external system, your custom Hook name may be more 
 
 For example, this `useMount` Hook tries to ensure some code only runs “on mount”:
 
-`function ChatRoom({ roomId }) { const [serverUrl, setServerUrl] = useState('https://localhost:1234'); // 🔴 Avoid: using custom "lifecycle" Hooks useMount(() => { const connection = createConnection({ roomId, serverUrl }); connection.connect(); post('/analytics/event', { eventName: 'visit_chat' }); }); // ...}// 🔴 Avoid: creating custom "lifecycle" Hooksfunction useMount(fn) { useEffect(() => { fn(); }, []); // 🔴 React Hook useEffect has a missing dependency: 'fn'}`
+`function ChatRoom({ roomId }) {const [serverUrl, setServerUrl] = useState('https://localhost:1234');// 🔴 Avoid: using custom "lifecycle" HooksuseMount(() => {const connection = createConnection({ roomId, serverUrl });connection.connect();post('/analytics/event', { eventName: 'visit_chat' });});// ...}// 🔴 Avoid: creating custom "lifecycle" Hooksfunction useMount(fn) {useEffect(() => {fn();}, []); // 🔴 React Hook useEffect has a missing dependency: 'fn'}`
 
 **Custom “lifecycle” Hooks like `useMount` don’t fit well into the React paradigm.** For example, this code example has a mistake (it doesn’t “react” to `roomId` or `serverUrl` changes), but the linter won’t warn you about it because the linter only checks direct `useEffect` calls. It won’t know about your Hook.
 
 If you’re writing an Effect, start by using the React API directly:
 
-`function ChatRoom({ roomId }) { const [serverUrl, setServerUrl] = useState('https://localhost:1234'); // ✅ Good: two raw Effects separated by purpose useEffect(() => { const connection = createConnection({ serverUrl, roomId }); connection.connect(); return () => connection.disconnect(); }, [serverUrl, roomId]); useEffect(() => { post('/analytics/event', { eventName: 'visit_chat', roomId }); }, [roomId]); // ...}`
+`function ChatRoom({ roomId }) {const [serverUrl, setServerUrl] = useState('https://localhost:1234');// ✅ Good: two raw Effects separated by purposeuseEffect(() => {const connection = createConnection({ serverUrl, roomId });connection.connect();return () => connection.disconnect();}, [serverUrl, roomId]);useEffect(() => {post('/analytics/event', { eventName: 'visit_chat', roomId });}, [roomId]);// ...}`
 
 Then, you can (but don’t have to) extract custom Hooks for different high-level use cases:
 
-`function ChatRoom({ roomId }) { const [serverUrl, setServerUrl] = useState('https://localhost:1234'); // ✅ Great: custom Hooks named after their purpose useChatRoom({ serverUrl, roomId }); useImpressionLog('visit_chat', { roomId }); // ...}`
+`function ChatRoom({ roomId }) {const [serverUrl, setServerUrl] = useState('https://localhost:1234');// ✅ Great: custom Hooks named after their purposeuseChatRoom({ serverUrl, roomId });useImpressionLog('visit_chat', { roomId });// ...}`
 
 **A good custom Hook makes the calling code more declarative by constraining what it does.** For example, `useChatRoom(options)` can only connect to the chat room, while `useImpressionLog(eventName, extraData)` can only send an impression log to the analytics. If your custom Hook API doesn’t constrain the use cases and is very abstract, in the long run it’s likely to introduce more problems than it solves.
 
-### Custom Hooks help you migrate to better patterns [](https://react.dev/learn/reusing-logic-with-custom-hooks#custom-hooks-help-you-migrate-to-better-patterns)
+### Custom Hooks help you migrate to better patterns 
 
 Effects are an “escape hatch”: you use them when you need to “step outside React” and when there is no better built-in solution for your use case. With time, the React team’s goal is to reduce the number of the Effects in your app to the minimum by providing more specific solutions to more specific problems. Wrapping your Effects in custom Hooks makes it easier to upgrade your code when these solutions become available.
 
 Let’s return to this example:
-
-App.js useOnlineStatus.js
-
-useOnlineStatus.js
 
 import { useState, useEffect } from 'react';
 
@@ -509,10 +413,6 @@ In the above example, `useOnlineStatus` is implemented with a pair of `useState`
 
 React includes a dedicated API called `useSyncExternalStore` which takes care of all of these problems for you. Here is your `useOnlineStatus` Hook, rewritten to take advantage of this new API:
 
-App.js useOnlineStatus.js
-
-useOnlineStatus.js
-
 import { useSyncExternalStore } from 'react';
 
 function subscribe(callback) {
@@ -527,14 +427,14 @@ function subscribe(callback) {
 export function useOnlineStatus() {
  return useSyncExternalStore(
  subscribe,
- () => navigator.onLine, // How to get the value on the client
- () => true // How to get the value on the server
+ () => navigator.onLine, 
+ () => true 
  );
 }
 
 Notice how **you didn’t need to change any of the components** to make this migration:
 
-`function StatusBar() { const isOnline = useOnlineStatus(); // ...}function SaveButton() { const isOnline = useOnlineStatus(); // ...}`
+`function StatusBar() {const isOnline = useOnlineStatus();// ...}function SaveButton() {const isOnline = useOnlineStatus();// ...}`
 
 This is another reason for why wrapping Effects in custom Hooks is often beneficial:
 
@@ -546,25 +446,21 @@ Similar to a design system, you might find it helpful to start extracting common
 
 ##### Deep Dive
 
-#### Will React provide any built-in solution for data fetching? [](https://react.dev/learn/reusing-logic-with-custom-hooks#will-react-provide-any-built-in-solution-for-data-fetching)
+#### Will React provide any built-in solution for data fetching? 
 
 Today, with the `use` API, data can be read in render by passing a Promise to `use`:
 
-`import { use, Suspense } from "react";function Message({ messagePromise }) { const messageContent = use(messagePromise); return <p>Here is the message: {messageContent}</p>;}export function MessageContainer({ messagePromise }) { return ( <Suspense fallback={<p>⌛Downloading message...</p>}> <Message messagePromise={messagePromise} /> </Suspense> );}`
+`import { use, Suspense } from "react";function Message({ messagePromise }) {const messageContent = use(messagePromise);return <p>Here is the message: {messageContent}</p>;}export function MessageContainer({ messagePromise }) {return (<Suspense fallback={<p>⌛Downloading message...</p>}><Message messagePromise={messagePromise} /></Suspense>);}`
 
 We’re still working out the details, but we expect that in the future, you’ll write data fetching like this:
 
-`import { use } from 'react';function ShippingForm({ country }) { const cities = use(fetch(`/api/cities?country=${country}`)); const [city, setCity] = useState(null); const areas = city ? use(fetch(`/api/areas?city=${city}`)) : null; // ...`
+`import { use } from 'react';function ShippingForm({ country }) {const cities = use(fetch(`/api/cities?country=${country}`));const [city, setCity] = useState(null);const areas = city ? use(fetch(`/api/areas?city=${city}`)) : null;// ...`
 
 If you use custom Hooks like `useData` above in your app, it will require fewer changes to migrate to the eventually recommended approach than if you write raw Effects in every component manually. However, the old approach will still work fine, so if you feel happy writing raw Effects, you can continue to do that.
 
-### There is more than one way to do it [](https://react.dev/learn/reusing-logic-with-custom-hooks#there-is-more-than-one-way-to-do-it)
+### There is more than one way to do it 
 
 Let’s say you want to implement a fade-in animation _from scratch_ using the browser `requestAnimationFrame` API. You might start with an Effect that sets up an animation loop. During each frame of the animation, you could change the opacity of the DOM node you hold in a ref until it reaches `1`. Your code might start like this:
-
-App.js
-
-App.js
 
 import { useState, useEffect, useRef } from 'react';
 
@@ -583,7 +479,7 @@ function Welcome() {
  const progress = Math.min(timePassed / duration, 1);
  onProgress(progress);
  if (progress < 1) {
- // We still have more frames to paint
+ 
  frameId = requestAnimationFrame(onFrame);
  }
  }
@@ -630,10 +526,6 @@ export default function App() {
 
 To make the component more readable, you might extract the logic into a `useFadeIn` custom Hook:
 
-App.js useFadeIn.js
-
-App.js
-
 import { useState, useEffect, useRef } from 'react';
 import { useFadeIn } from './useFadeIn.js';
 
@@ -663,10 +555,6 @@ export default function App() {
 }
 
 You could keep the `useFadeIn` code as is, but you could also refactor it more. For example, you could extract the logic for setting up the animation loop out of `useFadeIn` into a custom `useAnimationLoop` Hook:
-
-App.js useFadeIn.js
-
-useFadeIn.js
 
 import { useState, useEffect } from 'react';
 import { useEffectEvent } from 'react';
@@ -707,49 +595,13 @@ function useAnimationLoop(isRunning, drawFrame) {
 
 However, you didn’t _have to_ do that. As with regular functions, ultimately you decide where to draw the boundaries between different parts of your code. You could also take a very different approach. Instead of keeping the logic in the Effect, you could move most of the imperative logic inside a JavaScript class:
 
-App.js useFadeIn.js animation.js
-
-useFadeIn.js
-
-import { useState, useEffect } from 'react';
-import { FadeInAnimation } from './animation.js';
-
-export function useFadeIn(ref, duration) {
- useEffect(() => {
- const animation = new FadeInAnimation(ref.current);
- animation.start(duration);
- return () => {
- animation.stop();
- };
- }, [ref, duration]);
-}
-
 Effects let you connect React to external systems. The more coordination between Effects is needed (for example, to chain multiple animations), the more it makes sense to extract that logic out of Effects and Hooks _completely_ like in the sandbox above. Then, the code you extracted _becomes_ the “external system”. This lets your Effects stay simple because they only need to send messages to the system you’ve moved outside React.
 
 The examples above assume that the fade-in logic needs to be written in JavaScript. However, this particular fade-in animation is both simpler and much more efficient to implement with a plain CSS Animation:
 
-App.js welcome.css
-
-welcome.css
-
-.welcome {
- color: white;
- padding: 50px;
- text-align: center;
- font-size: 50px;
- background-image: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
-
- animation: fadeIn 1000ms;
-}
-
-@keyframes fadeIn {
- 0% { opacity: 0; }
- 100% { opacity: 1; }
-}
-
 Sometimes, you don’t even need a Hook!
 
-## Recap[](https://react.dev/learn/reusing-logic-with-custom-hooks#recap)
+## Recap
 
 * Custom Hooks let you share logic between components.
 * Custom Hooks must be named starting with `use` followed by a capital letter.
@@ -761,35 +613,8 @@ Sometimes, you don’t even need a Hook!
 * Don’t create custom Hooks like `useMount`. Keep their purpose specific.
 * It’s up to you how and where to choose the boundaries of your code.
 
-## Try out some challenges[](https://react.dev/learn/reusing-logic-with-custom-hooks#challenges)
-
-1. Extract a `useCounter` Hook 2. Make the counter delay configurable 3. Extract `useInterval` out of `useCounter`4. Fix a resetting interval 5. Implement a staggering movement 
-
-#### Challenge 1 of 5: 
-
-Extract a `useCounter` Hook [](https://react.dev/learn/reusing-logic-with-custom-hooks#extract-a-usecounter-hook)
-
 This component uses a state variable and an Effect to display a number that increments every second. Extract this logic into a custom Hook called `useCounter`. Your goal is to make the `Counter` component implementation look exactly like this:
 
-`export default function Counter() { const count = useCounter(); return <h1>Seconds passed: {count}</h1>;}`
+`export default function Counter() {const count = useCounter();return <h1>Seconds passed: {count}</h1>;}`
 
 You’ll need to write your custom Hook in `useCounter.js` and import it into the `App.js` file.
-
-App.js useCounter.js
-
-App.js
-
-import { useState, useEffect } from 'react';
-
-export default function Counter() {
- const [count, setCount] = useState(0);
- useEffect(() => {
- const id = setInterval(() => {
- setCount(c => c + 1);
- }, 1000);
- return () => clearInterval(id);
- }, []);
- return <h1>Seconds passed: {count}</h1>;
-}
-
-Show solution

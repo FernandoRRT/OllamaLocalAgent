@@ -1,8 +1,3 @@
-Title: State as a Snapshot – React
-
-URL Source: https://react.dev/learn/state-as-a-snapshot
-
-Markdown Content:
 State variables might look like regular JavaScript variables that you can read and write to. However, state behaves more like a snapshot. Setting it does not change the state variable you already have, but instead triggers a re-render.
 
 ### You will learn
@@ -12,7 +7,7 @@ State variables might look like regular JavaScript variables that you can read a
 * Why state does not update immediately after you set it
 * How event handlers access a “snapshot” of the state
 
-## Setting state triggers renders [](https://react.dev/learn/state-as-a-snapshot#setting-state-triggers-renders)
+## Setting state triggers renders 
 
 You might think of your user interface as changing directly in response to the user event like a click. In React, it works a little differently from this mental model. On the previous page, you saw that setting state requests a re-render from React. This means that for an interface to react to the event, you need to _update the state_.
 
@@ -26,7 +21,7 @@ Here’s what happens when you click the button:
 
 Let’s take a closer look at the relationship between state and rendering.
 
-## Rendering takes a snapshot in time [](https://react.dev/learn/state-as-a-snapshot#rendering-takes-a-snapshot-in-time)
+## Rendering takes a snapshot in time 
 
 “Rendering” means that React is calling your component, which is a function. The JSX you return from that function is like a snapshot of the UI in time. Its props, event handlers, and local variables were all calculated **using its state at the time of the render.**
 
@@ -114,7 +109,7 @@ For the next render, `number` is `1`, so _that render’s_ click handler looks l
 
 This is why clicking the button again will set the counter to `2`, then to `3` on the next click, and so on.
 
-## State over time [](https://react.dev/learn/state-as-a-snapshot#state-over-time)
+## State over time 
 
 Well, that was fun. Try to guess what clicking this button will alert:
 
@@ -195,7 +190,7 @@ export default function Form() {
 
 But what if you wanted to read the latest state before a re-render? You’ll want to use a state updater function, covered on the next page!
 
-## Recap[](https://react.dev/learn/state-as-a-snapshot#recap)
+## Recap
 
 * Setting state requests a new render.
 * React stores state outside of your component, as if on a shelf.
@@ -205,7 +200,7 @@ But what if you wanted to read the latest state before a re-render? You’ll wan
 * You can mentally substitute state in event handlers, similarly to how you think about the rendered JSX.
 * Event handlers created in the past have the state values from the render in which they were created.
 
-## Try out some challenges[](https://react.dev/learn/state-as-a-snapshot#challenges)
+## Try out some challenges
 
 #### Challenge
 
@@ -215,7 +210,7 @@ of
 
 1:
 
-Implement a traffic light [](https://react.dev/learn/state-as-a-snapshot#implement-a-traffic-light)
+Implement a traffic light 
 
 Here is a crosswalk light component that toggles when the button is pressed:
 

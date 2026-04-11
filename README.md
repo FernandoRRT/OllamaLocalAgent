@@ -46,27 +46,30 @@ This repository includes pre-fetched documentation (`docs_stack`) and all necess
 
 ```text
 .
-├── docker
-│   └── postgres
-│       └── docker-compose.yml   # Postgres + pgvector container config
-├── docs_stack                   # Pre-downloaded Markdown documentation
-│   ├── nextjs/                  # Next.js 16 documentation files
-│   └── react/                   # React 19 documentation files
-├── src                          # Core application logic
+├── docker/
+│   └── postgres/
+│       └── docker-compose.yml     # Postgres + pgvector container config
+├── docs_stack/                   # Pre-downloaded & Sanitized Markdown
+│   ├── auth0-nextjs/             # Auth0 SDK v4 documentation
+│   ├── nextjs/                   # Next.js 16 documentation
+│   └── react/                    # React 19 documentation
+├── src/                          # Core application logic
 │   ├── helpers/
-│   │   ├── fetchAndClean.js     # Sanitization Regex engine
-│   │   └── runBulk.js           # Bulk execution orchestrator
-│   └── lib/
-│       └── database.js          # Centralized DB connection & RAG Config (TOP_K)
-├── bulk-fetch-next.js           # Lightweight config script for Next.js
-├── bulk-fetch-react.js          # Lightweight config script for React
-├── fetch-docs.js                # Fetch a single documentation page
-├── ingest.js                    # Chunks markdown and saves vectors to Postgres
-├── jsconfig.json                # VS Code IntelliSense configuration
-├── mcp-rag.js                   # MCP Server linking the DB to OpenClaude
-├── package.json                 # Node dependencies ("type": "module")
-├── search.js                    # CLI utility to test vector search
-└── setup-db.js                  # Initializes Postgres tables and HNSW indexes
+│   │   ├── constants.js          # Shared paths (like docs_stack base path)
+│   │   ├── fetchAndClean.js      # Sanitization Regex engine (The "Sanitizer")
+│   │   └── runBulk.js            # Bulk execution orchestrator
+│   ├── lib/
+│   │   └── database.js           # Centralized DB connection & RAG Config (TOP_K)
+│   └── mcp/                      # Curated fetch configurations (CLI Menu sources)
+│       ├── bulk-fetch-auth0.js
+│       ├── bulk-fetch-next.js
+│       └── bulk-fetch-react.js
+├── bulk-fetch.js                 # Centralized Bulk Fetch Commander (CLI Menu)
+├── fetch-docs.js                 # CLI utility to fetch a single documentation page
+├── ingest.js                     # Chunks markdown and saves vectors to Postgres
+├── mcp-rag.js                    # MCP Server linking the DB to OpenClaude
+├── search.js                     # CLI utility to test vector search results
+└── setup-db.js                   # Initializes Postgres tables and HNSW indexes
 ```
 ---
 
@@ -135,20 +138,35 @@ You can download additional documentation pages using the script below. It will 
 node fetch-docs.js https://example.com /example/doc-name.md
 ``` 
 
-#### Bulk download
+#### Bulk Download
 
-The bulk download scripts contain links to documentation pages for various frameworks in the versions below:
+The bulk download scripts contain curated links for the following framework versions:
 
- - Next.js v16.2.3
- - React v19.2
-
-If new versions of the framework have been released, check that the links remain the same. If you run the script again, it will delete the contents of the folder and download everything again. For example, you can download the Next documentation using:
+- **Next.js v16.x** (Optimized RAG list)
+- **React v19.x** (Core hooks and patterns)
+- **Auth0 Next.js SDK v4.x** (Main examples and MCD)
+    
+This project features a centralized **Bulk Fetch Commander** to manage documentation versions. Instead of running individual files, use this single entry point to select which stack you want to update:
 
 ```bash
-node bulk-fetch-next.js
-``` 
+node bulk-fetch.js
+```
 
-If you want to change the download folder or create a fetch script for a new framework (like MUI or Tailwind), simply duplicate one of the `bulk-fetch-*.js` files, update the array of URLs, and change the `dirPath` at the top. The heavy lifting of downloading, cleaning, and avoiding infinite loops is safely handled by `src/helpers/runBulk.js`.
+##### 💡 Usage Tips
+
+1.  **Extensibility:** To create a fetch script for a new framework (like MUI or Tailwind), simply duplicate one of the `bulk-fetch-*.js` files in the `/src/mcp` folder and update the URLs array.    
+2.  **Auto-Discovery:** Any new script created in that folder will be automatically added to the `bulk-fetch.js` menu. Remember to update the `dirPath` at the top of your new script to define the correct download folder.
+3.  **Version Updates:** If a framework is updated, verify if the URLs remain valid. Re-running a script will refresh the folder content by deleting old files and downloading everything again.
+4. **Orchestration:** The heavy lifting of downloading, cleaning, and avoiding infinite loops is safely handled by `src/helpers/runBulk.js`, while the sanitization engine lives in `src/helpers/fetchAndClean.js`.
+
+### 🧠 Smart Sanitization Engine
+
+Unlike generic scrapers, our `src/helpers/fetchAndClean.js` utilizes a multi-step regex pipeline specifically tuned for RAG:
+
+1.  **GitHub Artifact Removal:** Automatically kills empty header anchors `[](url)` and "Copy" buttons.    
+2.  **Context Preservation:** Strips Table of Contents (TOC) but keeps the anchor text to save embedding tokens.
+3.  **Hex Hash Filtering:** Removes long commit hashes and cache busters that cause vector noise.    
+4.  **Markdown Refinement:** Converts links to plain text to prevent the LLM from hallucinating broken URLs.
 
 ### 7. Ingest the Documentation (Populate the Brain)
 

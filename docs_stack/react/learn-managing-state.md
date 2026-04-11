@@ -1,6 +1,6 @@
 Copy
 
-# Managing State[](https://react.dev/learn/managing-state#undefined)
+# Managing State
 
 Intermediate
 
@@ -16,7 +16,7 @@ As your application grows, it helps to be more intentional about how your state 
 * How to pass information without “prop drilling”
 * How to scale state management as your app grows
 
-## Reacting to input with state [](https://react.dev/learn/managing-state#reacting-to-input-with-state)
+## Reacting to input with state 
 
 With React, you won’t modify the UI from code directly. For example, you won’t write commands like “disable the button”, “enable the button”, “show the success message”, etc. Instead, you will describe the UI you want to see for the different visual states of your component (“initial state”, “typing state”, “success state”), and then trigger the state changes in response to user input. This is similar to how designers think about UI.
 
@@ -104,7 +104,7 @@ Read More
 
 * * *
 
-## Choosing the state structure [](https://react.dev/learn/managing-state#choosing-the-state-structure)
+## Choosing the state structure 
 
 Structuring state well can make a difference between a component that is pleasant to modify and debug, and one that is a constant source of bugs. The most important principle is that state shouldn’t contain redundant or duplicated information. If there’s unnecessary state, it’s easy to forget to update it, and introduce bugs!
 
@@ -211,7 +211,7 @@ Read More
 
 * * *
 
-## Sharing state between components [](https://react.dev/learn/managing-state#sharing-state-between-components)
+## Sharing state between components 
 
 Sometimes, you want the state of two components to always change together. To do it, remove state from both of them, move it to their closest common parent, and then pass it down to them via props. This is known as “lifting state up”, and it’s one of the most common things you will do writing React code.
 
@@ -274,7 +274,7 @@ Read More
 
 * * *
 
-## Preserving and resetting state [](https://react.dev/learn/managing-state#preserving-and-resetting-state)
+## Preserving and resetting state 
 
 When you re-render a component, React needs to decide which parts of the tree to keep (and update), and which parts to discard or re-create from scratch. In most cases, React’s automatic behavior works well enough. By default, React preserves the parts of the tree that “match up” with the previously rendered component tree.
 
@@ -346,7 +346,7 @@ Read More
 
 * * *
 
-## Extracting state logic into a reducer [](https://react.dev/learn/managing-state#extracting-state-logic-into-a-reducer)
+## Extracting state logic into a reducer 
 
 Components with many state updates spread across many event handlers can get overwhelming. For these cases, you can consolidate all the state update logic outside your component in a single function, called “reducer”. Your event handlers become concise because they only specify the user “actions”. At the bottom of the file, the reducer function specifies how the state should update in response to each action!
 
@@ -443,7 +443,7 @@ Read More
 
 * * *
 
-## Passing data deeply with context [](https://react.dev/learn/managing-state#passing-data-deeply-with-context)
+## Passing data deeply with context 
 
 Usually, you will pass information from a parent component to a child component via props. But passing props can become inconvenient if you need to pass some prop through many components, or if many components need the same information. Context lets the parent component make some information available to any component in the tree below it—no matter how deep it is—without passing it explicitly through props.
 
@@ -487,7 +487,7 @@ Read More
 
 * * *
 
-## Scaling up with reducer and context [](https://react.dev/learn/managing-state#scaling-up-with-reducer-and-context)
+## Scaling up with reducer and context 
 
 Reducers let you consolidate a component’s state update logic. Context lets you pass information deep down to other components. You can combine reducers and context together to manage state of a complex screen.
 
@@ -519,8 +519,60 @@ Read More
 
 * * *
 
-## What’s next? [](https://react.dev/learn/managing-state#whats-next)
+## What’s next? 
 
 Head over to Reacting to Input with State to start reading this chapter page by page!
 
 Or, if you’re already familiar with these topics, why not read about Escape Hatches?
+
+Previous Updating Arrays in StateNext Reacting to Input with State
+
+* * *
+
+Copyright © Meta Platforms, Inc
+
+no uwu plz
+
+uwu?
+
+Logo by@sawaratsuki1004
+
+Learn React
+
+Quick Start
+
+Installation
+
+Describing the UI
+
+Adding Interactivity
+
+Managing State
+
+Escape Hatches
+
+API Reference
+
+React APIs
+
+React DOM APIs
+
+Community
+
+Code of Conduct
+
+Meet the Team
+
+Docs Contributors
+
+Acknowledgements
+
+More
+
+Blog
+
+React Native
+
+Privacy
+
+Terms

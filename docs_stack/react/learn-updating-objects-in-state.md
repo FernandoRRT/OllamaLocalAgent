@@ -1,6 +1,6 @@
 Copy
 
-# Updating Objects in State[](https://react.dev/learn/updating-objects-in-state#undefined)
+# Updating Objects in State
 
 State can hold any kind of JavaScript value, including objects. But you shouldn’t change objects that you hold in the React state directly. Instead, when you want to update an object, you need to create a new one (or make a copy of an existing one), and then set the state to use that copy.
 
@@ -11,7 +11,7 @@ State can hold any kind of JavaScript value, including objects. But you shouldn�
 * What immutability is, and how not to break it
 * How to make object copying less repetitive with Immer
 
-## What’s a mutation? [](https://react.dev/learn/updating-objects-in-state#whats-a-mutation)
+## What’s a mutation? 
 
 You can store any kind of JavaScript value in state.
 
@@ -33,7 +33,7 @@ Technically, it is possible to change the contents of _the object itself_. **Thi
 
 However, although objects in React state are technically mutable, you should treat them **as if** they were immutable—like numbers, booleans, and strings. Instead of mutating them, you should always replace them.
 
-## Treat state as read-only [](https://react.dev/learn/updating-objects-in-state#treat-state-as-read-only)
+## Treat state as read-only 
 
 In other words, you should **treat any JavaScript object that you put into state as read-only.**
 
@@ -132,7 +132,7 @@ export default function MovingDot() {
 
 ##### Deep Dive
 
-#### Local mutation is fine [](https://react.dev/learn/updating-objects-in-state#local-mutation-is-fine)
+#### Local mutation is fine 
 
 Code like this is a problem because it modifies an _existing_ object in state:
 
@@ -148,7 +148,7 @@ In fact, it is completely equivalent to writing this:
 
 Mutation is only a problem when you change _existing_ objects that are already in state. Mutating an object you’ve just created is okay because _no other code references it yet._ Changing it isn’t going to accidentally impact something that depends on it. This is called a “local mutation”. You can even do local mutation while rendering. Very convenient and completely okay!
 
-## Copying objects with the spread syntax [](https://react.dev/learn/updating-objects-in-state#copying-objects-with-the-spread-syntax)
+## Copying objects with the spread syntax 
 
 In the previous example, the `position` object is always created fresh from the current cursor position. But often, you will want to include _existing_ data as a part of the new object you’re creating. For example, you may want to update _only one_ field in a form, but keep the previous values for all other fields.
 
@@ -297,7 +297,7 @@ Note that the `...` spread syntax is “shallow”—it only copies things one l
 
 ##### Deep Dive
 
-#### Using a single event handler for multiple fields [](https://react.dev/learn/updating-objects-in-state#using-a-single-event-handler-for-multiple-fields)
+#### Using a single event handler for multiple fields 
 
 You can also use the `[` and `]` braces inside your object definition to specify a property with a dynamic name. Here is the same example, but with a single event handler instead of three different ones:
 
@@ -358,7 +358,7 @@ export default function Form() {
 
 Here, `e.target.name` refers to the `name` property given to the `<input>` DOM element.
 
-## Updating a nested object [](https://react.dev/learn/updating-objects-in-state#updating-a-nested-object)
+## Updating a nested object 
 
 Consider a nested object structure like this:
 
@@ -478,7 +478,7 @@ export default function Form() {
 
 ##### Deep Dive
 
-#### Objects are not really nested [](https://react.dev/learn/updating-objects-in-state#objects-are-not-really-nested)
+#### Objects are not really nested 
 
 An object like this appears “nested” in code:
 
@@ -494,7 +494,7 @@ The `obj1` object is not “inside” `obj2`. For example, `obj3` could “point
 
 If you were to mutate `obj3.artwork.city`, it would affect both `obj2.artwork.city` and `obj1.city`. This is because `obj3.artwork`, `obj2.artwork`, and `obj1` are the same object. This is difficult to see when you think of objects as “nested”. Instead, they are separate objects “pointing” at each other with properties.
 
-### Write concise update logic with Immer [](https://react.dev/learn/updating-objects-in-state#write-concise-update-logic-with-immer)
+### Write concise update logic with Immer 
 
 If your state is deeply nested, you might want to consider flattening it. But, if you don’t want to change your state structure, you might prefer a shortcut to nested spreads. Immer is a popular library that lets you write using the convenient but mutating syntax and takes care of producing the copies for you. With Immer, the code you write looks like you are “breaking the rules” and mutating an object:
 
@@ -504,7 +504,7 @@ But unlike a regular mutation, it doesn’t overwrite the past state!
 
 ##### Deep Dive
 
-#### How does Immer work? [](https://react.dev/learn/updating-objects-in-state#how-does-immer-work)
+#### How does Immer work? 
 
 The `draft` provided by Immer is a special type of object, called a Proxy, that “records” what you do with it. This is why you can mutate it freely as much as you like! Under the hood, Immer figures out which parts of the `draft` have been changed, and produces a completely new object that contains your edits.
 
@@ -540,7 +540,7 @@ Notice how much more concise the event handlers have become. You can mix and mat
 
 ##### Deep Dive
 
-#### Why is mutating state not recommended in React? [](https://react.dev/learn/updating-objects-in-state#why-is-mutating-state-not-recommended-in-react)
+#### Why is mutating state not recommended in React? 
 
 There are a few reasons:
 
@@ -552,7 +552,7 @@ There are a few reasons:
 
 In practice, you can often “get away” with mutating state in React, but we strongly advise you not to do that so that you can use new React features developed with this approach in mind. Future contributors and perhaps even your future self will thank you!
 
-## Recap[](https://react.dev/learn/updating-objects-in-state#recap)
+## Recap
 
 * Treat all state in React as immutable.
 * When you store objects in state, mutating them will not trigger renders and will change the state in previous render “snapshots”.
@@ -562,13 +562,13 @@ In practice, you can often “get away” with mutating state in React, but we s
 * To update a nested object, you need to create copies all the way up from the place you’re updating.
 * To reduce repetitive copying code, use Immer.
 
-## Try out some challenges[](https://react.dev/learn/updating-objects-in-state#challenges)
+## Try out some challenges
 
 1. Fix incorrect state updates 2. Find and fix the mutation 3. Update an object with Immer 
 
 #### Challenge 1 of 3: 
 
-Fix incorrect state updates [](https://react.dev/learn/updating-objects-in-state#fix-incorrect-state-updates)
+Fix incorrect state updates 
 
 This form has a few bugs. Click the button that increases the score a few times. Notice that it does not increase. Then edit the first name, and notice that the score has suddenly “caught up” with your changes. Finally, edit the last name, and notice that the score has disappeared completely.
 
@@ -631,4 +631,56 @@ export default function Scoreboard() {
  );
 }
 
-Show solution
+Show solution Next Challenge
+
+Previous Queueing a Series of State UpdatesNext Updating Arrays in State
+
+* * *
+
+Copyright © Meta Platforms, Inc
+
+no uwu plz
+
+uwu?
+
+Logo by@sawaratsuki1004
+
+Learn React
+
+Quick Start
+
+Installation
+
+Describing the UI
+
+Adding Interactivity
+
+Managing State
+
+Escape Hatches
+
+API Reference
+
+React APIs
+
+React DOM APIs
+
+Community
+
+Code of Conduct
+
+Meet the Team
+
+Docs Contributors
+
+Acknowledgements
+
+More
+
+Blog
+
+React Native
+
+Privacy
+
+Terms
