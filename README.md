@@ -52,7 +52,8 @@ This repository includes pre-fetched documentation (`docs_stack`) and all necess
 ├── docs_stack/                   # Pre-downloaded & Sanitized Markdown
 │   ├── auth0-nextjs/             # Auth0 SDK v4 documentation
 │   ├── nextjs/                   # Next.js 16 documentation
-│   └── react/                    # React 19 documentation
+│   ├── react/                    # React 19 documentation
+│   └── zod/                      # Zod 4 documentation
 ├── src/                          # Core application logic
 │   ├── helpers/
 │   │   ├── constants.js          # Shared paths (like docs_stack base path)
@@ -63,7 +64,8 @@ This repository includes pre-fetched documentation (`docs_stack`) and all necess
 │   └── mcp/                      # Curated fetch configurations (CLI Menu sources)
 │       ├── bulk-fetch-auth0.js
 │       ├── bulk-fetch-next.js
-│       └── bulk-fetch-react.js
+│       ├── bulk-fetch-react.js
+│       └── bulk-fetch-zod.js
 ├── bulk-fetch.js                 # Centralized Bulk Fetch Commander (CLI Menu)
 ├── fetch-docs.js                 # CLI utility to fetch a single documentation page
 ├── ingest.js                     # Chunks markdown and saves vectors to Postgres
@@ -145,6 +147,7 @@ The bulk download scripts contain curated links for the following framework vers
 - **Next.js v16.x** (Optimized RAG list)
 - **React v19.x** (Core hooks and patterns)
 - **Auth0 Next.js SDK v4.x** (Main examples and MCD)
+- **Zod v4.x** (Main examples and error customization)
     
 This project features a centralized **Bulk Fetch Commander** to manage documentation versions. Instead of running individual files, use this single entry point to select which stack you want to update:
 
