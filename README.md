@@ -51,6 +51,7 @@ This repository includes pre-fetched documentation (`docs_stack`) and all necess
 │       └── docker-compose.yml     # Postgres + pgvector container config
 ├── docs_stack/                   # Pre-downloaded & Sanitized Markdown
 │   ├── auth0-nextjs/             # Auth0 SDK v4 documentation
+│   ├── material ui/              # Material ui 9 documentation
 │   ├── nextjs/                   # Next.js 16 documentation
 │   ├── react/                    # React 19 documentation
 │   └── zod/                      # Zod 4 documentation
@@ -144,9 +145,10 @@ node fetch-docs.js https://example.com /example/doc-name.md
 
 The bulk download scripts contain curated links for the following framework versions:
 
+- **Auth0 Next.js SDK v4.x** (Main examples and MCD)
+- **Material UI v9.x** (Main examples and customization)
 - **Next.js v16.x** (Optimized RAG list)
 - **React v19.x** (Core hooks and patterns)
-- **Auth0 Next.js SDK v4.x** (Main examples and MCD)
 - **Zod v4.x** (Main examples and error customization)
     
 This project features a centralized **Bulk Fetch Commander** to manage documentation versions. Instead of running individual files, use this single entry point to select which stack you want to update:
