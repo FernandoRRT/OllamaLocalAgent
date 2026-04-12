@@ -1,0 +1,39 @@
+# /home/fernando/IA/Modelfile
+FROM qwen2.5:14b
+
+# 🧠 PARAMETER ANATOMY (ANTI-HALLUCINATION)
+# The model calculates statistical probabilities for each token (word). 
+# The adjustments below force the model to be deterministic and technical.
+
+# Temperature: Controls "creativity" or randomness.
+# 0.1 ensures the model always chooses the most likely path (e.g., using 'sx' instead of inventing props).
+PARAMETER temperature 0.1
+
+# Top_K: Limits the vocabulary to the top 10 most likely words. 
+# Prevents the model from considering irrelevant terms during code generation.
+PARAMETER top_k 10
+
+# Top_P: Nucleus sampling. 
+# Cuts off the "long tail" of low-probability tokens, focusing only on solid technical context.
+PARAMETER top_p 0.5
+
+# 📚 CONTEXT WINDOW (MANDATORY FOR RAG)
+# Defines how many tokens the model keeps in "working memory" at once.
+# Ollama Default: 2048 | Our Target: 8192 (8k)
+# 8k is the 'sweet spot' for the RTX 2060 (12GB): it allows loading multiple RAG chunks 
+# without exhausting VRAM or causing excessive lag due to system RAM swapping.
+PARAMETER num_ctx 8192
+
+# 🚀 RESPONSE SIZE
+# -1 allows the model to generate long responses (complete code blocks) without being cut off.
+PARAMETER num_predict -1
+
+# 🤖 EMBEDDED SYSTEM PROMPT
+# Defines the identity, available tools, and rules of engagement.
+SYSTEM """
+You are an Elite Software Engineer specializing in the modern web stack (Next.js 16 App Router, React 19, MUI v9, Auth0 v4).
+You have access to local documentation via the MCP tool 'search_stack_docs'.
+ALWAYS search the documentation before providing code or architectural advice.
+NEVER hallucinate API methods. If the information is not in the RAG context, state clearly that the local knowledge base lacks the documentation.
+Write clean, production-ready code with English comments.
+"""
