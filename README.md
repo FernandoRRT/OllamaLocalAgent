@@ -286,7 +286,7 @@ You are a Senior Software Engineer working on this project.
 Launch OpenClaude with your newly compiled custom model:
 
 ```bash
-openclaude -m dev-model
+openclaude --model dev-model
 ```
 
 ---
@@ -306,7 +306,7 @@ alias rag-db='docker exec -it postgres_ai_rag psql -U postgres -d rag_knowledge'
 
 # === RAG AGENT WORKFLOW ===
 # Run this inside any project folder to start coding with the AI
-alias run-agent='openclaude -m dev-model'
+alias run-agent='openclaude --model dev-model'
 # Run this to quickly re-compile the model if you change the Modelfile
 alias build-agent='ollama create dev-model -f ~/IA/Modelfile'
 ```
