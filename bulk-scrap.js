@@ -1,4 +1,3 @@
-// bulk-fetch.js
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -7,22 +6,21 @@ import readline from 'node:readline';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Target directory where the bulk scripts are stored
-const mcpDir = path.join(__dirname, 'src', 'mcp');
+const configsDir = path.join(__dirname, 'bulk-scrap-configs');
 
 async function runMenu() {
   try {
     // 1. Read directory and filter only .js files
-    const files = await fs.readdir(mcpDir);
+    const files = await fs.readdir(configsDir);
     const scripts = files.filter(f => f.endsWith('.js'));
 
     if (scripts.length === 0) {
-      console.log('⚠️ No fetch scripts found in ./src/mcp');
+      console.log(`⚠️ No scrape scripts found in ./bulk-scrap-configs`);
       return;
     }
 
     // 2. Build the CLI Menu
-    console.log('\n📦 RAG Bulk Fetch Commander');
+    console.log('\n📦 Bulk Scrape Commander');
     console.log('==============================');
     scripts.forEach((script, index) => {
       console.log(`[${index + 1}] - ${script}`);
@@ -53,14 +51,13 @@ async function runMenu() {
       }
 
       const selectedScript = scripts[choice - 1];
-      const scriptPath = path.join(mcpDir, selectedScript);
+      const scriptPath = path.join(configsDir, selectedScript);
 
       console.log(`\n🚀 Executing: ${selectedScript}...\n`);
       rl.close();
 
       try {
         // 5. Dynamic import executes the ES Module immediately
-        // Note: 'file://' prefix is required for dynamic absolute path imports in Node.js ESM
         await import(`file://${scriptPath}`);
       } catch (importError) {
         console.error(`❌ Error executing ${selectedScript}:`, importError);
@@ -69,7 +66,7 @@ async function runMenu() {
 
   } catch (error) {
     if (error.code === 'ENOENT') {
-      console.error(`❌ Directory not found: ${mcpDir}. Please create it.`);
+      console.error(`❌ Directory not found: ${configsDir}. Please create it and add your scripts.`);
     } else {
       console.error('❌ Error reading directory:', error);
     }
