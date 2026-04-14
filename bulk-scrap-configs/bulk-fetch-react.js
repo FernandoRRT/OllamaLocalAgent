@@ -1,6 +1,6 @@
 import path from 'path';
-import { runBulk } from '../helpers/runBulk.js';
-import { DOCS_STACK_DIR } from '../helpers/constants.js';
+import { runBulk } from '../src/helpers/runBulk.js';
+import { DOCS_STACK_DIR } from '../src/helpers/constants.js';
 
 // Now the path is always absolute and standard
 const dirPath = path.join(DOCS_STACK_DIR, 'react');

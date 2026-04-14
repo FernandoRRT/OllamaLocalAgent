@@ -2,7 +2,7 @@ import fs from 'fs';
 import { fetchAndClean } from './fetchAndClean.js';
 
 export async function runBulk(docsArray, dirPath, stackName = "Stack") {
-    console.log(`🚀 Starting Bulk Fetch of ${stackName} (${docsArray.length} files)...\n`);
+    console.log(`🚀 Starting Bulk Scrap of ${stackName} (${docsArray.length} files)...\n`);
 
     // Clears the old directory for safety
     if (fs.existsSync(dirPath)) {
